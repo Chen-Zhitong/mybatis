@@ -38,6 +38,12 @@ public class ReflectorTest {
     Assert.assertFalse(reflector.hasGetter("class"));
   }
 
+  @Test
+  public void shouldGetId() throws Exception {
+    Reflector reflector = Reflector.forClass(Section.class);
+    Assert.assertTrue(reflector.hasGetter("id"));
+  }
+
   static interface Entity<T> {
     T getId();
     void setId(T id);
