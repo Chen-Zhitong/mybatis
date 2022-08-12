@@ -25,7 +25,7 @@ import java.util.List;
  */
 /**
  * 结果集处理器
- * 
+ *
  */
 public interface ResultSetHandler {
 

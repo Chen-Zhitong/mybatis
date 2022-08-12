@@ -22,7 +22,7 @@ import org.apache.ibatis.exceptions.PersistenceException;
  */
 /**
  * 日志异常,继承PersistenceException，没啥好说的，就是语义分类
- * 
+ *
  */
 public class LogException extends PersistenceException {
 

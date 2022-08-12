@@ -25,7 +25,7 @@ import java.sql.SQLException;
  */
 /**
  * 参数处理器
- * 
+ *
  */
 public interface ParameterHandler {
 

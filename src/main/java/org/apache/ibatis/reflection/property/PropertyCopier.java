@@ -22,7 +22,7 @@ import java.lang.reflect.Field;
  */
 /**
  * 属性复制器
- * 
+ *
  */
 public final class PropertyCopier {
 

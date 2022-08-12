@@ -85,7 +85,7 @@ public class Plugin implements InvocationHandler {
     // issue #251
     //必须得有Intercepts注解，没有报错
     if (interceptsAnnotation == null) {
-      throw new PluginException("No @Intercepts annotation was found in interceptor " + interceptor.getClass().getName());      
+      throw new PluginException("No @Intercepts annotation was found in interceptor " + interceptor.getClass().getName());
     }
     //value是数组型，Signature的数组
     Signature[] sigs = interceptsAnnotation.value();

@@ -135,5 +135,5 @@ public class VelocitySqlSourceBuilder extends BaseBuilder {
       }
     }
   }
-  
+
 }

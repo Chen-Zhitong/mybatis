@@ -28,7 +28,7 @@
 
   <body>
     <section name="スタートガイド">
-    
+
     <subsection name="Installation">
       <p>
         MyBatis を使うためには、ダウンロードした
@@ -46,8 +46,8 @@
   <artifactId>mybatis</artifactId>
   <version>x.x.x</version>
 </dependency>]]></source>
-    </subsection>    
-     
+    </subsection>
+
       <subsection name="XML 形式の設定ファイルを使って SqlSessionFactory を生成する">
         <p>
           MyBatis アプリケーションは、SqlSessionFactory のインスタンスを中心に構成されています。<br />

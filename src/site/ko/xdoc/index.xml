@@ -44,7 +44,7 @@ MyBatis 는 JDBC 코드와 수동으로 셋팅하는 파라미터와 결과 매�
         <p>당신은 이 문서의 가장 멋진 저자가 되는 셈이다. 많은 사람들이 이 문서를 읽을 것이다!
         </p>
       </subsection>
-      
+
       <subsection name="번역에 대하여">
         <p>번역자 : 이동국(fromm0@gmail.com, http://ldg.pe.kr, https://www.facebook.com/dongguk.lee.3)</p>
       </subsection>

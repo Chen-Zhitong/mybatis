@@ -32,9 +32,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class EnumTypeHandlerTest {
-    
+
     private static SqlSessionFactory sqlSessionFactory;
-    
+
     @BeforeClass
     public static void initDatabase() throws Exception {
         Connection conn = null;
@@ -62,7 +62,7 @@ public class EnumTypeHandlerTest {
             }
         }
     }
-    
+
     @Test
     public void testEnumWithParam() {
         SqlSession sqlSession = sqlSessionFactory.openSession();

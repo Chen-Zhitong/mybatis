@@ -31,7 +31,7 @@ import org.apache.ibatis.transaction.Transaction;
  */
 /**
  * 执行器
- * 
+ *
  */
 public interface Executor {
 

@@ -84,7 +84,7 @@ public class MultiDbTest {
       sqlSession.close();
     }
   }
-  
+
   @Test
   public void shouldExecuteHsqlQueryWithDynamicIf() {
     SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -120,8 +120,8 @@ public class MultiDbTest {
     } finally {
       sqlSession.close();
     }
-  }  
-  
+  }
+
   @Test
   public void shouldInsertInCommonWithSelectKey2() {
     SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -133,6 +133,6 @@ public class MultiDbTest {
     } finally {
       sqlSession.close();
     }
-  }  
+  }
 
 }

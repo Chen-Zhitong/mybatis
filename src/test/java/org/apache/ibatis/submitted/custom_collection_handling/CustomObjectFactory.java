@@ -84,7 +84,7 @@ public class CustomObjectFactory implements ObjectFactory {
         }
         return classToCreate;
     }
-    
+
     public <T> boolean isCollection(Class<T> type) {
       return CustomCollection.class.isAssignableFrom(type);
     }

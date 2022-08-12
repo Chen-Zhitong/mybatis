@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?> 
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
 
        Copyright 2009-2012 the original author or authors.
@@ -23,11 +23,11 @@
 		<setting name="defaultExecutorType" value="SIMPLE"/>
 		<setting name="useGeneratedKeys" value="true"/>
 	</settings>
-	
+
 	<typeAliases>
-		<typeAlias type="org.apache.ibatis.submitted.cache.Person" alias="Person" /> 
+		<typeAlias type="org.apache.ibatis.submitted.cache.Person" alias="Person" />
 	</typeAliases>
-	
+
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC">
@@ -40,8 +40,8 @@
 			</dataSource>
 		</environment>
 	</environments>
-	
+
 	<mappers>
-		<mapper class="org.apache.ibatis.submitted.cache.PersonMapper"/>	
+		<mapper class="org.apache.ibatis.submitted.cache.PersonMapper"/>
 	</mappers>
-</configuration> 
+</configuration>

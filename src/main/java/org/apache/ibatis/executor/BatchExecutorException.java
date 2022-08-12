@@ -22,8 +22,8 @@ import java.util.List;
  * This exception is thrown if a <code>java.sql.BatchUpdateException</code> is caught
  * during the execution of any nested batch.  The exception contains the
  * java.sql.BatchUpdateException that is the root cause, as well as
- * the results from any prior nested batch that executed successfully.  
- * 
+ * the results from any prior nested batch that executed successfully.
+ *
  * @author Jeff Butler
  */
 /**
@@ -36,8 +36,8 @@ public class BatchExecutorException extends ExecutorException {
   private final BatchUpdateException batchUpdateException;
   private final BatchResult batchResult;
 
-  public BatchExecutorException(String message, 
-                                BatchUpdateException cause, 
+  public BatchExecutorException(String message,
+                                BatchUpdateException cause,
                                 List<BatchResult> successfulBatchResults,
                                 BatchResult batchResult) {
     super(message + " Cause: " + cause, cause);

@@ -31,7 +31,7 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
  */
 /**
  * 原类
- * 
+ *
  */
 public class MetaClass {
 

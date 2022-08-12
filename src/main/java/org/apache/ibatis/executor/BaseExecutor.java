@@ -47,7 +47,7 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
  */
 /**
  * 执行器基类
- * 
+ *
  */
 public abstract class BaseExecutor implements Executor {
 
@@ -251,7 +251,7 @@ public abstract class BaseExecutor implements Executor {
       cacheKey.update(configuration.getEnvironment().getId());
     }
     return cacheKey;
-  }    
+  }
 
   @Override
   public boolean isCached(MappedStatement ms, CacheKey key) {
@@ -364,7 +364,7 @@ public abstract class BaseExecutor implements Executor {
   public void setExecutorWrapper(Executor wrapper) {
     this.wrapper = wrapper;
   }
-  
+
   //延迟加载
   private static class DeferredLoad {
 

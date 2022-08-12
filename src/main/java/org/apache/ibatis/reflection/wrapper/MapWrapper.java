@@ -29,7 +29,7 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
  */
 /**
  * Map包装器
- * 
+ *
  */
 public class MapWrapper extends BaseWrapper {
 

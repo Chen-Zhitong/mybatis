@@ -39,7 +39,7 @@ import org.apache.ibatis.io.Resources;
  * 没有池化的数据源
  */
 public class UnpooledDataSource implements DataSource {
-  
+
   private ClassLoader driverClassLoader;
   //作为可选项,你可以传递数据库驱动的属性。要这样做,属性的前缀是以“driver.”开 头的,例如
   //driver.encoding=UTF8

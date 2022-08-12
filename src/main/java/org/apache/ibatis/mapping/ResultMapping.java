@@ -136,7 +136,7 @@ public class ResultMapping {
       resultMapping.lazy = lazy;
       return this;
     }
-    
+
     public ResultMapping build() {
       // lock down collections
       resultMapping.flags = Collections.unmodifiableList(resultMapping.flags);
@@ -174,7 +174,7 @@ public class ResultMapping {
         }
       }
     }
-    
+
     private void resolveTypeHandler() {
       if (resultMapping.typeHandler == null && resultMapping.javaType != null) {
         Configuration configuration = resultMapping.configuration;
@@ -256,7 +256,7 @@ public class ResultMapping {
   public void setLazy(boolean lazy) {
     this.lazy = lazy;
   }
-  
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

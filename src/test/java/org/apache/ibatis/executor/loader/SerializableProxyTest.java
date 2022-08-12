@@ -40,9 +40,9 @@ import org.junit.Test;
 public abstract class SerializableProxyTest {
 
   protected Author author = new Author(999, "someone", "!@#@!#!@#", "someone@somewhere.com", "blah", Section.NEWS);
-  
+
   protected ProxyFactory proxyFactory;
-  
+
   @Test
   public void shouldKeepGenericTypes() throws Exception {
     for (int i = 0; i < 10000; i++) {

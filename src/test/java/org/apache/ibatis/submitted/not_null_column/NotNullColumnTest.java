@@ -30,9 +30,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class NotNullColumnTest {
-    
+
     private static SqlSessionFactory sqlSessionFactory;
-    
+
     @BeforeClass
     public static void initDatabase() throws Exception {
         Connection conn = null;
@@ -60,13 +60,13 @@ public class NotNullColumnTest {
             }
         }
     }
-    
+
     @Test
     public void testNotNullColumnWithChildrenNoFid() {
       SqlSession sqlSession = sqlSessionFactory.openSession();
       try {
           FatherMapper fatherMapper = sqlSession.getMapper(FatherMapper.class);
-          
+
           Father test = fatherMapper.selectByIdNoFid(1);
           assertNotNull(test);
           assertNotNull(test.getChildren());
@@ -75,13 +75,13 @@ public class NotNullColumnTest {
         sqlSession.close();
       }
     }
-    
+
     @Test
     public void testNotNullColumnWithoutChildrenNoFid() {
       SqlSession sqlSession = sqlSessionFactory.openSession();
       try {
           FatherMapper fatherMapper = sqlSession.getMapper(FatherMapper.class);
-          
+
           Father test = fatherMapper.selectByIdNoFid(2);
           assertNotNull(test);
           assertNotNull(test.getChildren());
@@ -105,7 +105,7 @@ public class NotNullColumnTest {
         sqlSession.close();
       }
     }
-  
+
     @Test
     public void testNotNullColumnWithoutChildrenWithInternalResultMap() {
       SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -120,7 +120,7 @@ public class NotNullColumnTest {
         sqlSession.close();
       }
     }
-    
+
     @Test
     public void testNotNullColumnWithoutChildrenWithRefResultMap() {
       SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -135,7 +135,7 @@ public class NotNullColumnTest {
         sqlSession.close();
       }
     }
-    
+
     @Test
     public void testNotNullColumnWithoutChildrenFidMultipleNullColumns() {
       SqlSession sqlSession = sqlSessionFactory.openSession();

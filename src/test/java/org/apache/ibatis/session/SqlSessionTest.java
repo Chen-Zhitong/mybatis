@@ -167,7 +167,7 @@ public class SqlSessionTest extends BaseDataTest {
       session.close();
     }
   }
-  
+
   @Test
   public void shouldSelectAllAuthorsAsMap() throws Exception {
     SqlSession session = sqlMapper.openSession(TransactionIsolationLevel.SERIALIZABLE);
@@ -578,7 +578,7 @@ public class SqlSessionTest extends BaseDataTest {
       session.close();
     }
   }
-  
+
   @Test
   public void shouldExecuteSelectAllAuthorsUsingMapperClassThatReturnsSet() {
     SqlSession session = sqlMapper.openSession();
@@ -654,7 +654,7 @@ public class SqlSessionTest extends BaseDataTest {
       session.close();
     }
   }
-  
+
   @Test
   public void shouldSelectAuthorsUsingMapperClassWithResultHandler() {
     SqlSession session = sqlMapper.openSession();

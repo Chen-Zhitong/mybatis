@@ -35,7 +35,7 @@ import org.apache.ibatis.io.ResolverUtil;
  */
 /**
  * 类型处理器注册机
- * 
+ *
  */
 public final class TypeHandlerRegistry {
 
@@ -341,14 +341,14 @@ public final class TypeHandlerRegistry {
       }
     }
   }
-  
+
   // get information
-  
+
   /**
    * @since 3.2.2
    */
   public Collection<TypeHandler<?>> getTypeHandlers() {
     return Collections.unmodifiableCollection(ALL_TYPE_HANDLERS_MAP.values());
   }
-  
+
 }

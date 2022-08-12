@@ -24,7 +24,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 
 public class DisallowDotsOnNamesTest {
-        
+
     @Test(expected=PersistenceException.class)
     public void testShouldNotAllowMappedStatementsWithDots() throws IOException {
         Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/disallowdotsonnames/ibatisConfig.xml");

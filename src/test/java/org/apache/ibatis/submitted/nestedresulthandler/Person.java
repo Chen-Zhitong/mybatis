@@ -22,7 +22,7 @@ import java.util.List;
 public class Person {
   private Integer id;
   private String name;
-  private List<Item> items=new ArrayList<Item>(); 
+  private List<Item> items=new ArrayList<Item>();
 
   public Integer getId() {
     return id;
@@ -43,7 +43,7 @@ public class Person {
   public Collection<Item> getItems() {
     return items;
   }
-  
+
   public boolean owns(String name) {
     for (Item item : getItems()) {
       if (item.getName().equals(name))

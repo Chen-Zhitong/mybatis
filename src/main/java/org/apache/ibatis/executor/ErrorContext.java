@@ -19,7 +19,7 @@ package org.apache.ibatis.executor;
  * @author Clinton Begin
  */
 /**
- * 
+ *
  * 错误上下文
  */
 public class ErrorContext {
@@ -35,7 +35,7 @@ public class ErrorContext {
   private String message;
   private String sql;
   private Throwable cause;
- 
+
   //单例模式
   private ErrorContext() {
   }

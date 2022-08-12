@@ -26,7 +26,7 @@
         <typeAlias alias="Employee" type="org.apache.ibatis.submitted.multiple_discriminator.Employee"/>
         <typeAlias alias="Director" type="org.apache.ibatis.submitted.multiple_discriminator.Director"/>
     </typeAliases>
-    
+
     <environments default="test">
         <environment id="test">
             <transactionManager type="JDBC"></transactionManager>
@@ -37,7 +37,7 @@
             </dataSource>
         </environment>
     </environments>
-    
+
     <mappers>
         <mapper resource="org/apache/ibatis/submitted/multiple_discriminator/Person.xml"/>
     </mappers>

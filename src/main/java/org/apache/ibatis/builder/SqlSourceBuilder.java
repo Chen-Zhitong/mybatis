@@ -33,7 +33,7 @@ import org.apache.ibatis.type.JdbcType;
  */
 /**
  * SQL源码构建器
- * 
+ *
  */
 public class SqlSourceBuilder extends BaseBuilder {
 
@@ -147,5 +147,5 @@ public class SqlSourceBuilder extends BaseBuilder {
       }
     }
   }
-  
+
 }

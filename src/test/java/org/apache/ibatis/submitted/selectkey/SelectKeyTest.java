@@ -183,7 +183,7 @@ public class SelectKeyTest {
         assertEquals(1, rows);
         assertEquals(22, name.getNameId());
         assertEquals("barney_fred", name.getGeneratedName());
-        
+
         name.setName("Wilma");
         rows = mapper.updateTable2WithGeneratedKey(name);
         assertEquals(1, rows);
@@ -207,7 +207,7 @@ public class SelectKeyTest {
         assertEquals(1, rows);
         assertEquals(22, name.getNameId());
         assertEquals("barney_fred", name.getGeneratedName());
-        
+
         name.setName("Wilma");
         rows = mapper.updateTable2WithGeneratedKeyXml(name);
         assertEquals(1, rows);
@@ -264,7 +264,7 @@ public class SelectKeyTest {
         assertEquals(1, rows);
         assertEquals(22, name.getNameId());
         assertEquals("barney_fred", name.getGeneratedName());
-        
+
         name.setName("Wilma");
         rows = mapper.updateTable2WithSelectKeyWithKeyMap(name);
         assertEquals(1, rows);

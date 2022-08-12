@@ -27,7 +27,7 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
  */
 /**
  * Collection包装器
- * 
+ *
  */
 public class CollectionWrapper implements ObjectWrapper {
 

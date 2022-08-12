@@ -34,7 +34,7 @@
 	    	#{id}, #{name}, #{funkyNumber}, #{roundingMode}
 	    )
 	</insert>
-	
+
 	<resultMap type="org.apache.ibatis.submitted.rounding.User" id="usermap2">
 		<id column="id" property="id"/>
 		<result column="name" property="name"/>

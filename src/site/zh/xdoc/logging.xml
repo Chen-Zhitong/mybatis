@@ -131,18 +131,18 @@ log4j.appender.stdout.layout.ConversionPattern=%5p [%t] - %m%n]]></source>
         </p>
 
         <source>log4j.logger.org.mybatis.example.BlogMapper.selectBlog=TRACE</source>
-        
+
         <p>与此相对，可以对一组mapper接口记录日志，只要对mapper接口所在的包开启日志功能即可：</p>
 
         <source>log4j.logger.org.mybatis.example=TRACE</source>
-        
+
         <p>某些查询可能会返回大量的数据，只想记录其执行的SQL语句该怎么办？为此，Mybatis中SQL语
-             句的日志级别被设为DEBUG（JDK Logging中为FINE），结果日志的级别为TRACE（JDK 
+             句的日志级别被设为DEBUG（JDK Logging中为FINE），结果日志的级别为TRACE（JDK
            Logging中为FINER)。所以，只要将日志级别调整为DEBUG即可达到目的：
         </p>
 
         <source>log4j.logger.org.mybatis.example=DEBUG</source>
-        
+
         <p>要记录日志的是类似下面的mapper文件而不是mapper接口又该怎么呢？
         </p>
 

@@ -39,7 +39,7 @@ import org.apache.ibatis.transaction.TransactionFactory;
  */
 /**
  * 结果延迟加载器
- * 
+ *
  */
 public class ResultLoader {
 
@@ -53,10 +53,10 @@ public class ResultLoader {
   protected final BoundSql boundSql;
   protected final ResultExtractor resultExtractor;
   protected final long creatorThreadId;
-  
+
   protected boolean loaded;
   protected Object resultObject;
-  
+
   public ResultLoader(Configuration config, Executor executor, MappedStatement mappedStatement, Object parameterObject, Class<?> targetType, CacheKey cacheKey, BoundSql boundSql) {
     this.configuration = config;
     this.executor = executor;

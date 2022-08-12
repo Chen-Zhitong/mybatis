@@ -54,7 +54,7 @@
 		</if>
 		where id=#{value}
 	</select>
-	
+
 	<sql id="sql1" databaseId="hsql">
 		hsql
 	</sql>
@@ -62,7 +62,7 @@
 	<sql id="sql1">
 		common
 	</sql>
-	
+
 	<select id="select4" resultType="string" parameterType="int">
 		select name from
 		<include refid="sql1"/>

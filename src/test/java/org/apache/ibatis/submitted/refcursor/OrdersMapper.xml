@@ -27,14 +27,14 @@
       <result property="description" column="ITEM_DESCRIPTION"/>
     </collection>
   </resultMap>
-  
+
   <update id="getOrder1" parameterType="map" statementType="CALLABLE">
-    { #{order,jdbcType=OTHER,mode=OUT,resultMap=OrderResult,javaType=java.sql.ResultSet} = 
+    { #{order,jdbcType=OTHER,mode=OUT,resultMap=OrderResult,javaType=java.sql.ResultSet} =
         call mbtest.get_order(#{orderId,jdbcType=INTEGER,mode=IN}) }
   </update>
 
   <update id="getOrder2" parameterType="map" statementType="CALLABLE">
-    { #{order,jdbcType=OTHER,mode=OUT,resultMap=org.apache.ibatis.submitted.refcursor.OrdersMapper.OrderResult,javaType=java.sql.ResultSet} = 
+    { #{order,jdbcType=OTHER,mode=OUT,resultMap=org.apache.ibatis.submitted.refcursor.OrdersMapper.OrderResult,javaType=java.sql.ResultSet} =
         call mbtest.get_order(#{orderId,jdbcType=INTEGER,mode=IN}) }
   </update>
 </mapper>

@@ -36,12 +36,12 @@ public class TextSqlNode implements SqlNode {
   public TextSqlNode(String text) {
     this(text, null);
   }
-  
+
   public TextSqlNode(String text, Pattern injectionFilter) {
     this.text = text;
     this.injectionFilter = injectionFilter;
   }
-  
+
   //判断是否是动态sql
   public boolean isDynamic() {
     DynamicCheckerTokenParser checker = new DynamicCheckerTokenParser();
@@ -56,7 +56,7 @@ public class TextSqlNode implements SqlNode {
     context.appendSql(parser.parse(text));
     return true;
   }
-  
+
   private GenericTokenParser createParser(TokenHandler handler) {
     return new GenericTokenParser("${", "}", handler);
   }
@@ -94,7 +94,7 @@ public class TextSqlNode implements SqlNode {
       }
     }
   }
-  
+
   //动态SQL检查器
   private static class DynamicCheckerTokenParser implements TokenHandler {
 
@@ -115,5 +115,5 @@ public class TextSqlNode implements SqlNode {
       return null;
     }
   }
-  
+
 }

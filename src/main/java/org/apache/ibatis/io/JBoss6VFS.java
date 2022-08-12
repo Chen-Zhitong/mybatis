@@ -28,7 +28,7 @@ import org.apache.ibatis.logging.LogFactory;
 /**
  * A {@link VFS} implementation that works with the VFS API provided by JBoss 6.
  * 调用Jboss6的VFS API
- * 
+ *
  * @author Ben Gunter
  */
 public class JBoss6VFS extends VFS {
@@ -110,7 +110,7 @@ public class JBoss6VFS extends VFS {
   /**
    * Verifies that the provided object reference is null. If it is null, then this VFS is marked
    * as invalid for the current environment.
-   * 
+   *
    * @param object The object reference to check for null.
    */
   protected static <T> T checkNotNull(T object) {
@@ -123,7 +123,7 @@ public class JBoss6VFS extends VFS {
   /**
    * Verifies that the return type of a method is what it is expected to be. If it is not, then
    * this VFS is marked as invalid for the current environment.
-   * 
+   *
    * @param method The method whose return type is to be checked.
    * @param expected A type to which the method's return type must be assignable.
    * @see Class#isAssignableFrom(Class)

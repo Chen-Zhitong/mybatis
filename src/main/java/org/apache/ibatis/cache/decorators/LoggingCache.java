@@ -32,7 +32,7 @@ import org.apache.ibatis.logging.LogFactory;
 public class LoggingCache implements Cache {
 
   //用的mybatis自己的抽象Log
-  private Log log;  
+  private Log log;
   private Cache delegate;
   protected int requests = 0;
   protected int hits = 0;

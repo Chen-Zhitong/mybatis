@@ -130,5 +130,5 @@ public class TypeHandlerRegistryTest {
     assertSame(IntegerTypeHandler.class, typeHandlerRegistry.getTypeHandler(Integer.class).getClass());
     typeHandlerRegistry.register(Integer.class, IntegerTypeHandler.class);
   }
-  
+
 }

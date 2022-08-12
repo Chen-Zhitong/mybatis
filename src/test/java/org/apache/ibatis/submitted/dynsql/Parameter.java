@@ -24,7 +24,7 @@ public class Parameter {
   private String schema;
   private List<Integer> ids;
   private boolean enabled;
-  
+
   public String getFred() {
     // added this method to check for bug with DynamicContext
     // IBATIS-777

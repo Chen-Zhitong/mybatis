@@ -27,7 +27,7 @@ import org.apache.ibatis.session.ResultHandler;
  */
 /**
  * 默认结果处理器
- * 
+ *
  */
 public class DefaultResultHandler implements ResultHandler {
 

@@ -21,9 +21,9 @@ public interface MapperOverload extends ParentMapper {
 
   @Override
   User getUserXML();
-  
+
   @Override
   @Select("select * from users where id = 2")
   User getUserAnnotated();
-  
+
 }

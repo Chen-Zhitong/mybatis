@@ -31,7 +31,7 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
  */
 /**
  * Bean包装器
- * 
+ *
  */
 public class BeanWrapper extends BaseWrapper {
 

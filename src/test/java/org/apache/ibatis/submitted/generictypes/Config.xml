@@ -36,7 +36,7 @@
       </dataSource>
     </environment>
   </environments>
-  
+
   <mappers>
     <mapper class="org.apache.ibatis.submitted.generictypes.Mapper" />
   </mappers>

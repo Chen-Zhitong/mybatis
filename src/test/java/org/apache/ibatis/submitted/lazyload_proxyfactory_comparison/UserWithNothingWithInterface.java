@@ -15,7 +15,7 @@
  */
 package org.apache.ibatis.submitted.lazyload_proxyfactory_comparison;
 
-public class UserWithNothingWithInterface 
+public class UserWithNothingWithInterface
 implements Owned<Group> {
 
   private Integer id;
@@ -37,11 +37,11 @@ implements Owned<Group> {
   public void setName(String name) {
     this.name = name;
   }
-  
+
   public Group getOwner() {
      return owner;
   }
-  
+
   public void setOwner(Group owner) {
     this.owner = owner;
   }

@@ -35,7 +35,7 @@ import org.apache.ibatis.transaction.Transaction;
  */
 /**
  * 简单执行器
- * 
+ *
  */
 public class SimpleExecutor extends BaseExecutor {
 

@@ -9,11 +9,11 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
 public class CustomObjectWrapper implements org.apache.ibatis.reflection.wrapper.ObjectWrapper {
 
   private CustomCollection collection;
-  
+
   public CustomObjectWrapper(CustomCollection collection){
     this.collection = collection;
   }
-  
+
   public Object get(PropertyTokenizer prop) {
     // TODO Auto-generated method stub
     return null;

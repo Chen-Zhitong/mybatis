@@ -20,7 +20,7 @@ public class Person {
         EMPLOYEE,
         DIRECTOR
     }
-    
+
     private Long id;
     private String firstName;
     private String lastName;

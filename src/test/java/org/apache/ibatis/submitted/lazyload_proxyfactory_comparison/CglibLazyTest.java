@@ -16,7 +16,7 @@
 package org.apache.ibatis.submitted.lazyload_proxyfactory_comparison;
 
 
-public class CglibLazyTest 
+public class CglibLazyTest
 extends AbstractLazyTest {
   @Override
   protected String getConfiguration() {

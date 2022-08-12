@@ -22,7 +22,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 /**
  * 调用者
- * 
+ *
  */
 public interface Invoker {
   //调用

@@ -20,7 +20,7 @@ package org.apache.ibatis.parsing;
  */
 /**
  * 普通记号解析器，处理#{}和${}参数
- * 
+ *
  */
 public class GenericTokenParser {
 

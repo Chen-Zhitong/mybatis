@@ -23,7 +23,7 @@ import org.apache.ibatis.reflection.ReflectionException;
  */
 /**
  * 默认对象包装器工厂
- * 
+ *
  */
 public class DefaultObjectWrapperFactory implements ObjectWrapperFactory {
 

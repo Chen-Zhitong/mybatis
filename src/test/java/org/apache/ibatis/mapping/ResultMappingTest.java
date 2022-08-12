@@ -19,7 +19,7 @@ public class ResultMappingTest {
         .nestedResultMapId("nested resultMap")
         .build();
   }
-  
+
   //Issue 4: column is mandatory on nested queries
   @Test(expected=IllegalStateException.class)
   public void shouldFailWithAMissingColumnInNetstedSelect() throws Exception {

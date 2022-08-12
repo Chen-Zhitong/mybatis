@@ -29,20 +29,20 @@ import org.apache.ibatis.logging.LogFactory;
 
 /**
  * Vendor DatabaseId provider
- * 
+ *
  * It returns database product name as a databaseId
  * If the user provides a properties it uses it to translate database product name
- * key="Microsoft SQL Server", value="ms" will return "ms" 
- * It can return null, if no database product name or 
- * a properties was specified and no translation was found 
- * 
+ * key="Microsoft SQL Server", value="ms" will return "ms"
+ * It can return null, if no database product name or
+ * a properties was specified and no translation was found
+ *
  * @author Eduardo Macarron
  */
 /**
  * 厂商数据库Id提供者
  */
 public class VendorDatabaseIdProvider implements DatabaseIdProvider {
-  
+
   private static final Log log = LogFactory.getLog(BaseExecutor.class);
 
   private Properties properties;
@@ -99,5 +99,5 @@ public class VendorDatabaseIdProvider implements DatabaseIdProvider {
       }
     }
   }
-  
+
 }

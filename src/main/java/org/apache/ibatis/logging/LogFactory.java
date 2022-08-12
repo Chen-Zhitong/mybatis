@@ -23,7 +23,7 @@ import java.lang.reflect.Constructor;
  */
 /**
  * 日志工厂
- * 
+ *
  */
 public final class LogFactory {
 

@@ -65,7 +65,7 @@
       /web.xml</pre>
   <p>이건 선호되는 형태이지 반드시 따라야 하는 요구사항이 아님을 기억해두라. 하지만 이러한 공통적인 형태를 사용하면 많은 사람들이 쉽게 이해할 것이다. </p>
   <p>이 섹션의 나머지 예제는 디렉터리 구조가 이렇게 되어 있다고 가정하고 설명한다.</p>
-  </subsection>  
+  </subsection>
 
   <subsection name="SqlSessions" id="sqlSessions">
   <p>MyBatis 를 사용하기 위한 기본적인 자바 인터페이스는 SqlSession 이다. 이 인터페이스를 통해 명령어를 실행하고, 매퍼를
@@ -73,9 +73,9 @@
 만드는 방법을 배워보자. SqlSession 은 SqlSessionFactory 인스턴스를 사용해서 만든다. SqlSessionFactory 는 몇가지
 방법으로 SqlSession 인스턴스를 생성하기 위한 메서드를 포함하고 있다. SqlSessionFactory 자체는 XML, 애노테이션 또는
 자바 설정에서 SqlSessonFactory 를 생성할 수 있는 SqlSessionFactoryBuilder 를 통해 만들어진다.</p>
-  <p><span class="label important">참고</span> 
-  Spring이나 Guide와 같은 의존성 삽입 프레임워크와 함께 사용할때, SqlSessions은 DI프레임워크에 의해 생성되고 삽입된다. 
-  그래서 SqlSessionFactoryBuilder 나 SqlSessionFactory가 필요하지 않을 것이기 때문에 SqlSession 섹션으로 바로 넘어가도 무방하다. 
+  <p><span class="label important">참고</span>
+  Spring이나 Guide와 같은 의존성 삽입 프레임워크와 함께 사용할때, SqlSessions은 DI프레임워크에 의해 생성되고 삽입된다.
+  그래서 SqlSessionFactoryBuilder 나 SqlSessionFactory가 필요하지 않을 것이기 때문에 SqlSession 섹션으로 바로 넘어가도 무방하다.
   추가적인 정보는 MyBatis-Spring이나 MyBatis-Guice를 참고하길 바란다. </p>
   <h4>SqlSessionFactoryBuilder</h4>
   <p>SqlSessionFactoryBuilder 는 5 개의 build() 메서드를 가진다. 각각은 서로 다른 소스에서 SqlSession 을 빌드한다.</p>
@@ -83,7 +83,7 @@
 SqlSessionFactory build(InputStream inputStream, String environment)
 SqlSessionFactory build(InputStream inputStream, Properties properties)
 SqlSessionFactory build(InputStream inputStream, String env, Properties props)
-SqlSessionFactory build(Configuration config)</source>  
+SqlSessionFactory build(Configuration config)</source>
 
   <p>처음 4 개의 메서드가 가장 공통적이다. XML 문서를 나타내는 Reader 인스턴스를 가진다. SqlMapConfig.xml 파일은
 위에서 다루었다. 선택적으로 사용가능한 프로퍼티는 environment 와 properties 이다. environment 는 데이터소스와
@@ -102,10 +102,10 @@ SqlSessionFactory build(Configuration config)</source>
     <dataSource type="JNDI">
         ...
   </environment>
-</environments>]]></source>  
+</environments>]]></source>
   <p>environment 파라미터를 가진 메서드를 호출한다면, MyBatis 는 사용할 환경을 위한 설정을 사용할 것이다. 물론 잘못된
 환경설정을 사용하면, 에러를 보게 될 것이다. environment 파라미터를 가지지 않는 메서드 중 하나를 호출한다면, 디폴트
-환경(위 예제에서 default=“development”)이 사용될 것이다.</p>  
+환경(위 예제에서 default=“development”)이 사용될 것이다.</p>
   <p>properties 인스턴스를 가진 메서드를 호출하면, MyBatis 는 프로퍼티들을 로드해서 설정에서 사용가능한 부분을 사용할
 것이다. 프로퍼티들은 ${propName} 와 같은 문법을 사용해서 설정의 값으로 대체될 수 있다.</p>
   <p>프로퍼티들은 SqlMapConfig.xml 파일에서 사용되거나 직접 명시할 수 있다. 그러므로 프로퍼티들의 우선순위를 이해하는
@@ -122,15 +122,15 @@ SqlSessionFactory build(Configuration config)</source>
   <p>그래서 가장 우선순위가 높은 속성은 메서드의 파라미터로 전달된 값이고 그 다음은 자원및 url 속성이고 마지막은
 properties 요소에 명시된 값이다.</p>
   <hr/>
-  
+
   <p>요약해보면, 처음 4 개의 메서드는 사실 같지만, environment 그리고/또는 properties 에 명시한 값을 오버라이드한다.
-mybatis-config.xml 파일에서 SqlSessionFactory 를 빌드하는 예제이다.</p>  
+mybatis-config.xml 파일에서 SqlSessionFactory 를 빌드하는 예제이다.</p>
 
   <source>String <strong>resource</strong> = "org/mybatis/builder/mybatis-config.xml";
 InputStream <strong>inputStream</strong> = Resources.getResourceAsStream(resource);
 SqlSessionFactoryBuilder <strong>builder</strong> = new SqlSessionFactoryBuilder();
-SqlSessionFactory <strong>factory</strong> = builder.build(inputStream);</source>  
-  
+SqlSessionFactory <strong>factory</strong> = builder.build(inputStream);</source>
+
   <p>Resources 유틸리티 클래스를 사용하고 있는 것을 주의깊게 보면 된다. 이 클래스는 org.apache.ibatis.io 패키지에 있다.
 Resources 클래스는 그 이름이 나타내는 것처럼, 클래스패스나 파일 시스템 또는 웹 URL 에서 자원으로 로드하도록 해준다.
 IDE 를 통해 클래스의 소스 코드를 보는 것으로 유용한 메서드를 보게 될 것이다. 그 유용한 메서드 목록들이다.</p>
@@ -212,7 +212,7 @@ REPEATABLE_READ, SERIALIZABLE).</p>
     <li><code>ExecutorType.BATCH</code>: 이 실행자는 모든 update 구문을 배치처리하고 중간에 select 가 실행될 경우 필요하다면 경계를 표시한다. 이러한
 과정은 행위를 좀더 이해하기 쉽게 하기 위함이다.</li>
   </ul>
-  <p><span class="label important">참고</span> SqlSessionFactory 에서 언급하지 않는 한개 이상의 메서드가 있다. 
+  <p><span class="label important">참고</span> SqlSessionFactory 에서 언급하지 않는 한개 이상의 메서드가 있다.
   getConfiguration() 메서드인데, 이 메서드는런타임시 MyBatis 설정을 조사하는 Configuration 인스턴스를 리턴할것이다.</p>
   <p><span class="label important">참고</span> MyBatis 이전저번을 사용했다면, 세션, 트랜잭션 그리고 배치들을 여기저기서 찾게 될 것이다.
   이것들은 더이상 사용되지 않는다. 세가지 모두 세션의 범위에 모두 포함되었다. 이것들이 제공하던 모든 기능을 사용하기 위해 각각이 필요한 것 아니다.</p>
@@ -246,7 +246,7 @@ int update(String statement)
 int delete(String statement)]]></source>
 
   <p>마지막으로, 리턴되는 데이터의 범위를 제한하거나 결과를 핸들링 하는 로직을 부여할 수 있는 3 개의 select 메서드가 있다.</p>
-  
+
   <source><![CDATA[<E> List<E> selectList (String statement, Object parameter, RowBounds rowBounds)
 <K,V> Map<K,V> selectMap(String statement, Object parameter, String mapKey, RowBounds rowbounds)
 void select (String statement, Object parameter, ResultHandler handler)
@@ -254,7 +254,7 @@ void select (String statement, Object parameter, RowBounds rowBounds, ResultHand
 
   <p>RowBounds 파라미터는 MyBatis 로 하여금 특정 개수 만큼의 레코드를 건너띄게 한다. RowBounds 클래스는 offset 과
 limit 둘다 가지는 생성자가 있다.</p>
- 
+
   <source>int offset = 100;
 int limit = 25;
 RowBounds rowBounds = new RowBounds(offset, limit);</source>
@@ -263,7 +263,7 @@ RowBounds rowBounds = new RowBounds(offset, limit);</source>
   <p>ResultHandler 파라미터는 레코드별로 다룰수 있도록 해준다. List 에 추가할수도 있고, Map, Set 을 만들수도 있으며,
 각각의 결과를 그냥 던질수도 있다. ResultHandler 로 많은 것을 할 수 있고 MyBatis 는 결과셋을 다루기 위해 내부적으로
 사용한다.</p>
-  <p>인터페이스는 매우 간단하다.</p>  
+  <p>인터페이스는 매우 간단하다.</p>
   <source>package org.apache.ibatis.session;
 public interface ResultHandler {
   void handleResult(ResultContext context);
@@ -318,7 +318,7 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
   <source>Configuration getConfiguration()</source>
 
   <h5>Mappers 사용하기</h5>
-  <source><![CDATA[<T> T getMapper(Class<T> type)]]></source>  
+  <source><![CDATA[<T> T getMapper(Class<T> type)]]></source>
   <p>다양한 insert, update, delete 그리고 select 메서드는 강력하지만, 다소 장황하고 타입에 안전하지 않다. 더군다나 IDE 나
 단위 테스트에 그다지 도움이 되지 않는 형태이다. 우리는 Mapper 를 사용하는 예제는 이미 시작하기 섹션에서 봤다.</p>
   <p>그러므로, 매핑된 구문을 실행하기 위해 좀더 공통적인 방법은 Mapper 클래스를 사용하는 것이다. Mapper 클래스는
@@ -326,10 +326,10 @@ SqlSession 메서드에 일치하는 메서드와 간단히 연동된다. 다음
 매핑하는 방법을 보여준다.</p>
   <source><![CDATA[public interface AuthorMapper {
   // (Author) selectOne("selectAuthor",5);
-  Author selectAuthor(int id); 
+  Author selectAuthor(int id);
   // (List<Author>) selectList(“selectAuthors”)
   List<Author> selectAuthors();
-  
+
   // (Map<Integer,Author>) selectMap("selectAuthors", "id")
   @MapKey("id")
   List<Author> selectAuthorsAsMap();
@@ -341,7 +341,7 @@ SqlSession 메서드에 일치하는 메서드와 간단히 연동된다. 다음
   int deleteAuthor(int id);
 }]]></source>
   <p>아주 간결하게, 각각의 Mapper 메서드 시그니처는 SqlSession 의 메서드 시그니처와 일치해야만 한다. String 파라미터
-ID 가 없지만, 대신 메서드명은 매핑된 구문의 ID 와 같아야 한다.</p> 
+ID 가 없지만, 대신 메서드명은 매핑된 구문의 ID 와 같아야 한다.</p>
   <p>추가로, 리턴 타입은 기대하는 결과 타입과 일치해야만 한다. 원시타입과 Map, POJO 그리고 자바빈등 대부분의 타입이
 지원된다.</p>
   <p><span class="label important">참고</span> Mapper 인터페이스는 어떠한 인터페이스를 구현할 필요가 없고 어떠한 클래스를 확장할 필요도 없다. 메서드
@@ -409,7 +409,7 @@ ID 가 없지만, 대신 메서드명은 매핑된 구문의 ID 와 같아야 �
 사용가능한 속성들 : id, column, javaType,
 jdbcType, typeHandler, select 그리고 resultMap.
 id 속성은 비교하기 위해 사용되는 값이다.
-XML 에서는 <code>&lt;idArg&gt;</code> 요소와 유사하다.</td>  
+XML 에서는 <code>&lt;idArg&gt;</code> 요소와 유사하다.</td>
       </tr>
       <tr>
         <td><code>@TypeDiscriminator</code></td>
@@ -614,15 +614,15 @@ id 를 제공하기 위해 사용된다. XML 에 정의된 결과
         <td><code>@ResultType</code></td>
         <td><code>Method</code></td>
         <td>N/A</td>
-        <td>이 애노테이션은 결과 핸들러를 사용할때 사용한다. 
+        <td>이 애노테이션은 결과 핸들러를 사용할때 사용한다.
         이 경우 리턴타입은 void이고 마이바티스는 각각의 레코드 정보를 가지는 객체의 타입을 결정하는 방법을 가져야만 한다.
         XML 결과매핑이 있다면  @ResultMap 애노테이션을 사용하자.
-        결과타입이 XML에서 <code>&lt;select&gt;</code> 엘리먼트에 명시되어 있다면 다른 애노테이션이 필요하지 않다. 
+        결과타입이 XML에서 <code>&lt;select&gt;</code> 엘리먼트에 명시되어 있다면 다른 애노테이션이 필요하지 않다.
         결과타입이 XML에서 <code>&lt;select&gt;</code> 엘리먼트에 명시되어 있지 않은 경우에 이 애노테이션을 사용하자.
-        예를들어, @Select 애노테이션이 선언되어 있다면 메소드는 결과 핸들러를 사용할 것이다. 
-        결과 타입은 void여야만 하고 이 애노테이션(이나 @ResultMap)을 반드시 사용해야 한다. 
+        예를들어, @Select 애노테이션이 선언되어 있다면 메소드는 결과 핸들러를 사용할 것이다.
+        결과 타입은 void여야만 하고 이 애노테이션(이나 @ResultMap)을 반드시 사용해야 한다.
         이 애노테이션은 메소드 리턴타입이 void가 아니라면 무시한다. </td>
-      </tr>      
+      </tr>
     </tbody>
   </table>
 

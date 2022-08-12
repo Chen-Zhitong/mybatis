@@ -28,9 +28,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class CommonPropertyLazyLoadError {
-    
+
     private static SqlSessionFactory sqlSessionFactory;
-    
+
     @BeforeClass
     public static void initDatabase() throws Exception {
         Connection conn = null;
@@ -58,13 +58,13 @@ public class CommonPropertyLazyLoadError {
             }
         }
     }
-    
+
     @Test
     public void testLazyLoadWithNoAncestor() {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         try {
             ChildMapper childMapper = sqlSession.getMapper(ChildMapper.class);
-            
+
             childMapper.selectById(1);
         } finally {
             sqlSession.close();
@@ -76,7 +76,7 @@ public class CommonPropertyLazyLoadError {
         try {
             FatherMapper fatherMapper = sqlSession.getMapper(FatherMapper.class);
             ChildMapper childMapper = sqlSession.getMapper(ChildMapper.class);
-            
+
             fatherMapper.selectById(1);
             childMapper.selectById(1);
         } finally {
@@ -90,7 +90,7 @@ public class CommonPropertyLazyLoadError {
             GrandFatherMapper grandFatherMapper = sqlSession.getMapper(GrandFatherMapper.class);
             FatherMapper fatherMapper = sqlSession.getMapper(FatherMapper.class);
             ChildMapper childMapper = sqlSession.getMapper(ChildMapper.class);
-            
+
             grandFatherMapper.selectById(1);
             fatherMapper.selectById(1);
             childMapper.selectById(1);
@@ -104,7 +104,7 @@ public class CommonPropertyLazyLoadError {
         try {
             GrandFatherMapper grandFatherMapper = sqlSession.getMapper(GrandFatherMapper.class);
             ChildMapper childMapper = sqlSession.getMapper(ChildMapper.class);
-            
+
             grandFatherMapper.selectById(1);
             childMapper.selectById(1);
         } finally {

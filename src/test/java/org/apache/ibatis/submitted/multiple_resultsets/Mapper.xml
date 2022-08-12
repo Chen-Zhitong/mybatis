@@ -25,7 +25,7 @@
 	</select>
 
 	<resultMap type="org.apache.ibatis.submitted.multiple_resultsets.OrderDetail" id="usersResult" />
-	
+
 	<resultMap type="org.apache.ibatis.submitted.multiple_resultsets.OrderHeader" id="groupsResult" />
-	
+
 </mapper>

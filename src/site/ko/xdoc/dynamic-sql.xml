@@ -43,10 +43,10 @@
       </ul>
       <subsection name="if" id="if">
         <p>동적 SQL 에서 가장 공통적으로 사용되는 것으로 where 의 일부로 포함될 수 있다. 예를 들면:</p>
-        <source><![CDATA[<select id="findActiveBlogWithTitleLike" 
+        <source><![CDATA[<select id="findActiveBlogWithTitleLike"
      resultType="Blog">
-  SELECT * FROM BLOG 
-  WHERE state = ‘ACTIVE’ 
+  SELECT * FROM BLOG
+  WHERE state = ‘ACTIVE’
   <if test="title != null">
     AND title like #{title}
   </if>
@@ -55,9 +55,9 @@
 것이다. 하지만 title 값이 있다면, 그 값과 비슷한 데이터를 찾게 될 것이다.</p>
         <p>title 과 author 을 사용하여 검색하고 싶다면? 먼저, 의미가 좀더 잘 전달되도록 구문의 이름을 변경할 것이다. 그리고 다른
 조건을 추가한다.</p>
-        <source><![CDATA[<select id="findActiveBlogLike" 
+        <source><![CDATA[<select id="findActiveBlogLike"
      resultType="Blog">
-  SELECT * FROM BLOG WHERE state = ‘ACTIVE’ 
+  SELECT * FROM BLOG WHERE state = ‘ACTIVE’
   <if test="title != null">
     AND title like #{title}
   </if>
@@ -71,7 +71,7 @@
 MyBatis 에서는 choose 요소를 제공한다.</p>
         <p>위 예제를 다시 사용해보자. 지금은 title 만으로 검색하고 author 가 있다면 그 값으로 검색된다. 둘다 제공하지 않는다면,
 featured 상태의 blog 가 리턴된다.</p>
-        <source><![CDATA[<select id="findActiveBlogLike" 
+        <source><![CDATA[<select id="findActiveBlogLike"
      resultType="Blog">
   SELECT * FROM BLOG WHERE state = ‘ACTIVE’
   <choose>
@@ -89,13 +89,13 @@ featured 상태의 blog 가 리턴된다.</p>
       </subsection>
       <subsection name="trim, where, set" id="trimWhereSet">
         <p>앞서 예제는 악명높게 다양한 요소가 사용된 동적 SQL 이다. “if” 예제를 사용해보자.</p>
-        <source><![CDATA[<select id="findActiveBlogLike" 
+        <source><![CDATA[<select id="findActiveBlogLike"
      resultType="Blog">
-  SELECT * FROM BLOG 
-  WHERE 
+  SELECT * FROM BLOG
+  WHERE
   <if test="state != null">
     state = #{state}
-  </if> 
+  </if>
   <if test="title != null">
     AND title like #{title}
   </if>
@@ -104,22 +104,22 @@ featured 상태의 blog 가 리턴된다.</p>
   </if>
 </select>]]></source>
         <p>어떤 조건에도 해당되지 않는다면 어떤 일이 벌어질까? 아마도 다음과 같은 SQL 이 만들어질 것이다.</p>
-        <source><![CDATA[SELECT * FROM BLOG 
+        <source><![CDATA[SELECT * FROM BLOG
 WHERE]]></source>
         <p>아마도 이건 실패할 것이다. 두번째 조건에만 해당된다면 무슨 일이 벌어질까? 아마도 다음과 같은 SQL 이 만들어질 것이다.</p>
-        <source><![CDATA[SELECT * FROM BLOG 
-WHERE 
+        <source><![CDATA[SELECT * FROM BLOG
+WHERE
 AND title like ‘someTitle’]]></source>
         <p>이것도 아마 실패할 것이다. 이 문제는 조건만 가지고는 해결되지 않았다. 이렇게 작성했다면, 다시는 이렇게 작성하지 않게
 될 것이다.</p>
         <p>실패하지 않기 위해서 조금 수정해야 한다. 조금 수정하면 아마도 다음과 같을 것이다:</p>
-        <source><![CDATA[<select id="findActiveBlogLike" 
+        <source><![CDATA[<select id="findActiveBlogLike"
      resultType="Blog">
-  SELECT * FROM BLOG 
-  <where> 
+  SELECT * FROM BLOG
+  <where>
     <if test="state != null">
          state = #{state}
-    </if> 
+    </if>
     <if test="title != null">
         AND title like #{title}
     </if>
@@ -133,7 +133,7 @@ AND title like ‘someTitle’]]></source>
         <p>만약에 where 요소가 기대한 것처럼 작동하지 않는다면, trim 요소를 사용자 정의할 수도 있다. 예를 들어, 다음은 where
 요소에 대한 trim 기능과 동일하다.:</p>
         <source><![CDATA[<trim prefix="WHERE" prefixOverrides="AND |OR ">
-  ... 
+  ...
 </trim>]]></source>
         <p>override 속성은 오버라이드하는 텍스트의 목록을 제한한다. 결과는 override 속성에 명시된 것들을 지우고 with 속성에
 명시된 것을 추가한다.</p>
@@ -203,20 +203,20 @@ AND title like ‘someTitle’]]></source>
 ]]></source>
       </subsection>
   <subsection name="Pluggable Scripting Languages For Dynamic SQL">
-    <p>마이바티스 3.2부터는 플러그인 형태로 스크립트 언어를 사용할 수 있다. 
+    <p>마이바티스 3.2부터는 플러그인 형태로 스크립트 언어를 사용할 수 있다.
     그래서 언어 드라이버를 장착하고 동적 SQL쿼리를 작성할때 그 언어를 사용할 수 있다. </p>
     <p>두개의 내장된 언어가 있다. </p>
     <ul>
     <li>xml</li>
     <li>raw</li>
     </ul>
-    <p><code>xml</code> 언어는 설정하지 않을때 기본으로 사용하는 값이다. 
+    <p><code>xml</code> 언어는 설정하지 않을때 기본으로 사용하는 값이다.
     <code>xml</code>을 사용하면 이전에 다룬 모든 동적태그를 실행할 수 있다. </p>
-    <p><code>raw</code> 언어는 사실 기능이 조금 부족하다. 
-    <code>raw</code>설정을 사용하면 마이바티스는 파라미터를 치환해서 데이터베이스 드라이버에 구문을 전달한다. 
-    짐작하는 것처럼 <code>raw</code> 언어는 <code>xml</code> 언어보다 조금더 빠르다. 
+    <p><code>raw</code> 언어는 사실 기능이 조금 부족하다.
+    <code>raw</code>설정을 사용하면 마이바티스는 파라미터를 치환해서 데이터베이스 드라이버에 구문을 전달한다.
+    짐작하는 것처럼 <code>raw</code> 언어는 <code>xml</code> 언어보다 조금더 빠르다.
     </p>
-    <p>다음처럼 <code>lang</code> 속성을 추가해서 구문에서 사용할 언어를 명시할 수 있다. 
+    <p>다음처럼 <code>lang</code> 속성을 추가해서 구문에서 사용할 언어를 명시할 수 있다.
     </p>
   <source><![CDATA[<select id="selectBlog" lang="raw">
   SELECT * FROM BLOG
@@ -232,7 +232,7 @@ AND title like ‘someTitle’]]></source>
   ParameterHandler createParameterHandler(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql);
   SqlSource createSqlSource(Configuration configuration, XNode script, Class<?> parameterType);
   SqlSource createSqlSource(Configuration configuration, String script, Class<?> parameterType);
-}]]></source>    
+}]]></source>
 	</subsection>
     </section>
   </body>

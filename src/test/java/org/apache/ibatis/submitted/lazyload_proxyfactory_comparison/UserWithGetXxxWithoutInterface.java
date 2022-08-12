@@ -36,11 +36,11 @@ public class UserWithGetXxxWithoutInterface {
   public void setName(String name) {
     this.name = name;
   }
-  
+
   public Group getOwner() {
      return owner;
   }
-  
+
   public void setOwner(Group owner) {
     this.owner = owner;
   }

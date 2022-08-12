@@ -8,7 +8,7 @@ import org.apache.ibatis.session.ResultHandler;
 
 public class UserResultHandler implements ResultHandler {
   private List<User> users;
-  
+
   public UserResultHandler() {
     super();
     users = new ArrayList<User>();

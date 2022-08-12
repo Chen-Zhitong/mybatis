@@ -71,7 +71,7 @@ public class BlobTest {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         try {
             BlobMapper blobMapper = sqlSession.getMapper(BlobMapper.class);
-            
+
             byte[] myblob = new byte[] {1, 2, 3, 4, 5};
             BlobRecord blobRecord = new BlobRecord(1, myblob);
             int rows = blobMapper.insert(blobRecord);

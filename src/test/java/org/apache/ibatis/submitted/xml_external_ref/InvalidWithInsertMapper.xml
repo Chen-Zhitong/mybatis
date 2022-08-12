@@ -27,7 +27,7 @@
 		<include refid="wrongId" />
 		FROM person
 	</select>
-	
+
 	<insert id="insert" parameterType="java.util.Map">
 		INSERT INTO Person (person_name)
 		VALUES (#{name})

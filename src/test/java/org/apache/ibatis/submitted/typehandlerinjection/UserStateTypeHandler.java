@@ -35,7 +35,7 @@ public class UserStateTypeHandler<E> implements TypeHandler<Object> {
     lookup.put("0", "INACTIVE");
     lookup.put("1", "ACTIVE");
   }
-  
+
   UserStateTypeHandler() {
     // can only be constructed from this package
   }

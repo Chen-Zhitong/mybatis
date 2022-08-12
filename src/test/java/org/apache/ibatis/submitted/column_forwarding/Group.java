@@ -27,11 +27,11 @@ public class Group {
   public void setId(Integer id) {
     this.id = id;
   }
-  
+
   public String getState() {
     return state;
   }
-  
+
   public void setState(String state) {
     this.state = state;
   }

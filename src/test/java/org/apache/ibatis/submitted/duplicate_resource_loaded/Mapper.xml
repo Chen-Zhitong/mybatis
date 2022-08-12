@@ -31,4 +31,4 @@
     select * from blog
   </select>
 </mapper>
-  
+

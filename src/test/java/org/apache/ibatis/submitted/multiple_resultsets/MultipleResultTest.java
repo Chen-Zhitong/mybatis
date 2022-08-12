@@ -29,14 +29,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /*
- * This class contains tests for multiple results.  
+ * This class contains tests for multiple results.
  * It is based on Jeff's ref cursor tests.
- * 
+ *
  * The tests require a
  * local install of PostgreSQL and cannot be run as a part of the normal
- * MyBatis build unless PostreSQL is setup on the build machine as 
+ * MyBatis build unless PostreSQL is setup on the build machine as
  * described in setupdb.txt
- * 
+ *
  * If PostgreSQL is setup as described in setupdb.txt, then remove
  * the @Ignore annotation to enable the tests.
  *

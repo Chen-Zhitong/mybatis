@@ -35,7 +35,7 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
  */
 /**
  * JDBC3键值生成器,核心是使用JDBC3的Statement.getGeneratedKeys
- * 
+ *
  */
 public class Jdbc3KeyGenerator implements KeyGenerator {
 

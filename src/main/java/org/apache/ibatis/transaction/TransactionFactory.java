@@ -48,7 +48,7 @@ public interface TransactionFactory {
    */
   //根据Connection创建Transaction
   Transaction newTransaction(Connection conn);
-  
+
   /**
    * Creates a {@link Transaction} out of a datasource.
    * @param dataSource DataSource to take the connection from

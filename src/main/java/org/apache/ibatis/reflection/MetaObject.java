@@ -33,7 +33,7 @@ import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 /**
  * 元对象,各种get，set方法有点ognl表达式的味道
  * 可以参考MetaObjectTest来跟踪调试，基本上用到了reflection包下所有的类
- * 
+ *
  */
 public class MetaObject {
 
@@ -181,7 +181,7 @@ public class MetaObject {
   public boolean isCollection() {
     return objectWrapper.isCollection();
   }
-  
+
   //添加属性
   public void add(Object element) {
     objectWrapper.add(element);
@@ -191,5 +191,5 @@ public class MetaObject {
   public <E> void addAll(List<E> list) {
     objectWrapper.addAll(list);
   }
-  
+
 }

@@ -79,7 +79,7 @@
   	FROM names
   	]]>
   </sql>
-  
+
   <select id="selectXml" resultType="Name" lang="xml">
     SELECT firstName
     <if test="includeLastName != null">, lastName</if>

@@ -40,19 +40,19 @@ public class User {
   public void setName(String name) {
     this.name = name;
   }
-  
+
   public BigDecimal getFunkyNumber() {
     return funkyNumber;
   }
-  
+
   public void setFunkyNumber(BigDecimal big) {
-    funkyNumber = big;  
+    funkyNumber = big;
   }
-  
+
   public RoundingMode getRoundingMode() {
     return roundingMode;
   }
-  
+
   public void setRoundingMode(RoundingMode mode) {
     roundingMode = mode;
   }

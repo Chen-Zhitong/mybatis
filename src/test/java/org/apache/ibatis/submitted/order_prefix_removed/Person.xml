@@ -27,8 +27,8 @@
         <result property="firstName" column="firstName"/>
         <result property="lastName" column="lastName"/>
     </resultMap>
-    
-    
+
+
     <select id="select" resultMap="personMap">
         SELECT id, firstName, lastName
         FROM person

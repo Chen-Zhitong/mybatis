@@ -26,7 +26,7 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
  */
 /**
  * 对象包装器
- * 
+ *
  */
 public interface ObjectWrapper {
 
@@ -59,13 +59,13 @@ public interface ObjectWrapper {
 
   //实例化属性
   MetaObject instantiatePropertyValue(String name, PropertyTokenizer prop, ObjectFactory objectFactory);
-  
+
   //是否是集合
   boolean isCollection();
-  
+
   //添加属性
   public void add(Object element);
-  
+
   //添加属性
   public <E> void addAll(List<E> element);
 

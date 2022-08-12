@@ -20,7 +20,7 @@ package org.apache.ibatis.session;
  */
 /**
  * 结果上下文
- * 
+ *
  */
 public interface ResultContext {
 

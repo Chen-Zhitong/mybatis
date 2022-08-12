@@ -24,7 +24,7 @@ import java.util.Map;
  */
 /**
  * JDBC类型枚举
- * 
+ *
  */
 public enum JdbcType {
   /*

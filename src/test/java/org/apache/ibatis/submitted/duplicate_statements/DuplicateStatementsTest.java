@@ -40,7 +40,7 @@ public class DuplicateStatementsTest {
       Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/duplicate_statements/mybatis-config.xml");
       sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
       reader.close();
-      
+
       // populate in-memory database
       SqlSession session = sqlSessionFactory.openSession();
       Connection conn = session.getConnection();

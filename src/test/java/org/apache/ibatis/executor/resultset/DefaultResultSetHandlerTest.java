@@ -61,7 +61,7 @@ public class DefaultResultSetHandlerTest {
 
   /**
    * Contrary to the spec, some drivers require case-sensitive column names when getting result.
-   * 
+   *
    * @see <a href="http://code.google.com/p/mybatis/issues/detail?id=557">Issue 557</a>
    */
   @Test

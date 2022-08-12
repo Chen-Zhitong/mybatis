@@ -29,7 +29,7 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.junit.Test;
 
 public class EnumWithOgnlTest {
-    
+
     @Test
     public void testConfiguration() {
         UnpooledDataSourceFactory dataSourceFactory = new UnpooledDataSourceFactory();

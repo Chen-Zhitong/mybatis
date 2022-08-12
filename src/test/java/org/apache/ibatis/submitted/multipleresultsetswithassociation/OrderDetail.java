@@ -21,7 +21,7 @@ public class OrderDetail {
   private int lineNumber;
   private int quantity;
   private String itemDescription;
-  
+
   private OrderHeader orderHeader;
 
   public int getOrderId() {

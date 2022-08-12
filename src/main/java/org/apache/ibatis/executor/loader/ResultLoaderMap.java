@@ -46,7 +46,7 @@ import org.apache.ibatis.session.RowBounds;
  */
 /**
  * 结果延迟加载器映射
- * 
+ *
  */
 public class ResultLoaderMap {
 

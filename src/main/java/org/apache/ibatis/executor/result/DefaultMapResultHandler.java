@@ -28,7 +28,7 @@ import org.apache.ibatis.session.ResultHandler;
  */
 /**
  * 默认Map结果处理器
- * 
+ *
  */
 public class DefaultMapResultHandler<K, V> implements ResultHandler {
 

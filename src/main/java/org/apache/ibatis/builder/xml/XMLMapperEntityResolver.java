@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
  * 应用程序可以使用此接口将系统标识符重定向到本地 URI
  * 但是用DTD是比较过时的做法，新的都改用xsd了
  * 这个类的名字并不准确，因为它被两个类都用到了（XMLConfigBuilder,XMLMapperBuilder）
- * 
+ *
  * @author Clinton Begin
  */
 public class XMLMapperEntityResolver implements EntityResolver {
@@ -76,11 +76,11 @@ public class XMLMapperEntityResolver implements EntityResolver {
 
   /*
    * Converts a public DTD into a local one
-   * 
+   *
    * @param publicId The public id that is what comes after "PUBLIC"
    * @param systemId The system id that is what comes after the public id.
    * @return The InputSource for the DTD
-   * 
+   *
    * @throws org.xml.sax.SAXException If anything goes wrong
    */
   @Override

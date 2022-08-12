@@ -57,7 +57,7 @@ public class MultipleCrossIncludeTest {
 
     Configuration configuration = sqlSessionFactory.getConfiguration();
     configuration.getMappedStatementNames();
-    
+
     MappedStatement selectPetStatement = configuration.getMappedStatement("org.apache.ibatis.submitted.xml_external_ref.MultipleCrossIncludePetMapper.select");
     MappedStatement selectPersonStatement = configuration.getMappedStatement("org.apache.ibatis.submitted.xml_external_ref.MultipleCrossIncludePersonMapper.select");
     Cache cache = selectPetStatement.getCache();

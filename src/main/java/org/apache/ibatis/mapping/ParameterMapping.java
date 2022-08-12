@@ -27,14 +27,14 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
  */
 /**
  * 参数映射
- * 
+ *
  */
 public class ParameterMapping {
 
   private Configuration configuration;
 
   //例子：#{property,javaType=int,jdbcType=NUMERIC}
-  
+
   //property
   private String property;
   //mode
@@ -120,15 +120,15 @@ public class ParameterMapping {
 
     private void validate() {
       if (ResultSet.class.equals(parameterMapping.javaType)) {
-        if (parameterMapping.resultMapId == null) { 
-          throw new IllegalStateException("Missing resultmap in property '"  
-              + parameterMapping.property + "'.  " 
+        if (parameterMapping.resultMapId == null) {
+          throw new IllegalStateException("Missing resultmap in property '"
+              + parameterMapping.property + "'.  "
               + "Parameters of type java.sql.ResultSet require a resultmap.");
-        }            
+        }
       } else {
-        if (parameterMapping.typeHandler == null) { 
-          throw new IllegalStateException("Type handler was null on parameter mapping for property '"  
-              + parameterMapping.property + "'.  " 
+        if (parameterMapping.typeHandler == null) {
+          throw new IllegalStateException("Type handler was null on parameter mapping for property '"
+              + parameterMapping.property + "'.  "
               + "It was either not specified and/or could not be found for the javaType / jdbcType combination specified.");
         }
       }

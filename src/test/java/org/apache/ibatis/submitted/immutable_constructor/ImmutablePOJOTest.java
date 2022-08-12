@@ -91,5 +91,5 @@ public final class ImmutablePOJOTest {
       session.close();
     }
   }
-  
+
 }

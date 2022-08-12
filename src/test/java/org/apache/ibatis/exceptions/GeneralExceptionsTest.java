@@ -62,7 +62,7 @@ public class GeneralExceptionsTest {
         PersistenceException.class,
         SqlSessionException.class,
         TransactionException.class,
-        TypeException.class, 
+        TypeException.class,
         ScriptingException.class
     };
     for (Class<?> exceptionType : exceptionTypes) {

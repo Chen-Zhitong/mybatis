@@ -36,7 +36,7 @@ import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
  */
 /**
  * 默认的SqlSessionFactory
- * 
+ *
  */
 public class DefaultSqlSessionFactory implements SqlSessionFactory {
 
@@ -124,7 +124,7 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
         // Failover to true, as most poor drivers
         // or databases won't support transactions
         autoCommit = true;
-      }      
+      }
       final Environment environment = configuration.getEnvironment();
       final TransactionFactory transactionFactory = getTransactionFactoryFromEnvironment(environment);
       final Transaction tx = transactionFactory.newTransaction(connection);

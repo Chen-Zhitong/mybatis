@@ -39,7 +39,7 @@ import org.apache.ibatis.transaction.TransactionException;
  */
 /**
  * Jdbc事务。直接利用JDBC的commit,rollback。
- * 它依赖于从数据源得 到的连接来管理事务范围。 
+ * 它依赖于从数据源得 到的连接来管理事务范围。
  */
 public class JdbcTransaction implements Transaction {
 

@@ -69,7 +69,7 @@ public class CustomCollectionHandlingTest {
             assertEquals(2, list.get(0).getContacts().size());
             assertEquals(1, list.get(1).getContacts().size());
             assertEquals("3 Wall Street", list.get(0).getContacts().get(1).getAddress());
-        } 
+        }
         finally {
             sqlSession.close();
         }

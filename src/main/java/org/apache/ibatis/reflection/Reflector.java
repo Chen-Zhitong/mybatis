@@ -147,7 +147,7 @@ public class Reflector {
           Method method = iterator.next();
           Class<?> methodType = method.getReturnType();
           if (methodType.equals(getterType)) {
-            throw new ReflectionException("Illegal overloaded getter method with ambiguous type for property " 
+            throw new ReflectionException("Illegal overloaded getter method with ambiguous type for property "
                 + propName + " in class " + firstMethod.getDeclaringClass()
                 + ".  This breaks the JavaBeans " + "specification and can cause unpredicatble results.");
           } else if (methodType.isAssignableFrom(getterType)) {
@@ -156,7 +156,7 @@ public class Reflector {
             getter = method;
             getterType = methodType;
           } else {
-            throw new ReflectionException("Illegal overloaded getter method with ambiguous type for property " 
+            throw new ReflectionException("Illegal overloaded getter method with ambiguous type for property "
                 + propName + " in class " + firstMethod.getDeclaringClass()
                 + ".  This breaks the JavaBeans " + "specification and can cause unpredicatble results.");
           }
@@ -302,7 +302,7 @@ public class Reflector {
     while (currentClass != null) {
       addUniqueMethods(uniqueMethods, currentClass.getDeclaredMethods());
 
-      // we also need to look for interface methods - 
+      // we also need to look for interface methods -
       // because the class may be abstract
       Class<?>[] interfaces = currentClass.getInterfaces();
       for (Class<?> anInterface : interfaces) {

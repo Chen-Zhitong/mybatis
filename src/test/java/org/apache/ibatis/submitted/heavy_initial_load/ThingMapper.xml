@@ -27,8 +27,8 @@
   </resultMap>
 
   <select id="selectByCode" resultMap="thingMap" parameterType="String">
-  
-    SELECT  
+
+    SELECT
 		<if test="@org.apache.ibatis.submitted.heavy_initial_load.Code@_1.equals(code)">1</if>
 		<if test="@org.apache.ibatis.submitted.heavy_initial_load.Code@_2.equals(code)">2</if>
 		<if test="@org.apache.ibatis.submitted.heavy_initial_load.Code@_3.equals(code)">3</if>

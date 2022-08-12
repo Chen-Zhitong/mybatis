@@ -179,7 +179,7 @@ public final class MappedStatement {
       mappedStatement.resultSets = delimitedStringtoArray(resultSet);
       return this;
     }
-    
+
     public MappedStatement build() {
       assert mappedStatement.configuration != null;
       assert mappedStatement.id != null;
@@ -281,7 +281,7 @@ public final class MappedStatement {
   public String[] getResulSets() {
     return resultSets;
   }
-  
+
   public BoundSql getBoundSql(Object parameterObject) {
 	//其实就是调用sqlSource.getBoundSql
     BoundSql boundSql = sqlSource.getBoundSql(parameterObject);

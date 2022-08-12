@@ -333,7 +333,7 @@ ps.setInt(1,id);]]></source>
 
         <p>这里有一个简单（甚至很傻）的示例，它可以生成一个随机 ID（你最好不要这么做，但这里展示了 MyBatis 处理问题的灵活性及其所关心的广度）：
         </p>
-        
+
         <source><![CDATA[<insert id="insertAuthor">
   <selectKey keyProperty="id" resultType="int" order="BEFORE">
     select CAST(RANDOM()*1000000 as INTEGER) a from SYSIBM.SYSDUMMY1
@@ -523,7 +523,7 @@ public class User {
   private int id;
   private String username;
   private String hashedPassword;
-  
+
   public int getId() {
     return id;
   }
@@ -767,13 +767,13 @@ resultMap 元素有很多子元素和一个值得讨论的结构。
             </tr>
             <tr>
               <td><code>type</code></td>
-              <td>A fully qualified Java class name, or a type alias (see the table above for the list of built-in type aliases). 
+              <td>A fully qualified Java class name, or a type alias (see the table above for the list of built-in type aliases).
               </td>
             </tr>
             <tr>
               <td><code>autoMapping</code></td>
-              <td>If present, MyBatis will enable or disable the automapping for this ResultMap. 
-                This attribute overrides the global autoMappingBehavior. Default: unset. 
+              <td>If present, MyBatis will enable or disable the automapping for this ResultMap.
+                This attribute overrides the global autoMappingBehavior. Default: unset.
               </td>
             </tr>
           </tbody>
@@ -1252,12 +1252,12 @@ resultMap
             <tr>
               <td><code>notNullColumn</code></td>
               <td>
-                By default a child object is created only if at least one of the columns mapped to the child's properties 
+                By default a child object is created only if at least one of the columns mapped to the child's properties
                 is non null. With this attribute you can change this behaviour by specifiying which columns must have a value
-                so MyBatis will create a child object only if any of those columns is not null. Multiple column names can be 
+                so MyBatis will create a child object only if any of those columns is not null. Multiple column names can be
                 specified using a comma as a separator. Default value: unset.
               </td>
-            </tr>            
+            </tr>
             <tr>
               <td><code>autoMapping</code></td>
               <td>If present, MyBatis will enable or disable auto-mapping when mapping the result to this property.
@@ -1636,7 +1636,7 @@ MyBatis 会从结果集中得到每条记录,
         </p>
 
       </subsection>
-      
+
       <subsection name="自动映射">
 
         <p>
@@ -1655,7 +1655,7 @@ MyBatis 会从结果集中得到每条记录,
            通常数据库列使用大写单词命名，单词间用下划线分隔；而java属性一般遵循驼峰命名法。
            为了在这两种命名方式之间启用自动映射，需要将 <code>mapUnderscoreToCamelCase</code>设置为true。
         </p>
-        
+
         <p>
            自动映射甚至在特定的result map下也能工作。在这种情况下，对于每一个result map,所有的ResultSet提供的列，
            如果没有被手工映射，则将被自动映射。自动映射处理完毕后手工映射才会被处理。
@@ -1677,7 +1677,7 @@ MyBatis 会从结果集中得到每条记录,
         <p>
           There are three auto-mapping levels:
         </p>
-        
+
         <ul>
           <li>
             <code>NONE</code> - disables auto-mapping. Only manually mapped properties will be set.
@@ -1692,10 +1692,10 @@ MyBatis 会从结果集中得到每条记录,
 
         <p>
           The default value is <code>PARTIAL</code>, and it is so for a reason. When <code>FULL</code> is used auto-mapping will
-          be performed when processing join results and joins retrieve data of several different entities in the same row 
+          be performed when processing join results and joins retrieve data of several different entities in the same row
           hence this may result in undesired mappings. To understand the risk have a look at the following sample:
         </p>
-        
+
         <source><![CDATA[<select id="selectBlog" resultMap="blogResult">
   select
     B.id,
@@ -1712,10 +1712,10 @@ MyBatis 会从结果集中得到每条记录,
 <resultMap id="authorResult" type="Author">
   <result property="username" column="author_username"/>
 </resultMap>]]></source>
-        
+
         <p>
-          With this result map both <i>Blog</i> and <i>Author</i> will be auto-mapped. But note that <i>Author</i> has an <i>id</i> 
-          property and there is a column named <i>id</i> in the ResultSet so Author's id will be filled with Blog's id, and that is not 
+          With this result map both <i>Blog</i> and <i>Author</i> will be auto-mapped. But note that <i>Author</i> has an <i>id</i>
+          property and there is a column named <i>id</i> in the ResultSet so Author's id will be filled with Blog's id, and that is not
           what you were expecting. So use the <code>FULL</code> option with caution.
         </p>
 
@@ -1732,9 +1732,9 @@ MyBatis 会从结果集中得到每条记录,
   from some_table
   where id = #{id}
 </select>]]></source>
-              
+
       </subsection>
-      
+
       <subsection name="缓存">
         <p>
 MyBatis 包含一个非常强大的查询缓存特性,它可以非常方便地配置和定制。MyBatis 3

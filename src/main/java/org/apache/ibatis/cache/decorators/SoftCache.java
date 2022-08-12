@@ -80,7 +80,7 @@ public class SoftCache implements Cache {
       if (result == null) {
         delegate.removeObject(key);
       } else {
-        // See #586 (and #335) modifications need more than a read lock 
+        // See #586 (and #335) modifications need more than a read lock
         synchronized (hardLinksToAvoidGarbageCollection) {
             //存入经常访问的键值到链表(最多256元素),防止垃圾回收
           hardLinksToAvoidGarbageCollection.addFirst(result);

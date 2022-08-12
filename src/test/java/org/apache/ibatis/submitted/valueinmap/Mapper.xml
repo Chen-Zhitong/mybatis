@@ -25,7 +25,7 @@
 	</select>
 
 	<select id="count2" resultType="int">
-		select count(*) from ${listx} 
+		select count(*) from ${listx}
 	</select>
 
 </mapper>

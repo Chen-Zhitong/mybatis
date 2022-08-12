@@ -55,7 +55,7 @@ public class LogFactoryTest {
     logSomething(log);
     assertEquals(log.getClass().getName(), Log4j2Impl.class.getName());
   }
-  
+
   @Test
   public void shouldUseJdKLogging() {
     LogFactory.useJdkLogging();
@@ -93,7 +93,7 @@ public class LogFactoryTest {
     Reader reader = Resources.getResourceAsReader("org/apache/ibatis/logging/mybatis-config.xml");
     new SqlSessionFactoryBuilder().build(reader);
     reader.close();
-    
+
     Log log = LogFactory.getLog(Object.class);
     log.debug("Debug message.");
     assertEquals(log.getClass().getName(), NoLoggingImpl.class.getName());

@@ -53,7 +53,7 @@ public class DefaultSqlSession implements SqlSession {
    */
   private boolean autoCommit;
   private boolean dirty;
-  
+
   public DefaultSqlSession(Configuration configuration, Executor executor, boolean autoCommit) {
     this.configuration = configuration;
     this.executor = executor;
@@ -313,7 +313,7 @@ public class DefaultSqlSession implements SqlSession {
         //参数若是List型，做list标记
         map.put("list", object);
       }
-      return map;      
+      return map;
     } else if (object != null && object.getClass().isArray()) {
       //参数若是数组型，，做array标记
       StrictMap<Object> map = new StrictMap<Object>();

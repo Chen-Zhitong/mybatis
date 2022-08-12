@@ -26,10 +26,10 @@ import org.apache.ibatis.reflection.ExceptionUtil;
 
 /**
  * Statement proxy to add logging
- * 
+ *
  * @author Clinton Begin
  * @author Eduardo Macarron
- * 
+ *
  */
 public final class StatementLogger extends BaseJdbcLogger implements InvocationHandler {
 
@@ -45,7 +45,7 @@ public final class StatementLogger extends BaseJdbcLogger implements InvocationH
     try {
       if (Object.class.equals(method.getDeclaringClass())) {
         return method.invoke(this, params);
-      }    
+      }
       if (EXECUTE_METHODS.contains(method.getName())) {
         if (isDebugEnabled()) {
           debug(" Executing: " + removeBreakingWhitespace((String) params[0]), true);

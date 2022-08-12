@@ -189,7 +189,7 @@ public class LanguageTest {
       sqlSession.close();
     }
   }
-  
+
   @Test
   public void testLangXmlTags() {
     SqlSession sqlSession = sqlSessionFactory.openSession();

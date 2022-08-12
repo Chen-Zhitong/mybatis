@@ -29,7 +29,7 @@ import org.apache.ibatis.session.ResultHandler;
  */
 /**
  * 语句处理器
- * 
+ *
  */
 public interface StatementHandler {
 

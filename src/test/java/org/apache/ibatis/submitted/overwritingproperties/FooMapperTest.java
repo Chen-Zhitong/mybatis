@@ -62,7 +62,7 @@ public class FooMapperTest {
     mapper.insertFoo(inserted);
 
     final Foo selected = mapper.selectFoo();
-    
+
     // field1 is explicitly mapped properly
     // <result property="field1" column="field1" jdbcType="INTEGER"/>
     Assert.assertEquals(inserted.getField1(), selected.getField1());

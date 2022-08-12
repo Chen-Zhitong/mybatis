@@ -31,7 +31,7 @@
 			ofType="Part"
 			select="getCarPartInfo" />
 	</resultMap>
-	
+
 	<resultMap id="partResult" type="Part">
 		<constructor>
 			<arg column="name" javaType="String"/>

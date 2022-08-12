@@ -22,7 +22,7 @@ import org.apache.ibatis.session.ResultContext;
  */
 /**
  * 默认结果上下文
- * 
+ *
  */
 public class DefaultResultContext implements ResultContext {
 

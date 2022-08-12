@@ -20,7 +20,7 @@
 
 <configuration>
 
-	<typeHandlers>		
+	<typeHandlers>
 		<typeHandler handler="org.apache.ibatis.submitted.maptypehandler.LabelsTypeHandler" />
 	</typeHandlers>
 

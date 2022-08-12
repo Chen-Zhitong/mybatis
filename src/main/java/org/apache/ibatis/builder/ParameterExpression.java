@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 /**
  * Inline parameter expression parser. Supported grammar (simplified):
- * 
+ *
  * <pre>
  * inline-parameter = (propertyName | expression) oldJdbcType attributes
  * propertyName = /expression language's property navigation path/

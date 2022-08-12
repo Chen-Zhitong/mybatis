@@ -26,7 +26,7 @@ import java.sql.SQLException;
 /**
  * Integer类型处理器
  * 调用PreparedStatement.setInt, ResultSet.getInt, CallableStatement.getInt
- * 
+ *
  */
 public class IntegerTypeHandler extends BaseTypeHandler<Integer> {
 

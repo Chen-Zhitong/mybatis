@@ -22,7 +22,7 @@ public class Principal {
 
   private String principalName;
   private List<Permission> permissions = new ArrayList<Permission>();
-  
+
   public String getPrincipalName() {
     return principalName;
   }

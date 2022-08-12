@@ -25,7 +25,7 @@
 
     <settings>
         <setting name="lazyLoadingEnabled" value="true"/>
-        <setting name="aggressiveLazyLoading" value="true"/> 
+        <setting name="aggressiveLazyLoading" value="true"/>
     </settings>
 
 	<environments default="development">
@@ -40,7 +40,7 @@
 			</dataSource>
 		</environment>
 	</environments>
-	
+
 	<mappers>
 		<mapper class="org.apache.ibatis.submitted.serializecircular.PersonMapper" />
 		<mapper class="org.apache.ibatis.submitted.serializecircular.AttributeMapper" />

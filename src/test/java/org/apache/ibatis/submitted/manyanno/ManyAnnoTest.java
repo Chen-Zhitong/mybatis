@@ -37,7 +37,7 @@ public class ManyAnnoTest extends BaseDataTest {
     config.addMapper(PostMapper.class);
     final SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(config);
     final SqlSession session = factory.openSession();
-    
+
     PostMapper mapper = session.getMapper(PostMapper.class);
     List<AnnoPost> posts = mapper.getPosts(101);
 

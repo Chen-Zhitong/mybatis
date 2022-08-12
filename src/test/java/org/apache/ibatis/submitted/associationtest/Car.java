@@ -20,7 +20,7 @@ public class Car {
   private String type;
   private Engine engine;
   private Brakes brakes;
-  
+
   public int getId() {
     return id;
   }

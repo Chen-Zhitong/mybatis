@@ -29,7 +29,7 @@ import org.apache.logging.log4j.MarkerManager;
  *
  */
 public class Log4j2LoggerImpl implements Log {
-  
+
   private static Marker MARKER = MarkerManager.getMarker(LogFactory.MARKER);
 
   private Logger log;

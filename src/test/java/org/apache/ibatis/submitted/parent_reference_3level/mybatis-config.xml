@@ -36,9 +36,9 @@
           </dataSource>
         </environment>
     </environments>
-    
+
     <mappers>
         <mapper resource="org/apache/ibatis/submitted/parent_reference_3level/Mapper.xml" />
     </mappers>
-    
+
 </configuration>

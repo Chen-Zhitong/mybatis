@@ -37,7 +37,7 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
  */
 /**
  * 默认参数处理器
- * 
+ *
  */
 public class DefaultParameterHandler implements ParameterHandler {
 

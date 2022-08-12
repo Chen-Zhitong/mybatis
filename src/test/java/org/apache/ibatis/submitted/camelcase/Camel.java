@@ -16,11 +16,11 @@
 package org.apache.ibatis.submitted.camelcase;
 
 public class Camel {
-  
+
   private String id;
   private String firstName;
   private String LAST_NAME;
-  
+
   public String getId() {
     return id;
   }
@@ -32,7 +32,7 @@ public class Camel {
   }
   public void setFirstName(String firstName) {
     this.firstName = firstName;
-  } 
+  }
   public String getLAST_NAME() {
     return LAST_NAME;
   }

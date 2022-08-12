@@ -32,9 +32,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class EnumWithOgnlTest {
-    
+
     private static SqlSessionFactory sqlSessionFactory;
-    
+
     @BeforeClass
     public static void initDatabase() throws Exception {
         Connection conn = null;
@@ -62,7 +62,7 @@ public class EnumWithOgnlTest {
             }
         }
     }
-    
+
     @Test
     public void testEnumWithOgnl() {
         SqlSession sqlSession = sqlSessionFactory.openSession();

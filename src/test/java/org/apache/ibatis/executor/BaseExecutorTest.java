@@ -61,7 +61,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldInsertNewAuthorWithBeforeAutoKey() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       Author author = new Author(-1, "someone", "******", "someone@apache.org", null, Section.NEWS);
@@ -88,7 +88,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldInsertNewAuthor() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       Author author = new Author(99, "someone", "******", "someone@apache.org", null, Section.NEWS);
@@ -109,7 +109,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldSelectAllAuthorsAutoMapped() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       MappedStatement selectStatement = ExecutorTestHelper.prepareSelectAllAuthorsAutoMappedStatement(config);
@@ -131,7 +131,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldInsertNewAuthorWithAutoKey() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       Author author = new Author(-1, "someone", "******", "someone@apache.org", null, Section.NEWS);
@@ -158,7 +158,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldInsertNewAuthorByProc() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       Author author = new Author(97, "someone", "******", "someone@apache.org", null, null);
@@ -178,7 +178,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldInsertNewAuthorUsingSimpleNonPreparedStatements() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       Author author = new Author(99, "someone", "******", "someone@apache.org", null, null);
@@ -199,7 +199,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldUpdateAuthor() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       Author author = new Author(101, "someone", "******", "someone@apache.org", null, Section.NEWS);
@@ -220,7 +220,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldDeleteAuthor() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       Author author = new Author(101, null, null, null, null, null);
@@ -240,7 +240,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldSelectDiscriminatedPost() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       MappedStatement selectStatement = ExecutorTestHelper.prepareSelectDiscriminatedPost(config);
@@ -260,7 +260,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldSelect2DiscriminatedPosts() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       MappedStatement selectStatement = ExecutorTestHelper.prepareSelectDiscriminatedPost(config);
@@ -303,9 +303,9 @@ public class BaseExecutorTest extends BaseDataTest {
     }
   }
 
-  @Test 
+  @Test
   public void shouldSelectAuthorViaOutParams() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       MappedStatement selectStatement = ExecutorTestHelper.prepareSelectAuthorViaOutParams(config);
@@ -330,7 +330,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldFetchPostsForBlog() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       MappedStatement selectBlog = ExecutorTestHelper.prepareComplexSelectBlogMappedStatement(config);
@@ -352,7 +352,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldFetchOneOrphanedPostWithNoBlog() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       MappedStatement selectBlog = ExecutorTestHelper.prepareComplexSelectBlogMappedStatement(config);
@@ -373,7 +373,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldFetchPostWithBlogWithCompositeKey() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       MappedStatement selectBlog = ExecutorTestHelper.prepareSelectBlogByIdAndAuthor(config);
@@ -395,7 +395,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldFetchComplexBlogs() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       MappedStatement selectBlog = ExecutorTestHelper.prepareComplexSelectBlogMappedStatement(config);
@@ -417,7 +417,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldMapConstructorResults() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       MappedStatement selectStatement = ExecutorTestHelper.prepareSelectOneAuthorMappedStatementWithConstructorResults(config);
@@ -436,7 +436,7 @@ public class BaseExecutorTest extends BaseDataTest {
 
   @Test
   public void shouldClearDeferredLoads() throws Exception {
-    
+
     Executor executor = createExecutor(new JdbcTransaction(ds, null, false));
     try {
       MappedStatement selectBlog = ExecutorTestHelper.prepareComplexSelectBlogMappedStatement(config);

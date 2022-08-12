@@ -75,9 +75,9 @@ public class ForEachSqlNode implements SqlNode {
           context = new PrefixedContext(context, "");
       }
       int uniqueNumber = context.getUniqueNumber();
-      // Issue #709 
+      // Issue #709
       if (o instanceof Map.Entry) {
-        @SuppressWarnings("unchecked") 
+        @SuppressWarnings("unchecked")
         Map.Entry<Object, Object> mapEntry = (Map.Entry<Object, Object>) o;
         applyIndex(context, mapEntry.getKey(), uniqueNumber);
         applyItem(context, mapEntry.getValue(), uniqueNumber);

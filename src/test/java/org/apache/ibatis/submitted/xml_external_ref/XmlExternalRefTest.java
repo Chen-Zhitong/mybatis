@@ -59,7 +59,7 @@ public class XmlExternalRefTest {
     }
     configuration.getMappedStatementNames();
   }
-  
+
   @Test(expected = BuilderException.class)
   public void testFailFastOnBuildAllWithInsert() throws Exception {
     Configuration configuration = new Configuration();
@@ -81,7 +81,7 @@ public class XmlExternalRefTest {
 
     Configuration configuration = sqlSessionFactory.getConfiguration();
     configuration.getMappedStatementNames();
-    
+
     MappedStatement selectPetStatement = configuration.getMappedStatement("org.apache.ibatis.submitted.xml_external_ref.PetMapper.select");
     MappedStatement selectPersonStatement = configuration.getMappedStatement("org.apache.ibatis.submitted.xml_external_ref.PersonMapper.select");
     Cache cache = selectPetStatement.getCache();

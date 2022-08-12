@@ -20,5 +20,5 @@ public interface Mapper {
 
   @Select("select id, name from users")
   List<Map<String, Object>> getAListOfMaps();
-  
+
 }

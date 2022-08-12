@@ -25,7 +25,7 @@ import javax.sql.DataSource;
  * That id can be used later on to build different queries for each database type
  * This mechanism enables supporting multiple vendors or versions
  * DB id 提供者
- * 
+ *
  * @author Eduardo Macarron
  */
 public interface DatabaseIdProvider {

@@ -34,7 +34,7 @@ MyBatis 的 Java API 就是你收获你所做的努力的地方。正如你即�
 MyBatis 很大程度简化了你的代码而且保持简洁,很容易理解和维护。MyBatis 3 已经引入
 了很多重要的改进来使得 SQL 映射更加优秀。
   </p>
-  
+
   <subsection name="应用目录结构" id="directoryStructure">
   <p>
 在我们深入 Java API 之前,理解关于目录结构的最佳实践是很重要的。MyBatis 非常灵
@@ -74,7 +74,7 @@ MyBatis 很大程度简化了你的代码而且保持简洁,很容易理解和�
       /web.xml</pre>
   <p>Remember, these are preferences, not requirements, but others will thank you for using a common directory structure.</p>
   <p>这部分内容剩余的示例将假设你使用了这种目录结构。</p>
-  </subsection>  
+  </subsection>
 
   <subsection name="SqlSessions" id="sqlSessions">
   <p>
@@ -97,7 +97,7 @@ SqlSession 实例。
 SqlSessionFactory build(InputStream inputStream, String environment)
 SqlSessionFactory build(InputStream inputStream, Properties properties)
 SqlSessionFactory build(InputStream inputStream, String env, Properties props)
-SqlSessionFactory build(Configuration config)</source>  
+SqlSessionFactory build(Configuration config)</source>
 
   <p>
 第一种方法是最常用的,它使用了一个参照了 XML 文档或上面讨论过的更特定的
@@ -120,7 +120,7 @@ Environment
     <dataSource type="JNDI">
         ...
   </environment>
-</environments>]]></source>  
+</environments>]]></source>
   <p>如果你调用了 一个使用 environment 参数 方 式的 build 方法, 那么 MyBatis 将会使用
 configuration 对象来配置这个 environment。
 当然,
@@ -129,7 +129,7 @@ configuration 对象来配置这个 environment。
 如果你调用了其中之一没有 environment 参数的 build 方法,
 那么就使用
 默认的 environment(在上面的示例中就会指定为 default=”development”)。
-  </p>  
+  </p>
   <p>如果你调用了使用 properties 实例的方法,那么 MyBatis 就会加载那些 properties(属性
 配置文件)
 ,并你在你配置中可使用它们。那些属性可以用${propName}语法形式多次用在
@@ -154,19 +154,19 @@ resource/url 属性中加载的任意重复属性。
 后是在 properties 元素体中指定的属性。
   </p>
   <hr/>
-  
+
   <p>
 总结一下,前四个方法很大程度上是相同的,但是由于可以覆盖,就允许你可选地指定
 environment 和/或 properties。
 这里给出一个从 mybatis-config.xml 文件创建 SqlSessionFactory
 的示例:
-  </p>  
+  </p>
 
   <source>String <strong>resource</strong> = "org/mybatis/builder/mybatis-config.xml";
 InputStream <strong>inputStream</strong> = Resources.getResourceAsStream(resource);
 SqlSessionFactoryBuilder <strong>builder</strong> = new SqlSessionFactoryBuilder();
-SqlSessionFactory <strong>factory</strong> = builder.build(inputStream);</source>  
-  
+SqlSessionFactory <strong>factory</strong> = builder.build(inputStream);</source>
+
   <p>
 注意这里我们使用了 Resources 工具类,这个类在 org.mybatis.io 包中。Resources 类正
 如其名,会帮助你从类路径下,文件系统或一个 web URL 加载资源文件。看一下这个类的
@@ -215,7 +215,7 @@ SqlSessionFactory factory = builder.build(configuration);</source>
   <p>
 现在你有一个 SqlSessionFactory,可以用来创建 SqlSession 实例。
   </p>
-  
+
   <h4>SqlSessionFactory</h4>
   <p>
 SqlSessionFactory 有六个方法可以用来创建 SqlSession 实例。通常来说,如何决定是你
@@ -336,7 +336,7 @@ void select (String statement, Object parameter, RowBounds rowBounds, ResultHand
   <p>
 RowBounds 参数会告诉 MyBatis 略过指定数量的记录,还有限制返回结果的数量。
 RowBounds 类有一个构造方法来接收 offset 和 limit,否则是不可改变的。
-  </p> 
+  </p>
   <source>int offset = 100;
 int limit = 25;
 RowBounds rowBounds = new RowBounds(offset, limit);</source>
@@ -351,7 +351,7 @@ Set
 你可以使用 ResultHandler 做很多漂亮的事,
 那就是 MyBatis 内部创建结果集列表。
   </p>
-  <p>它的接口很简单。</p>  
+  <p>它的接口很简单。</p>
   <source>package org.apache.ibatis.session;
 public interface ResultHandler {
   void handleResult(ResultContext context);
@@ -427,7 +427,7 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
   <source>Configuration getConfiguration()</source>
 
   <h5>使用映射器</h5>
-  <source><![CDATA[<T> T getMapper(Class<T> type)]]></source>  
+  <source><![CDATA[<T> T getMapper(Class<T> type)]]></source>
   <p>
 上述的各个 insert,update,delete 和 select 方法都很强大,但也有些繁琐,没有类型安
 全,对于你的 IDE 也没有帮助,还有可能的单元测试。在上面的入门章节中我们已经看到
@@ -442,7 +442,7 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
   </p>
   <source><![CDATA[public interface AuthorMapper {
   // (Author) selectOne("selectAuthor",5);
-  Author selectAuthor(int id); 
+  Author selectAuthor(int id);
   // (List<Author>) selectList(“selectAuthors”)
   List<Author> selectAuthors();
   // (Map<Integer,Author>) selectMap("selectAuthors", "id")
@@ -468,7 +468,7 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
   <p>
 映射器接口不需要去实现任何接口或扩展任何类。
 只要方法前面可以被用来唯一标识对
-应的映射语句就可以了。  
+应的映射语句就可以了。
   </p>
   <p>
 映射器接口可以扩展其他接口。当使用 XML 来构建映射器接口时要保证在合适的命名
@@ -638,7 +638,7 @@ select,已映射语句(也就是映射器方
         <td>A mapping to a collection property of a complex type. Attributes: <code>select</code>, which is the fully
         qualified name of a mapped statement (i.e. mapper method) that can load a collection of instances of the appropriate
         types,
-        <code>fetchType</code>, which supersedes the global configuration parameter <code>lazyLoadingEnabled</code> for this mapping. 
+        <code>fetchType</code>, which supersedes the global configuration parameter <code>lazyLoadingEnabled</code> for this mapping.
         <span class="label important">NOTE</span> You will notice that join mapping is not supported via the
         Annotations API. This is due to the limitation in Java Annotations that does not allow for circular references.</td>
       </tr>
@@ -670,8 +670,8 @@ flushCache=false
 resultSetType=FORWARD_ONLY ,
 statementType=PREPARED ,
 fetchSize=-1 ,
-, 
-  timeout=-1 
+,
+  timeout=-1
 useGeneratedKeys=false ,
 keyProperty=”id”。
 理解 Java 注解是很
@@ -735,9 +735,9 @@ keyProperty=”id”。
         <td>
 这些可选的 SQL 注解允许你指定一个
 类名和一个方法在执行时来返回运行
-允许创建动态 
+允许创建动态
 的 SQL。
-基于执行的映射语句, 
+基于执行的映射语句,
 MyBatis
 会实例化这个类,然后执行由 provider
 指定的方法. 这个方法可以选择性的接

@@ -81,7 +81,7 @@ public class MapperMethod {
       throw new BindingException("Unknown execution method for: " + command.getName());
     }
     if (result == null && method.getReturnType().isPrimitive() && !method.returnsVoid()) {
-      throw new BindingException("Mapper method '" + command.getName() 
+      throw new BindingException("Mapper method '" + command.getName()
           + " attempted to return null from a method with a primitive return type (" + method.getReturnType() + ").");
     }
     return result;
@@ -111,8 +111,8 @@ public class MapperMethod {
   private void executeWithResultHandler(SqlSession sqlSession, Object[] args) {
     MappedStatement ms = sqlSession.getConfiguration().getMappedStatement(command.getName());
     if (void.class.equals(ms.getResultMaps().get(0).getType())) {
-      throw new BindingException("method " + command.getName() 
-          + " needs either a @ResultMap annotation, a @ResultType annotation," 
+      throw new BindingException("method " + command.getName()
+          + " needs either a @ResultMap annotation, a @ResultType annotation,"
           + " or a resultType attribute in XML so a ResultHandler can be used as a parameter.");
     }
     Object param = method.convertArgsToSqlCommandParam(args);
@@ -271,9 +271,9 @@ public class MapperMethod {
           final String genericParamName = "param" + String.valueOf(i + 1);
           if (!param.containsKey(genericParamName)) {
             //2.再加一个#{param1},#{param2}...参数
-            //你可以传递多个参数给一个映射器方法。如果你这样做了, 
+            //你可以传递多个参数给一个映射器方法。如果你这样做了,
             //默认情况下它们将会以它们在参数列表中的位置来命名,比如:#{param1},#{param2}等。
-            //如果你想改变参数的名称(只在多参数情况下) ,那么你可以在参数上使用@Param(“paramName”)注解。 
+            //如果你想改变参数的名称(只在多参数情况下) ,那么你可以在参数上使用@Param(“paramName”)注解。
             param.put(genericParamName, args[entry.getKey()]);
           }
           i++;

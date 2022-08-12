@@ -19,7 +19,7 @@ public class Permission {
 
   private String permission;
   private Resource resource;
-  
+
   public String getPermission() {
     return permission;
   }
@@ -32,5 +32,5 @@ public class Permission {
   public void setResource(Resource resource) {
     this.resource = resource;
   }
-  
+
 }

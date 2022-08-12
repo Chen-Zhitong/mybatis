@@ -33,7 +33,7 @@
   <resultMap type="org.apache.ibatis.submitted.associationtest.Brakes" id="brakesResult">
     <result column="brakesType" property="type"/>
   </resultMap>
-  
+
   <select id="getCars" resultMap="carResult">
     select * from cars
   </select>
@@ -41,9 +41,9 @@
   <select id="getCarsNonUnique" resultMap="carResult">
     select 1 as carid, cartype, enginetype, enginecylinders, brakestype from cars
   </select>
-  
+
   <select id="getCars2" resultMap="carResult">
     select 1 as carid, cartype, enginetype, enginecylinders, brakestype from cars where carid in (1,2)
   </select>
-  
+
 </mapper>

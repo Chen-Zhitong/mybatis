@@ -35,7 +35,7 @@ import org.junit.Test;
 public class NestedForEachTest {
 
   protected static SqlSessionFactory sqlSessionFactory;
-  
+
   @BeforeClass
   public static void setUp() throws Exception {
     Connection conn = null;
@@ -110,7 +110,7 @@ public class NestedForEachTest {
       sqlSession.close();
     }
   }
-  
+
   @Test
   public void testNestedSelect() {
     SqlSession sqlSession = sqlSessionFactory.openSession();

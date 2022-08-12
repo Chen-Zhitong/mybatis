@@ -53,9 +53,9 @@ public class SubstitutionInAnnotsTest {
     Configuration configuration = new Configuration();
     Environment environment = new Environment("test", new JdbcTransactionFactory(), new UnpooledDataSource("org.hsqldb.jdbcDriver", "jdbc:hsqldb:mem:annots", null));
     configuration.setEnvironment(environment);
-    
+
     configuration.addMapper(SubstitutionInAnnotsMapper.class);
-    
+
     sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
   }
 
@@ -80,7 +80,7 @@ public class SubstitutionInAnnotsTest {
       sqlSession.close();
     }
   }
-  
+
   @Test
   public void testSubstitutionWithAnnotsParameter() {
     SqlSession sqlSession = sqlSessionFactory.openSession();

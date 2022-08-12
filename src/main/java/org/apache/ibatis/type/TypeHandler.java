@@ -25,7 +25,7 @@ import java.sql.SQLException;
  */
 /**
  * 类型处理器
- * 
+ *
  */
 public interface TypeHandler<T> {
 

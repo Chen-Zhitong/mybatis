@@ -24,7 +24,7 @@
     <typeAliases>
         <typeAlias alias="Person" type="org.apache.ibatis.submitted.ognl_enum.Person"/>
     </typeAliases>
-    
+
     <environments default="test">
         <environment id="test">
             <transactionManager type="JDBC"></transactionManager>
@@ -35,7 +35,7 @@
             </dataSource>
         </environment>
     </environments>
-    
+
     <mappers>
         <mapper resource="org/apache/ibatis/submitted/ognl_enum/Person.xml"/>
     </mappers>

@@ -23,7 +23,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 /**
  * getter调用者
- * 
+ *
  */
 public class GetFieldInvoker implements Invoker {
   private Field field;

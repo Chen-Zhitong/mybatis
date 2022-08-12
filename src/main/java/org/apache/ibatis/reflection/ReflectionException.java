@@ -22,7 +22,7 @@ import org.apache.ibatis.exceptions.PersistenceException;
  */
 /**
  * 反射异常
- * 
+ *
  */
 public class ReflectionException extends PersistenceException {
 

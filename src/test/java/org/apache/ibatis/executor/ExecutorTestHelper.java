@@ -314,7 +314,7 @@ public class ExecutorTestHelper {
         }).build();
     return ms;
   }
-  
+
   public static MappedStatement createInsertAuthorWithIDof99MappedStatement(final Configuration config) {
     MappedStatement ms = new MappedStatement.Builder(config, "insertAuthor", new StaticSqlSource(config,"INSERT INTO author (id,username,password,email,bio) values(99,'someone','******','someone@apache.org',null)"), SqlCommandType.INSERT)
         .statementType(StatementType.STATEMENT)

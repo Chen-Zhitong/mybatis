@@ -28,7 +28,7 @@ public class CustomBeanWrapperFactory implements ObjectWrapperFactory {
       return false;
     }
   }
-  
+
   public ObjectWrapper getWrapperFor(MetaObject metaObject, Object object) {
     return new CustomBeanWrapper(metaObject, object);
   }

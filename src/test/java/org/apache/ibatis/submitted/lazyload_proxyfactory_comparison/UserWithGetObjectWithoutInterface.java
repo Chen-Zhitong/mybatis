@@ -36,15 +36,15 @@ public class UserWithGetObjectWithoutInterface {
   public void setName(String name) {
     this.name = name;
   }
-  
+
   public Group getOwner() {
      return owner;
   }
-  
+
   public void setOwner(Group owner) {
     this.owner = owner;
   }
-  
+
   public Object getObject() {
     return null;
   }

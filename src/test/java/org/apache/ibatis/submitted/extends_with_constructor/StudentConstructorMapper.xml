@@ -36,7 +36,7 @@
         	<idArg column="id" javaType="int"/>
         </constructor>
     </resultMap>
-    
+
     <select id="selectWithTeacherById" resultMap="StudentConstructorWithTeacherMap" parameterType="int">
     	SELECT id, name, teacher_id
     	FROM student

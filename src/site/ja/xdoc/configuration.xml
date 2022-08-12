@@ -1078,16 +1078,16 @@ public class GenericTypeHandler<E extends MyObject> extends BaseTypeHandler<E> {
         </p>
 
       </subsection>
-      
+
       <subsection name="Handling Enums">
         <p>
           <code>Enum</code> （列挙型）をマップする場合、
           <code>EnumTypeHandler</code> または <code>EnumOrdinalTypeHandler</code> のどちらかを使うことになります。
         </p>
-        
+
         <p>例えば数値の丸めモード（java.math.RoundingMode）を格納する場合、デフォルトでは <code>EnumTypeHandler</code> が使われ、各 <code>Enum</code> は名前の文字列（DOWN, HALF_UP, etc.）に変換されます。
         </p>
-        
+
         <b>他の TypeHandler が特定のクラスを対象としているのに対し、<code>EnumTypeHandler</code> は <code>Enum</code> を継承した任意のクラスを対象とする特別な TypeHandler です。</b>
 
         <p>では名前以外の値を格納したい場合、例えばデータベース管理者が数値で格納して欲しいと言ってきた場合はどうすれば良いのでしょうか。
@@ -1132,7 +1132,7 @@ public class GenericTypeHandler<E extends MyObject> extends BaseTypeHandler<E> {
 	    	#{id}, #{name}, #{funkyNumber}, #{roundingMode}
 	    )
 	</insert>
-	
+
 	<resultMap type="org.apache.ibatis.submitted.rounding.User" id="usermap2">
 		<id column="id" property="id"/>
 		<result column="name" property="name"/>
@@ -1476,7 +1476,7 @@ SqlSessionFactory factory = sqlSessionFactoryBuilder.build(reader,properties);]]
         <p>
           上記のように指定すると、"encoding=UTF8" というプロパティが InitialContext のインスタンス生成時にコンストラクタに渡されます。
         </p>
-        
+
         <p>
           上記以外の DataSource を利用する場合は <code>org.apache.ibatis.datasource.DataSourceFactory</code> インターフェイスを実装したアダプタを作成します。
         </p>
@@ -1493,7 +1493,7 @@ SqlSessionFactory factory = sqlSessionFactoryBuilder.build(reader,properties);]]
 
         <source><![CDATA[import org.apache.ibatis.datasource.unpooled.UnpooledDataSourceFactory;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-        
+
 public class C3P0DataSourceFactory extends UnpooledDataSourceFactory {
 
   public C3P0DataSourceFactory() {
@@ -1513,7 +1513,7 @@ public class C3P0DataSourceFactory extends UnpooledDataSourceFactory {
   <property name="password" value="root"/>
 </dataSource>
 ]]></source>
-        
+
       </subsection>
 
       <subsection name="databaseIdProvider">

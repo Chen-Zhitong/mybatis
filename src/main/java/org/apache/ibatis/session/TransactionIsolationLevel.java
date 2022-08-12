@@ -22,7 +22,7 @@ import java.sql.Connection;
  */
 /**
  * 事务隔离级别，是一个枚举型
- * 
+ *
  */
 public enum TransactionIsolationLevel {
 	//包括JDBC支持的5个级别

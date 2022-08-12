@@ -27,10 +27,10 @@ import org.apache.ibatis.reflection.ExceptionUtil;
 
 /**
  * PreparedStatement proxy to add logging
- * 
+ *
  * @author Clinton Begin
  * @author Eduardo Macarron
- * 
+ *
  */
 public final class PreparedStatementLogger extends BaseJdbcLogger implements InvocationHandler {
 
@@ -46,7 +46,7 @@ public final class PreparedStatementLogger extends BaseJdbcLogger implements Inv
     try {
       if (Object.class.equals(method.getDeclaringClass())) {
         return method.invoke(this, params);
-      }          
+      }
       if (EXECUTE_METHODS.contains(method.getName())) {
         if (isDebugEnabled()) {
           debug("Parameters: " + getParameterValueString(), true);

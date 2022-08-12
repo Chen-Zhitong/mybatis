@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
  * ResultHandler.  Those methods must have void return type, so
  * this annotation can be used to tell MyBatis what kind of object
  * it should build for each row.
- * 
+ *
  * @since 3.2.0
  * @author Jeff Butler
  */

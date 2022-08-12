@@ -38,11 +38,11 @@ public class AutomaticLazyLoadingTest {
 
   private SqlSession sqlSession;
 
-  private static List<Method> noMethods; 
+  private static List<Method> noMethods;
   private static List<Method> objectMethods;
-  
+
   @BeforeClass
-  public static void beforeClass() 
+  public static void beforeClass()
   throws Exception {
     noMethods = new ArrayList<Method>();
 
@@ -112,7 +112,7 @@ public class AutomaticLazyLoadingTest {
   throws Exception {
   testScenario("enabled", false, objectMethods);
   }
-   
+
   /**
    * Load an element with default configuration and call toString.
    * Expect that the toString triggers lazy loading which loads the nested Element
@@ -128,7 +128,7 @@ public class AutomaticLazyLoadingTest {
     }
   }
  }
-  
+
   /**
    * Load an element with default configuration and call toString.
    * Expect that the toString triggers lazy loading which loads the nested Element
@@ -141,24 +141,24 @@ public class AutomaticLazyLoadingTest {
     Element myElement = selectElement();
 
     String myMethodCallDescription;
-    
+
     if (aMethodToCall != null) {
       Object[] myArguments = new Object[aMethodToCall.getParameterTypes().length];
-      
+
       aMethodToCall.invoke(myElement, myArguments);
-      
+
       myMethodCallDescription = aMethodToCall.toString();
     } else {
       myMethodCallDescription = "not called a method";
     }
-    
+
     myElement = disableLazyLoaders(myElement);
-    
+
     closeSession();
-    
+
     try {
       Assert.assertEquals("parent", myElement.getElement().getValue());
-      
+
         if (anExpectingAnException) {
           Assert.fail("Excpected an exception, since " + myMethodCallDescription + " should not trigger lazy loading");
         }
@@ -168,7 +168,7 @@ public class AutomaticLazyLoadingTest {
         }
     }
   }
-  
+
   /**
    * Create a session with the specified configuration and initialized the database.
    */
@@ -206,9 +206,9 @@ public class AutomaticLazyLoadingTest {
    */
   private Element selectElement() {
     Element myElement = sqlSession.getMapper(ElementMapper.class).selectElementById("child");
-    
+
     Assert.assertNotNull("Test setup failure; Could not load element", myElement);
-    
+
     return myElement;
   }
 
@@ -216,20 +216,20 @@ public class AutomaticLazyLoadingTest {
   /**
    * Disable lazy loaders by serializing / deserializing the element
    */
-  private Element disableLazyLoaders(Element anElement) 
+  private Element disableLazyLoaders(Element anElement)
   throws Exception {
     ByteArrayOutputStream myBuffer = new ByteArrayOutputStream();
-    
+
     ObjectOutputStream myObjectOutputStream = new ObjectOutputStream(myBuffer);
     myObjectOutputStream.writeObject(anElement);
     myObjectOutputStream.close();
-    
+
     myBuffer.close();
-    
+
     ObjectInputStream myObjectInputStream = new ObjectInputStream(new ByteArrayInputStream(myBuffer.toByteArray()));
     Element myResult = (Element)myObjectInputStream.readObject();
     myObjectInputStream.close();
-    
+
     return myResult;
   }
 }

@@ -29,5 +29,5 @@ public interface Mapper {
   User getUserFromAMap(Map<String, Object> params);
 
   User getUserXML(Map<String, Object> params);
-  
+
 }

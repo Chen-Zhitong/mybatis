@@ -36,5 +36,5 @@
         FROM immutables AS i
         WHERE i.id = #{pojoID}
     </select>
-    
+
 </mapper>

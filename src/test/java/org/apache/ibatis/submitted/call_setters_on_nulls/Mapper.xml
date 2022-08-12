@@ -31,7 +31,7 @@
 	<select id="getUserMapped" resultMap="userMap">
 		select * from users
 	</select>
-	
+
 	<resultMap type="org.apache.ibatis.submitted.call_setters_on_nulls.User" id="userMap">
 		<id property="id" column="id" />
 		<result property="name" column="name" />
@@ -44,7 +44,7 @@
     <select id="getNameOnlyMapped" resultMap="mapResult">
         select name from users2
     </select>
-    
+
     <resultMap type="map" id="mapResult">
     	<result column="name" property="name" />
     </resultMap>

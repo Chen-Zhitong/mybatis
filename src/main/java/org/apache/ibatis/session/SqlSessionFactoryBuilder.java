@@ -101,7 +101,7 @@ public class SqlSessionFactoryBuilder {
       }
     }
   }
-    
+
   //最后一个build方法使用了一个Configuration作为参数,并返回DefaultSqlSessionFactory
   public SqlSessionFactory build(Configuration config) {
     return new DefaultSqlSessionFactory(config);

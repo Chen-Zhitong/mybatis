@@ -23,7 +23,7 @@ import java.util.Iterator;
 /**
  * 属性分解为标记，迭代子模式
  * 如person[0].birthdate.year，将依次取得person[0], birthdate, year
- * 
+ *
  */
 public class PropertyTokenizer implements Iterable<PropertyTokenizer>, Iterator<PropertyTokenizer> {
   //例子： person[0].birthdate.year

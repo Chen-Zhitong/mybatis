@@ -37,7 +37,7 @@ import org.apache.ibatis.logging.LogFactory;
 /**
  * A default implementation of {@link VFS} that works for most application servers.
  * 默认的VFS，提供了读取jar包的方法
- * 
+ *
  * @author Ben Gunter
  */
 public class DefaultVFS extends VFS {
@@ -157,7 +157,7 @@ public class DefaultVFS extends VFS {
   /**
    * List the names of the entries in the given {@link JarInputStream} that begin with the
    * specified {@code path}. Entries will match with or without a leading slash.
-   * 
+   *
    * @param jar The JAR input stream
    * @param path The leading path to match
    * @return The names of all the matching entries
@@ -198,7 +198,7 @@ public class DefaultVFS extends VFS {
    * by the URL. That is, assuming the URL references a JAR entry, this method will return a URL
    * that references the JAR file containing the entry. If the JAR cannot be located, then this
    * method returns null.
-   * 
+   *
    * @param url The URL of the JAR entry.
    * @return The URL of the JAR file, if one is found. Null if not.
    * @throws MalformedURLException
@@ -268,7 +268,7 @@ public class DefaultVFS extends VFS {
   /**
    * Converts a Java package name to a path that can be looked up with a call to
    * {@link ClassLoader#getResources(String)}.
-   * 
+   *
    * @param packageName The Java package name to convert to a path
    */
   protected String getPackagePath(String packageName) {
@@ -277,7 +277,7 @@ public class DefaultVFS extends VFS {
 
   /**
    * Returns true if the resource located at the given URL is a JAR file.
-   * 
+   *
    * @param url The URL of the resource to test.
    */
   protected boolean isJar(URL url) {
@@ -286,7 +286,7 @@ public class DefaultVFS extends VFS {
 
   /**
    * Returns true if the resource located at the given URL is a JAR file.
-   * 
+   *
    * @param url The URL of the resource to test.
    * @param buffer A buffer into which the first few bytes of the resource are read. The buffer
    *            must be at least the size of {@link #JAR_MAGIC}. (The same buffer may be reused

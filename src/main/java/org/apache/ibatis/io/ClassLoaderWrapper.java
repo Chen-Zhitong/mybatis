@@ -34,10 +34,10 @@ public class ClassLoaderWrapper {
     try {
       systemClassLoader = ClassLoader.getSystemClassLoader();
     } catch (SecurityException ignored) {
-      // AccessControlException on Google App Engine   
+      // AccessControlException on Google App Engine
     }
   }
-  
+
   /*
    * Get a resource as a URL using the current class path
    *

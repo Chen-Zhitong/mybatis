@@ -49,9 +49,9 @@ public class CacheTest {
     reader.close();
     session.close();
   }
-  
+
   /*
-   * Test Plan: 
+   * Test Plan:
    *  1) SqlSession 1 executes "select * from A".
    *  2) SqlSession 1 closes.
    *  3) SqlSession 2 executes "delete from A where id = 1"
@@ -70,7 +70,7 @@ public class CacheTest {
     finally {
       sqlSession1.close();
     }
-    
+
     SqlSession sqlSession2 = sqlSessionFactory.openSession(false);
     try {
       PersonMapper pm = sqlSession2.getMapper(PersonMapper.class);
@@ -82,9 +82,9 @@ public class CacheTest {
       sqlSession2.close();
     }
   }
-  
+
   /*
-   * Test Plan: 
+   * Test Plan:
    *  1) SqlSession 1 executes "select * from A".
    *  2) SqlSession 1 closes.
    *  3) SqlSession 2 executes "delete from A where id = 1"
@@ -93,7 +93,7 @@ public class CacheTest {
    *  6) SqlSession 3 executes "select * from A"
    *
    * Assert:
-   *   Step 6 returns 2 rows. 
+   *   Step 6 returns 2 rows.
    */
   @Test
   public void testplan2() {
@@ -105,7 +105,7 @@ public class CacheTest {
     finally {
       sqlSession1.close();
     }
-    
+
     SqlSession sqlSession2 = sqlSessionFactory.openSession(false);
     try {
       PersonMapper pm = sqlSession2.getMapper(PersonMapper.class);
@@ -115,7 +115,7 @@ public class CacheTest {
       sqlSession2.rollback();
       sqlSession2.close();
     }
-    
+
     SqlSession sqlSession3 = sqlSessionFactory.openSession(false);
     try {
       PersonMapper pm = sqlSession3.getMapper(PersonMapper.class);
@@ -125,7 +125,7 @@ public class CacheTest {
       sqlSession3.close();
     }
   }
-  
+
   /*
    * Test Plan with Autocommit on:
    *  1) SqlSession 1 executes "select * from A".
@@ -136,7 +136,7 @@ public class CacheTest {
    *  6) SqlSession 3 closes.
    *
    * Assert:
-   *   Step 6 returns 1 row. 
+   *   Step 6 returns 1 row.
    */
   @Test
   public void testplan3() {
@@ -148,7 +148,7 @@ public class CacheTest {
     finally {
       sqlSession1.close();
     }
-    
+
     SqlSession sqlSession2 = sqlSessionFactory.openSession(true);
     try {
       PersonMapper pm = sqlSession2.getMapper(PersonMapper.class);
@@ -157,7 +157,7 @@ public class CacheTest {
     finally {
       sqlSession2.close();
     }
-    
+
     SqlSession sqlSession3 = sqlSessionFactory.openSession(true);
     try {
       PersonMapper pm = sqlSession3.getMapper(PersonMapper.class);

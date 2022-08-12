@@ -20,7 +20,7 @@ package org.apache.ibatis.logging;
  */
 /**
  * 日志接口
- * 
+ *
  */
 public interface Log {
 

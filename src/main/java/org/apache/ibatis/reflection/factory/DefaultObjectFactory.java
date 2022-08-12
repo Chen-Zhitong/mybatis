@@ -35,7 +35,7 @@ import org.apache.ibatis.reflection.ReflectionException;
  */
 /**
  * 默认对象工厂，所有对象都要由工厂来产生
- * 
+ *
  */
 public class DefaultObjectFactory implements ObjectFactory, Serializable {
 

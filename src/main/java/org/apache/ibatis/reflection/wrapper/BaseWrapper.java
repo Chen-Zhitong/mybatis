@@ -27,7 +27,7 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
  */
 /**
  * 对象包装器的基类
- * 
+ *
  */
 public abstract class BaseWrapper implements ObjectWrapper {
     //什么方法都没实现，只提供了一些util方法

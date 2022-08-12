@@ -53,7 +53,7 @@ import org.apache.ibatis.logging.LogFactory;
  * resolver.find(new CustomTest(), pkg2);
  * Collection&lt;ActionBean&gt; beans = resolver.getClasses();
  * </pre>
- * 
+ *
  * 找一个package下满足条件的所有类
  *
  * @author Tim Fennell
@@ -237,7 +237,7 @@ public class ResolverUtil<T> {
   /**
    * Converts a Java package name to a path that can be looked up with a call to
    * {@link ClassLoader#getResources(String)}.
-   * 
+   *
    * @param packageName The Java package name to convert to a path
    */
   protected String getPackagePath(String packageName) {

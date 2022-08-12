@@ -22,7 +22,7 @@ import org.apache.ibatis.exceptions.PersistenceException;
  */
 /**
  * 执行异常
- * 
+ *
  */
 public class ExecutorException extends PersistenceException {
 

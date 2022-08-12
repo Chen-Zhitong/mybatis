@@ -38,7 +38,7 @@ import org.apache.ibatis.reflection.SystemMetaObject;
  */
 /**
  * 缓存构建器,建造者模式
- * 
+ *
  */
 public class CacheBuilder {
   private String id;
@@ -86,7 +86,7 @@ public class CacheBuilder {
     this.blocking = blocking;
     return this;
   }
-  
+
   public CacheBuilder properties(Properties properties) {
     this.properties = properties;
     return this;

@@ -35,7 +35,7 @@ import org.apache.ibatis.session.RowBounds;
  */
 /**
  * 预处理语句处理器(PREPARED)
- * 
+ *
  */
 public class PreparedStatementHandler extends BaseStatementHandler {
 

@@ -63,7 +63,7 @@ public class EncodingTest {
     } finally {
       // restore charset
       Resources.setCharset(charset);
-      
+
       if (conn != null) {
         conn.close();
       }

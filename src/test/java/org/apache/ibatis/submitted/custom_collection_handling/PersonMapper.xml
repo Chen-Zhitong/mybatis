@@ -25,7 +25,7 @@
     <resultMap id="personRM" type="org.apache.ibatis.submitted.custom_collection_handling.Person">
         <id property="id" column="id" />
         <result property="name" column="name" />
-        <collection 
+        <collection
             property="contacts"
             ofType="org.apache.ibatis.submitted.custom_collection_handling.Contact"
             javaType="org.apache.ibatis.submitted.custom_collection_handling.CustomCollection">
@@ -38,11 +38,11 @@
     <resultMap id="personRM2" type="org.apache.ibatis.submitted.custom_collection_handling.Person">
         <id property="id" column="id" />
         <result property="name" column="name" />
-        <collection 
+        <collection
             property="contacts"
             ofType="org.apache.ibatis.submitted.custom_collection_handling.Contact"
             javaType="org.apache.ibatis.submitted.custom_collection_handling.CustomCollection"
-            column="id" 
+            column="id"
             select="findContacts" />
     </resultMap>
 

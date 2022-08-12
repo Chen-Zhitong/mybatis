@@ -54,7 +54,7 @@
     a.name as author_name
     FROM author a
   </select>
-  
+
   <select id="getPostsFromAuthor" resultType="Post">
     SELECT
     p.post_id as post_id,
@@ -62,5 +62,5 @@
     FROM post p
     WHERE author_id = #{id}
   </select>
-  
+
 </mapper>

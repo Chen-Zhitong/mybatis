@@ -37,7 +37,7 @@ public class Person {
     if (!(o instanceof Person)) return false;
 
     Person person = (Person) o;
-    
+
     if (id != null ? !id.equals(person.id) : person.id != null) return false;
 
     return true;

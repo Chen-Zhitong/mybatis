@@ -24,7 +24,7 @@ import org.apache.ibatis.reflection.ReflectionException;
  */
 /**
  * 属性命名器
- * 
+ *
  */
 public final class PropertyNamer {
 

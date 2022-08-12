@@ -112,5 +112,5 @@ public class CallSettersOnNullsTest {
       sqlSession.close();
     }
   }
-  
+
 }

@@ -22,7 +22,7 @@ import org.apache.ibatis.logging.Log;
  */
 /**
  * 不做日志,所以都是空方法
- * 
+ *
  */
 public class NoLoggingImpl implements Log {
 

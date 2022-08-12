@@ -36,7 +36,7 @@ import org.apache.ibatis.io.Resources;
  * 序列化缓存
  * 用途是先将对象序列化成2进制，再缓存,好处是将对象压缩了，省内存
  * 坏处是速度慢了
- * 
+ *
  */
 public class SerializedCache implements Cache {
 
@@ -137,7 +137,7 @@ public class SerializedCache implements Cache {
     protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
       return Resources.classForName(desc.getName());
     }
-    
+
   }
 
 }

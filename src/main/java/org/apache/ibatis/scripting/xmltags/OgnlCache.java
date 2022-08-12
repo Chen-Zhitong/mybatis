@@ -26,7 +26,7 @@ import org.apache.ibatis.builder.BuilderException;
 
 /**
  * Caches OGNL parsed expressions.
- *  
+ *
  * @see http://code.google.com/p/mybatis/issues/detail?id=342
  * OGNL缓存,根据以上链接，大致是说ognl有性能问题，所以加了一个缓存
  *

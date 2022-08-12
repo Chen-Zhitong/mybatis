@@ -23,11 +23,11 @@
 	<select id="getUser" resultMap="users" >
 		select * from users
 	</select>
-	
+
 	<select id="getGroupsForUser" resultType="org.apache.ibatis.submitted.javassist.Group">
 		select * from groups where owner = #{id}
 	</select>
-	
+
 	<resultMap type="org.apache.ibatis.submitted.javassist.User" id="users">
 		<id column="id" property="id" />
 		<result column="name" property="name" />

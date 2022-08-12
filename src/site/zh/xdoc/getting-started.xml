@@ -29,7 +29,7 @@
 
   <body>
     <section name="入门">
-    
+
     <subsection name="安装">
       <p>想要使用 MyBatis 只需将 <code>mybatis-x.x.x.jar</code> 文件置于 classpath 中。</p>
       <p>如果使用 Maven 构建项目，则需将下面的 dependency 置于 pom.xml 中：</p>
@@ -39,8 +39,8 @@
   <artifactId>mybatis</artifactId>
   <version>x.x.x</version>
 </dependency>]]></source>
-    </subsection>    
-    
+    </subsection>
+
     <subsection name="从 XML 中构建 SqlSessionFactory">
       <p>每个基于 MyBatis 的应用都是以一个 SqlSessionFactory 的实例为中心的。SqlSessionFactory 的实例可以通过 SqlSessionFactoryBuilder 获得。SqlSessionFactoryBuilder 可以从 XML 配置文件或一个预先定制的 Configuration 的实例构建出 SqlSessionFactory 的实例。</p>
       <p>从 XML 文件中构建 SqlSessionFactory 的实例非常简单，建议使用类路径下的资源文件进行配置。但是也可以使用任意的 InputStream 实例，包括字符串形式或 URL 形式的文件路径来配置。MyBatis 包含一个叫 Resources 的工具类，它包含一些静态方法，可使从 classpath 或其他位置加载资源文件更容易。</p>

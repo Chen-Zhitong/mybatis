@@ -85,5 +85,5 @@ public class EnumOrdinalTypeHandler<E extends Enum<E>> extends BaseTypeHandler<E
       }
     }
   }
-  
+
 }
