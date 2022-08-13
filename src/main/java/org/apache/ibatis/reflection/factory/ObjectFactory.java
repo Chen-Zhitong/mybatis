@@ -31,14 +31,14 @@ public interface ObjectFactory {
 
   /**
    * Sets configuration properties.
-   * 设置属性
+   * 设置配置信息属性
    * @param properties configuration properties
    */
   void setProperties(Properties properties);
 
   /**
    * Creates a new object with default constructor.
-   * 生产对象
+   * 通过无参构造器创建指定类的对象
    * @param type Object type
    * @return
    */
@@ -46,7 +46,7 @@ public interface ObjectFactory {
 
   /**
    * Creates a new object with the specified constructor and params.
-   * 生产对象，使用指定的构造函数和构造函数参数
+   * 生产对象，根据参数列表,从指定类型中选择合适的构造器创建对象
    * @param type Object type
    * @param constructorArgTypes Constructor argument types
    * @param constructorArgs Constructor argument values
@@ -57,7 +57,7 @@ public interface ObjectFactory {
   /**
    * Returns true if this object can have a set of other objects.
    * It's main purpose is to support non-java.util.Collection objects like Scala collections.
-   * 返回这个对象是否是集合，为了支持Scala collections？
+   * 检测指定类型是否为集合类型,主要处理java.util.Collection及其子类
    *
    * @since 3.1.0
    * @param type Object type

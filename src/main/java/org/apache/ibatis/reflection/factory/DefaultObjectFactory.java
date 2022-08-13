@@ -46,7 +46,7 @@ public class DefaultObjectFactory implements ObjectFactory, Serializable {
     return create(type, null, null);
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //告诉编译器忽略指定的警告，不用在编译完成后出现警告信息。
   @Override
   public <T> T create(Class<T> type, List<Class<?>> constructorArgTypes, List<Object> constructorArgs) {
     //根据接口创建具体的类
@@ -63,7 +63,7 @@ public class DefaultObjectFactory implements ObjectFactory, Serializable {
     // no props for default
   }
 
-  //2.实例化类
+  // 会根据传入的参数列表,选择合适的构造参数实例化对象
   private <T> T instantiateClass(Class<T> type, List<Class<?>> constructorArgTypes, List<Object> constructorArgs) {
     try {
       Constructor<T> constructor;
