@@ -27,6 +27,8 @@ import java.sql.Statement;
 
 /**
  * Connection proxy to add logging
+ * ConnectionLogger继承了BaseJdbcLogger抽象类,其中封装了Connection对象
+ * 并同时实现了InvocationHandler接口.
  *
  * @author Clinton Begin
  * @author Eduardo Macarron
@@ -42,11 +44,13 @@ public final class ConnectionLogger extends BaseJdbcLogger implements Invocation
 
     /*
      * Creates a logging version of a connection
+     * 为其封装的Connection对象创建相应的代理对象
      *
      * @param conn - the original connection
      * @return - the connection with logging
      */
     public static Connection newInstance(Connection conn, Log statementLog, int queryStack) {
+        // 使用JDK动态代理的方式创建代理对象
         InvocationHandler handler = new ConnectionLogger(conn, statementLog, queryStack);
         ClassLoader cl = Connection.class.getClassLoader();
         return (Connection) Proxy.newProxyInstance(cl, new Class[]{Connection.class}, handler);
@@ -56,6 +60,7 @@ public final class ConnectionLogger extends BaseJdbcLogger implements Invocation
     public Object invoke(Object proxy, Method method, Object[] params)
             throws Throwable {
         try {
+            // 如果调用的是从Object继承的方法, 则直接调用,不做任何其他处理
             if (Object.class.equals(method.getDeclaringClass())) {
                 return method.invoke(this, params);
             }

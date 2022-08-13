@@ -56,21 +56,28 @@ public final class PreparedStatementLogger extends BaseJdbcLogger implements Inv
     @Override
     public Object invoke(Object proxy, Method method, Object[] params) throws Throwable {
         try {
+            // 如果调用的是从Object继承的方法, 则直接调用,不做任何其他处理
             if (Object.class.equals(method.getDeclaringClass())) {
                 return method.invoke(this, params);
             }
+            //调用了EXECUTE_METHODS集合中的方法
             if (EXECUTE_METHODS.contains(method.getName())) {
                 if (isDebugEnabled()) {
+                    // 日志输出,输出的是参数值以及参数类型
                     debug("Parameters: " + getParameterValueString(), true);
                 }
+                // 清空BaseJdbcLogger中定义的三个column*集合
                 clearColumnInfo();
                 if ("executeQuery".equals(method.getName())) {
+                    // 如果调用executeQuery()方法, 则为ResultSet创建代理对象
                     ResultSet rs = (ResultSet) method.invoke(statement, params);
                     return rs == null ? null : ResultSetLogger.newInstance(rs, statementLog, queryStack);
                 } else {
+                    // 不是executeQuery()方法直接返回结果
                     return method.invoke(statement, params);
                 }
             } else if (SET_METHODS.contains(method.getName())) {
+                // 如果调用SET_METHODS集合中的方法,则通过setColumn()方法记录到BaseJdbcLogger中定义的三个column*集合
                 if ("setNull".equals(method.getName())) {
                     setColumn(params[0], null);
                 } else {
@@ -78,9 +85,11 @@ public final class PreparedStatementLogger extends BaseJdbcLogger implements Inv
                 }
                 return method.invoke(statement, params);
             } else if ("getResultSet".equals(method.getName())) {
+                // 如果调用getResultSet()方法, 则为ResultSet创建代理对象
                 ResultSet rs = (ResultSet) method.invoke(statement, params);
                 return rs == null ? null : ResultSetLogger.newInstance(rs, statementLog, queryStack);
             } else if ("getUpdateCount".equals(method.getName())) {
+                // 如果调用getUpdateCount()方法, 则通过日志框架输出其结果
                 int updateCount = (Integer) method.invoke(statement, params);
                 if (updateCount != -1) {
                     debug("   Updates: " + updateCount, false);

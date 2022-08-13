@@ -27,7 +27,9 @@ import java.util.*;
  */
 public abstract class BaseJdbcLogger {
 
+    //记录了PreparedStatement接口中定义的常用set*()方法
     protected static final Set<String> SET_METHODS = new HashSet<String>();
+    // 记录了Statement接口和PreparedStatement接口中与执行SQL语句相关的方法
     protected static final Set<String> EXECUTE_METHODS = new HashSet<String>();
 
     static {
@@ -59,10 +61,16 @@ public abstract class BaseJdbcLogger {
         EXECUTE_METHODS.add("addBatch");
     }
 
+    // 用于输出日志的Log对象
     protected Log statementLog;
+    // 记录了SQL的层数 用于格式化输出SQL
     protected int queryStack;
+
+    // 记录了 PreparedStatement.set*() 方法设置的键值对
     private Map<Object, Object> columnMap = new HashMap<Object, Object>();
+    // 记录了PreparedStatement.set*() 方法设置的key值
     private List<Object> columnNames = new ArrayList<Object>();
+    // 记录了PreparedStatement.set*() 方法设置的value值
     private List<Object> columnValues = new ArrayList<Object>();
 
     /*

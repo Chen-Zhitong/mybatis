@@ -18,6 +18,8 @@ package org.apache.ibatis.logging;
 import java.lang.reflect.Constructor;
 
 /**
+ * 负责创建对应的日志组件适配器
+ *
  * @author Clinton Begin
  * @author Eduardo Macarron
  */
@@ -36,8 +38,10 @@ public final class LogFactory {
     //具体究竟用哪个日志框架，那个框架所对应logger的构造函数
     private static Constructor<? extends Log> logConstructor;
 
+    // 按序加载并实例化对应日志组件的适配器
+    // 然后使用 LogFactory.logConstructor这个静态字段,记录当前使用的第三方日志组件的适配器
     static {
-        //这边乍一看以为开了几个并行的线程去决定使用哪个具体框架的logging，其实不然
+        // 下面会针对每种日志组件调用 tryImplementation()方法尝试加载
         //slf4j
         tryImplementation(new Runnable() {
             @Override
@@ -149,10 +153,13 @@ public final class LogFactory {
 
     private static void setImplementation(Class<? extends Log> implClass) {
         try {
+            // 获取指定适配器的构造方法
             Constructor<? extends Log> candidate = implClass.getConstructor(new Class[]{String.class});
+            // 实例化适配器
             Log log = candidate.newInstance(new Object[]{LogFactory.class.getName()});
+            // 输出日志
             log.debug("Logging initialized using '" + implClass + "' adapter.");
-            //设置logConstructor,一旦设上，表明找到相应的log的jar包了，那后面别的log就不找了。
+            //初始化logConstructor,一旦设上，表明找到相应的log的jar包了，那后面别的log就不找了。
             logConstructor = candidate;
         } catch (Throwable t) {
             throw new LogException("Error setting Log implementation.  Cause: " + t, t);
