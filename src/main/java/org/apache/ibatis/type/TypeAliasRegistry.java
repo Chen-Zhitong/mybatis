@@ -32,6 +32,7 @@ import java.util.*;
  */
 public class TypeAliasRegistry {
 
+    // 管理别名与Java类型之间的对应关系
     private final Map<String, Class<?>> TYPE_ALIASES = new HashMap<String, Class<?>>();
 
     public TypeAliasRegistry() {
@@ -139,11 +140,13 @@ public class TypeAliasRegistry {
     public void registerAliases(String packageName, Class<?> superType) {
         //TODO ResolverUtil
         ResolverUtil<Class<?>> resolverUtil = new ResolverUtil<Class<?>>();
+        // 查找指定包下的superType类型类
         resolverUtil.find(new ResolverUtil.IsA(superType), packageName);
         Set<Class<? extends Class<?>>> typeSet = resolverUtil.getClasses();
         for (Class<?> type : typeSet) {
             // Ignore inner classes and interfaces (including package-info.java)
             // Skip also inner classes. See issue #6
+            // 过滤掉内部类, 接口以及抽象类
             if (!type.isAnonymousClass() && !type.isInterface() && !type.isMemberClass()) {
                 registerAlias(type);
             }
@@ -153,12 +156,15 @@ public class TypeAliasRegistry {
     //注册类型别名
     public void registerAlias(Class<?> type) {
         //如果没有类型别名，用Class.getSimpleName来注册
+        // 类的简单名(不包含包名)
         String alias = type.getSimpleName();
         //或者通过Alias注解来注册(Class.getAnnotation)
+        // 读取@Alias注解
         Alias aliasAnnotation = type.getAnnotation(Alias.class);
         if (aliasAnnotation != null) {
             alias = aliasAnnotation.value();
         }
+        // 检测此别名不存在后,会将其级绿道TYPE_ALIASES集合中
         registerAlias(alias, type);
     }
 
@@ -168,12 +174,13 @@ public class TypeAliasRegistry {
             throw new TypeException("The parameter alias cannot be null");
         }
         // issue #748
+        // 将别名转换为小写
         String key = alias.toLowerCase(Locale.ENGLISH);
         //如果已经存在key了，且value和之前不一致，报错
-        //这里逻辑略显复杂，感觉没必要，一个key对一个value呗，存在key直接报错不就得了
         if (TYPE_ALIASES.containsKey(key) && TYPE_ALIASES.get(key) != null && !TYPE_ALIASES.get(key).equals(value)) {
             throw new TypeException("The alias '" + alias + "' is already mapped to the value '" + TYPE_ALIASES.get(key).getName() + "'.");
         }
+        // 注册别名
         TYPE_ALIASES.put(key, value);
     }
 

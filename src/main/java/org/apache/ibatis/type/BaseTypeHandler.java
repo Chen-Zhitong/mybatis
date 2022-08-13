@@ -23,6 +23,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * 为方便用户自定义 TypeHandler 实现, MyBatis 提供了 BaseTypeHandler 这个抽象类,
+ * 它实现了 TypeHandler 接口, 并继承了TypeReference抽象类
+ *
  * @author Clinton Begin
  * @author Simone Tripodi
  */
@@ -55,14 +58,16 @@ public abstract class BaseTypeHandler<T> extends TypeReference<T> implements Typ
                         "Cause: " + e, e);
             }
         } else {
-            //非NULL情况，怎么设还得交给不同的子类完成, setNonNullParameter是一个抽象方法
+            // 对于非空数据的处理交给子类实现
             setNonNullParameter(ps, i, parameter, jdbcType);
         }
     }
 
     @Override
     public T getResult(ResultSet rs, String columnName) throws SQLException {
+        // 对于非空数据的处理交给子类实现
         T result = getNullableResult(rs, columnName);
+
         //通过ResultSet.wasNull判断是否为NULL
         if (rs.wasNull()) {
             return null;
