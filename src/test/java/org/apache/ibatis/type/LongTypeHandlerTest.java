@@ -15,34 +15,34 @@
  */
 package org.apache.ibatis.type;
 
+import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.Test;
-
 public class LongTypeHandlerTest extends BaseTypeHandlerTest {
 
-  private static final TypeHandler<Long> TYPE_HANDLER = new LongTypeHandler();
+    private static final TypeHandler<Long> TYPE_HANDLER = new LongTypeHandler();
 
-  @Test
-  public void shouldSetParameter() throws Exception {
-    TYPE_HANDLER.setParameter(ps, 1, 100l, null);
-    verify(ps).setLong(1, 100l);
-  }
+    @Test
+    public void shouldSetParameter() throws Exception {
+        TYPE_HANDLER.setParameter(ps, 1, 100l, null);
+        verify(ps).setLong(1, 100l);
+    }
 
-  @Test
-  public void shouldGetResultFromResultSet() throws Exception {
-    when(rs.getLong("column")).thenReturn(100l);
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(new Long(100l), TYPE_HANDLER.getResult(rs, "column"));
-  }
+    @Test
+    public void shouldGetResultFromResultSet() throws Exception {
+        when(rs.getLong("column")).thenReturn(100l);
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(new Long(100l), TYPE_HANDLER.getResult(rs, "column"));
+    }
 
-  @Test
-  public void shouldGetResultFromCallableStatement() throws Exception {
-    when(cs.getLong(1)).thenReturn(100l);
-    when(cs.wasNull()).thenReturn(false);
-    assertEquals(new Long(100l), TYPE_HANDLER.getResult(cs, 1));
-  }
+    @Test
+    public void shouldGetResultFromCallableStatement() throws Exception {
+        when(cs.getLong(1)).thenReturn(100l);
+        when(cs.wasNull()).thenReturn(false);
+        assertEquals(new Long(100l), TYPE_HANDLER.getResult(cs, 1));
+    }
 
 }

@@ -15,15 +15,14 @@
  */
 package org.apache.ibatis.transaction.managed;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import javax.sql.DataSource;
-
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.TransactionIsolationLevel;
 import org.apache.ibatis.transaction.Transaction;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * {@link Transaction} that lets the container manage the full lifecycle of the transaction.
@@ -31,11 +30,13 @@ import org.apache.ibatis.transaction.Transaction;
  * Ignores all commit or rollback requests.
  * By default, it closes the connection but can be configured not to do it.
  *
+ * @author Clinton Begin
  * @see ManagedTransactionFactory
  */
 /**
  * @author Clinton Begin
  */
+
 /**
  * 托管事务,交给容器来管理事务
  * MANAGED – 这个配置几乎没做什么。
@@ -47,62 +48,62 @@ import org.apache.ibatis.transaction.Transaction;
  */
 public class ManagedTransaction implements Transaction {
 
-  private static final Log log = LogFactory.getLog(ManagedTransaction.class);
+    private static final Log log = LogFactory.getLog(ManagedTransaction.class);
 
-  private DataSource dataSource;
-  private TransactionIsolationLevel level;
-  private Connection connection;
-  private boolean closeConnection;
+    private DataSource dataSource;
+    private TransactionIsolationLevel level;
+    private Connection connection;
+    private boolean closeConnection;
 
-  public ManagedTransaction(Connection connection, boolean closeConnection) {
-    this.connection = connection;
-    this.closeConnection = closeConnection;
-  }
-
-  public ManagedTransaction(DataSource ds, TransactionIsolationLevel level, boolean closeConnection) {
-    this.dataSource = ds;
-    this.level = level;
-    this.closeConnection = closeConnection;
-  }
-
-  @Override
-  public Connection getConnection() throws SQLException {
-    if (this.connection == null) {
-      openConnection();
+    public ManagedTransaction(Connection connection, boolean closeConnection) {
+        this.connection = connection;
+        this.closeConnection = closeConnection;
     }
-    return this.connection;
-  }
 
-  //托管事务commit和rollback都是不做事的，交给容器管理
-  @Override
-  public void commit() throws SQLException {
-    // Does nothing
-  }
-
-  @Override
-  public void rollback() throws SQLException {
-    // Does nothing
-  }
-
-  @Override
-  public void close() throws SQLException {
-    //如果properties文件配置了closeConnection=false,则不关闭连接
-    if (this.closeConnection && this.connection != null) {
-      if (log.isDebugEnabled()) {
-        log.debug("Closing JDBC Connection [" + this.connection + "]");
-      }
-      this.connection.close();
+    public ManagedTransaction(DataSource ds, TransactionIsolationLevel level, boolean closeConnection) {
+        this.dataSource = ds;
+        this.level = level;
+        this.closeConnection = closeConnection;
     }
-  }
 
-  protected void openConnection() throws SQLException {
-    if (log.isDebugEnabled()) {
-      log.debug("Opening JDBC Connection");
+    @Override
+    public Connection getConnection() throws SQLException {
+        if (this.connection == null) {
+            openConnection();
+        }
+        return this.connection;
     }
-    this.connection = this.dataSource.getConnection();
-    if (this.level != null) {
-      this.connection.setTransactionIsolation(this.level.getLevel());
+
+    //托管事务commit和rollback都是不做事的，交给容器管理
+    @Override
+    public void commit() throws SQLException {
+        // Does nothing
     }
-  }
+
+    @Override
+    public void rollback() throws SQLException {
+        // Does nothing
+    }
+
+    @Override
+    public void close() throws SQLException {
+        //如果properties文件配置了closeConnection=false,则不关闭连接
+        if (this.closeConnection && this.connection != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Closing JDBC Connection [" + this.connection + "]");
+            }
+            this.connection.close();
+        }
+    }
+
+    protected void openConnection() throws SQLException {
+        if (log.isDebugEnabled()) {
+            log.debug("Opening JDBC Connection");
+        }
+        this.connection = this.dataSource.getConnection();
+        if (this.level != null) {
+            this.connection.setTransactionIsolation(this.level.getLevel());
+        }
+    }
 
 }

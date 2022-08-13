@@ -15,34 +15,34 @@
  */
 package org.apache.ibatis.type;
 
+import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.Test;
-
 public class BooleanTypeHandlerTest extends BaseTypeHandlerTest {
 
-  private static final TypeHandler<Boolean> TYPE_HANDLER = new BooleanTypeHandler();
+    private static final TypeHandler<Boolean> TYPE_HANDLER = new BooleanTypeHandler();
 
-  @Test
-  public void shouldSetParameter() throws Exception {
-    TYPE_HANDLER.setParameter(ps, 1, true, null);
-    verify(ps).setBoolean(1, true);
-  }
+    @Test
+    public void shouldSetParameter() throws Exception {
+        TYPE_HANDLER.setParameter(ps, 1, true, null);
+        verify(ps).setBoolean(1, true);
+    }
 
-  @Test
-  public void shouldGetResultFromResultSet() throws Exception {
-    when(rs.getBoolean("column")).thenReturn(true);
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(true, TYPE_HANDLER.getResult(rs, "column"));
-  }
+    @Test
+    public void shouldGetResultFromResultSet() throws Exception {
+        when(rs.getBoolean("column")).thenReturn(true);
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(true, TYPE_HANDLER.getResult(rs, "column"));
+    }
 
-  @Test
-  public void shouldGetResultFromCallableStatement() throws Exception {
-    when(cs.getBoolean(1)).thenReturn(true);
-    when(cs.wasNull()).thenReturn(false);
-    assertEquals(true, TYPE_HANDLER.getResult(cs, 1));
-  }
+    @Test
+    public void shouldGetResultFromCallableStatement() throws Exception {
+        when(cs.getBoolean(1)).thenReturn(true);
+        when(cs.wasNull()).thenReturn(false);
+        assertEquals(true, TYPE_HANDLER.getResult(cs, 1));
+    }
 
 }

@@ -15,34 +15,34 @@
  */
 package org.apache.ibatis.type;
 
+import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.Test;
-
 public class FloatTypeHandlerTest extends BaseTypeHandlerTest {
 
-  private static final TypeHandler<Float> TYPE_HANDLER = new FloatTypeHandler();
+    private static final TypeHandler<Float> TYPE_HANDLER = new FloatTypeHandler();
 
-  @Test
-  public void shouldSetParameter() throws Exception {
-    TYPE_HANDLER.setParameter(ps, 1, 100f, null);
-    verify(ps).setFloat(1, 100f);
-  }
+    @Test
+    public void shouldSetParameter() throws Exception {
+        TYPE_HANDLER.setParameter(ps, 1, 100f, null);
+        verify(ps).setFloat(1, 100f);
+    }
 
-  @Test
-  public void shouldGetResultFromResultSet() throws Exception {
-    when(rs.getFloat("column")).thenReturn(100f);
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(new Float(100f), TYPE_HANDLER.getResult(rs, "column"));
-  }
+    @Test
+    public void shouldGetResultFromResultSet() throws Exception {
+        when(rs.getFloat("column")).thenReturn(100f);
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(new Float(100f), TYPE_HANDLER.getResult(rs, "column"));
+    }
 
-  @Test
-  public void shouldGetResultFromCallableStatement() throws Exception {
-    when(cs.getFloat(1)).thenReturn(100f);
-    when(cs.wasNull()).thenReturn(false);
-    assertEquals(new Float(100f), TYPE_HANDLER.getResult(cs, 1));
-  }
+    @Test
+    public void shouldGetResultFromCallableStatement() throws Exception {
+        when(cs.getFloat(1)).thenReturn(100f);
+        when(cs.wasNull()).thenReturn(false);
+        assertEquals(new Float(100f), TYPE_HANDLER.getResult(cs, 1));
+    }
 
 }

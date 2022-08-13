@@ -15,23 +15,24 @@
  */
 package org.apache.ibatis.transaction.managed;
 
-import java.sql.Connection;
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
 import org.apache.ibatis.session.TransactionIsolationLevel;
 import org.apache.ibatis.transaction.Transaction;
 import org.apache.ibatis.transaction.TransactionFactory;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.util.Properties;
+
 /**
  * Creates {@link ManagedTransaction} instances.
  *
+ * @author Clinton Begin
  * @see ManagedTransaction
  */
 /**
  * @author Clinton Begin
  */
+
 /**
  * 托管事务工厂
  * 默认 情况下它会关闭连接。
@@ -39,29 +40,29 @@ import org.apache.ibatis.transaction.TransactionFactory;
  */
 public class ManagedTransactionFactory implements TransactionFactory {
 
-  private boolean closeConnection = true;
+    private boolean closeConnection = true;
 
-  @Override
-  public void setProperties(Properties props) {
-		//设置closeConnection属性
-    if (props != null) {
-      String closeConnectionProperty = props.getProperty("closeConnection");
-      if (closeConnectionProperty != null) {
-        closeConnection = Boolean.valueOf(closeConnectionProperty);
-      }
+    @Override
+    public void setProperties(Properties props) {
+        //设置closeConnection属性
+        if (props != null) {
+            String closeConnectionProperty = props.getProperty("closeConnection");
+            if (closeConnectionProperty != null) {
+                closeConnection = Boolean.valueOf(closeConnectionProperty);
+            }
+        }
     }
-  }
 
-  @Override
-  public Transaction newTransaction(Connection conn) {
-    return new ManagedTransaction(conn, closeConnection);
-  }
+    @Override
+    public Transaction newTransaction(Connection conn) {
+        return new ManagedTransaction(conn, closeConnection);
+    }
 
-  @Override
-  public Transaction newTransaction(DataSource ds, TransactionIsolationLevel level, boolean autoCommit) {
-    // Silently ignores autocommit and isolation level, as managed transactions are entirely
-    // controlled by an external manager.  It's silently ignored so that
-    // code remains portable between managed and unmanaged configurations.
-    return new ManagedTransaction(ds, level, closeConnection);
-  }
+    @Override
+    public Transaction newTransaction(DataSource ds, TransactionIsolationLevel level, boolean autoCommit) {
+        // Silently ignores autocommit and isolation level, as managed transactions are entirely
+        // controlled by an external manager.  It's silently ignored so that
+        // code remains portable between managed and unmanaged configurations.
+        return new ManagedTransaction(ds, level, closeConnection);
+    }
 }

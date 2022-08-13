@@ -18,7 +18,7 @@ import java.sql.SQLException;
 @MappedTypes({String.class})
 @MappedJdbcTypes(JdbcType.VARCHAR)
 public class MyStringHandler implements TypeHandler<String> {
-    private Logger log=Logger.getLogger(MyStringHandler.class);
+    private Logger log = Logger.getLogger(MyStringHandler.class);
 
     @Override
     public String getResult(ResultSet rs, String colName) throws SQLException {

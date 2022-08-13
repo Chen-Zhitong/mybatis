@@ -15,34 +15,34 @@
  */
 package org.apache.ibatis.type;
 
+import org.junit.Test;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.Test;
-
 public class ByteArrayTypeHandlerTest extends BaseTypeHandlerTest {
 
-  private static final TypeHandler<byte[]> TYPE_HANDLER = new ByteArrayTypeHandler();
+    private static final TypeHandler<byte[]> TYPE_HANDLER = new ByteArrayTypeHandler();
 
-  @Test
-  public void shouldSetParameter() throws Exception {
-    TYPE_HANDLER.setParameter(ps, 1, new byte[] { 1, 2, 3 }, null);
-    verify(ps).setBytes(1, new byte[] { 1, 2, 3 });
-  }
+    @Test
+    public void shouldSetParameter() throws Exception {
+        TYPE_HANDLER.setParameter(ps, 1, new byte[]{1, 2, 3}, null);
+        verify(ps).setBytes(1, new byte[]{1, 2, 3});
+    }
 
-  @Test
-  public void shouldGetResultFromResultSet() throws Exception {
-    when(rs.getBytes("column")).thenReturn(new byte[] { 1, 2, 3 });
-    when(rs.wasNull()).thenReturn(false);
-    assertArrayEquals(new byte[] { 1, 2, 3 }, TYPE_HANDLER.getResult(rs, "column"));
-  }
+    @Test
+    public void shouldGetResultFromResultSet() throws Exception {
+        when(rs.getBytes("column")).thenReturn(new byte[]{1, 2, 3});
+        when(rs.wasNull()).thenReturn(false);
+        assertArrayEquals(new byte[]{1, 2, 3}, TYPE_HANDLER.getResult(rs, "column"));
+    }
 
-  @Test
-  public void shouldGetResultFromCallableStatement() throws Exception {
-    when(cs.getBytes(1)).thenReturn(new byte[] { 1, 2, 3 });
-    when(cs.wasNull()).thenReturn(false);
-    assertArrayEquals(new byte[] { 1, 2, 3 }, TYPE_HANDLER.getResult(cs, 1));
-  }
+    @Test
+    public void shouldGetResultFromCallableStatement() throws Exception {
+        when(cs.getBytes(1)).thenReturn(new byte[]{1, 2, 3});
+        when(cs.wasNull()).thenReturn(false);
+        assertArrayEquals(new byte[]{1, 2, 3}, TYPE_HANDLER.getResult(cs, 1));
+    }
 
 }
