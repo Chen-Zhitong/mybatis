@@ -22,33 +22,32 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
 import java.util.List;
 
 /**
+ * ObjectWrapper接口是对对象的包装，抽象了对象的属性信息，它定义了一系列查询对象属性信息的方法，以及更新属性的方法。
+ *
  * @author Clinton Begin
- */
-
-/**
- * 对象包装器
  */
 public interface ObjectWrapper {
 
-    //get
+    // 如果 ObjectWrapper 中封装的是普通Bean对象, 则调用相应属性的相应getter方法,
+    // 如果封装的是集合类, 则获取指定key或下标对应的 value 值
     Object get(PropertyTokenizer prop);
 
     //set
     void set(PropertyTokenizer prop, Object value);
 
-    //查找属性
+    // 查找属性表达式指定的属性, 第二个参数表示是否忽略属性表达式中的下划线
     String findProperty(String name, boolean useCamelCaseMapping);
 
-    //取得getter的名字列表
+    // 查找可写属性的名称集合
     String[] getGetterNames();
 
-    //取得setter的名字列表
+    // 查找可读属性的名称集合
     String[] getSetterNames();
 
-    //取得setter的类型
+    // 解析属性表达式指定属性的 setter 方法的参数类型
     Class<?> getSetterType(String name);
 
-    //取得getter的类型
+    // 解析属性表达式指定属性的 getter 方法的返回值类型
     Class<?> getGetterType(String name);
 
     //是否有指定的setter
@@ -57,16 +56,16 @@ public interface ObjectWrapper {
     //是否有指定的getter
     boolean hasGetter(String name);
 
-    //实例化属性
+    // 为属性表达式指定的属性创建相应的 MetaObject 对象
     MetaObject instantiatePropertyValue(String name, PropertyTokenizer prop, ObjectFactory objectFactory);
 
     //是否是集合
     boolean isCollection();
 
-    //添加属性
+    // 调用Collection对象的 add() 方法
     public void add(Object element);
 
-    //添加属性
+    // 调用Collection对象的 addAll() 方法
     public <E> void addAll(List<E> element);
 
 }

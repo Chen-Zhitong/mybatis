@@ -23,11 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * BaseWrapper是一个实现了ObjectWrapper接口的抽象类，其中封装了MetaObject对象，并提供了三个常用的方法供其子类使用
+ *
  * @author Clinton Begin
- */
-
-/**
- * 对象包装器的基类
  */
 public abstract class BaseWrapper implements ObjectWrapper {
     //什么方法都没实现，只提供了一些util方法
@@ -48,13 +46,22 @@ public abstract class BaseWrapper implements ObjectWrapper {
         }
     }
 
+    /**
+     * 会解析属性表达式的索引信息,然后获取对应项.
+     *
+     * @param prop
+     * @param collection
+     * @return
+     */
     //取集合的值
     //中括号有2个意思，一个是Map，一个是List或数组
     protected Object getCollectionValue(PropertyTokenizer prop, Object collection) {
         if (collection instanceof Map) {
+            // 如果是Map类型,则 index 为 key
             //map['name']
             return ((Map) collection).get(prop.getIndex());
         } else {
+            // 如果是其他集合类型, 则 index 为下标
             int i = Integer.parseInt(prop.getIndex());
             if (collection instanceof List) {
                 //list[0]

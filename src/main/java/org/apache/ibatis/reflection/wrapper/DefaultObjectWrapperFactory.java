@@ -23,7 +23,8 @@ import org.apache.ibatis.reflection.ReflectionException;
  */
 
 /**
- * 默认对象包装器工厂
+ * 默认对象包装器工厂, 始终返回false 和抛出异常所以是不可用的
+ * 我们可以在mybatis-config.xml中配置自定义的ObjectWrapperFactory实现类进行扩展
  */
 public class DefaultObjectWrapperFactory implements ObjectWrapperFactory {
 
