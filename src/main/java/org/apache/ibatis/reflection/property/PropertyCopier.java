@@ -18,11 +18,9 @@ package org.apache.ibatis.reflection.property;
 import java.lang.reflect.Field;
 
 /**
- * @author Clinton Begin
- */
-
-/**
  * 属性复制器
+ *
+ * @author Clinton Begin
  */
 public final class PropertyCopier {
 
@@ -41,11 +39,13 @@ public final class PropertyCopier {
             for (Field field : fields) {
                 try {
                     field.setAccessible(true);
+                    // 将sourceBean对象中的属性设置到 destinationBean 对象中
                     field.set(destinationBean, field.get(sourceBean));
                 } catch (Exception e) {
                     // Nothing useful to do, will only fail on final fields, which will be ignored.
                 }
             }
+            // 继续拷贝父类中定义的字段
             parent = parent.getSuperclass();
         }
     }

@@ -32,7 +32,12 @@ public final class PropertyNamer {
         // Prevent Instantiation of Static Class
     }
 
-    //方法转为属性
+    /**
+     * 会将方法名转换成属性名
+     *
+     * @param name 方法名
+     * @return 属性名
+     */
     public static String methodToProperty(String name) {
         //去掉get|set|is
         if (name.startsWith("is")) {
@@ -53,7 +58,12 @@ public final class PropertyNamer {
         return name;
     }
 
-    //是否是属性
+    /**
+     * 负责检测方法名是否对应属性名
+     *
+     * @param name
+     * @return
+     */
     public static boolean isProperty(String name) {
         //必须以get|set|is开头
         return name.startsWith("get") || name.startsWith("set") || name.startsWith("is");
