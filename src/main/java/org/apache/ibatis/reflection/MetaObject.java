@@ -33,13 +33,17 @@ import java.util.Map;
  */
 public class MetaObject {
 
-    //有一个原来的对象，对象包装器，对象工厂，对象包装器工厂
+    // 原始JavaBean对象
     private Object originalObject;
+    // 上文介绍的ObjectWrapper对象, 其中封装了originalObject对象
     private ObjectWrapper objectWrapper;
+    // 负责实例化 originalObject 的工厂对象
     private ObjectFactory objectFactory;
+    // 负责创建ObjectWrapper的工厂对象
     private ObjectWrapperFactory objectWrapperFactory;
 
     private MetaObject(Object object, ObjectFactory objectFactory, ObjectWrapperFactory objectWrapperFactory) {
+        // 初始化上述字段
         this.originalObject = object;
         this.objectFactory = objectFactory;
         this.objectWrapperFactory = objectWrapperFactory;
@@ -48,7 +52,9 @@ public class MetaObject {
             //如果对象本身已经是ObjectWrapper型，则直接赋给objectWrapper
             this.objectWrapper = (ObjectWrapper) object;
         } else if (objectWrapperFactory.hasWrapperFor(object)) {
-            //如果有包装器,调用ObjectWrapperFactory.getWrapperFor
+            // 若ObjectWrapperFactory能够为该原始对象创建对应的ObjectWrapper对象,则由优先使用ObjectWrapperFactory,
+            // 而 DefaultObjectWrapperFactory.hasWrapperFor() 则始终返回false
+            // 用户可以自定义 ObjectWrapperFactory 实现进行扩展
             this.objectWrapper = objectWrapperFactory.getWrapperFor(this, object);
         } else if (object instanceof Map) {
             //如果是Map型，返回MapWrapper
@@ -62,9 +68,10 @@ public class MetaObject {
         }
     }
 
+    // MetaObject的构造方法时 private 修饰的, 只能通过forObject()这个静态方法创建MetaObject对象
     public static MetaObject forObject(Object object, ObjectFactory objectFactory, ObjectWrapperFactory objectWrapperFactory) {
         if (object == null) {
-            //处理一下null,将null包装起来
+            // 如果object为null, 则统一返回 SystemMetaObject.NULL_META_OBJECT 这个对象
             return SystemMetaObject.NULL_META_OBJECT;
         } else {
             return new MetaObject(object, objectFactory, objectWrapperFactory);
@@ -119,12 +126,33 @@ public class MetaObject {
         return objectWrapper.hasGetter(name);
     }
 
+    /**
+     * 为了帮助读者理解，这里依然以“orders[0].id”这个属性表达式为例来分析MetaObject.getValue（）方法的执行流程:
+     *
+     * （1）创建User对象相应的MetaObject对象，并调用MetaObject.getValue（）方法，经过PropertyTokenizer解析“orders[0].id”表达式之后，
+     * 其name为orders，indexedName为orders[0]，index为0，children为id。
+     *
+     * （2）调用MetaObject.metaObjectForProperty（）方法处理“orders[0]”表达式，
+     * 底层会调用BeanWrapper.get（）方法获取orders集合中第一个Order对象，其中先通过BeanWrapper.resolve-Collection（）方法获取orders集合对象，
+     * 然后调用BeanWrapper.getCollectionValue（）方法获取orders集合中的第一个元素。注意，这个过程中会递归调用MetaObject.getValue（）方法。
+     *
+     * （3）得到Order对象后，创建其相应的MetaObject对象，并调用MetaObject.getValue（）方法处理“id”表达式，逻辑同上，
+     * 最后得到属性表达式指定属性的值，即User对象的orders集合属性中第一个Order元素的id属性值。
+     *
+     * 摘录来自: 徐郡明. “MyBatis技术内幕。” Apple Books.
+     *
+     * @param name
+     * @return
+     */
     //取得值
     //如person[0].birthdate.year
     //具体测试用例可以看MetaObjectTest
     public Object getValue(String name) {
+        //  解析属性表达式
         PropertyTokenizer prop = new PropertyTokenizer(name);
+        // 处理子表达式
         if (prop.hasNext()) {
+            // 根据 PropertyTokenizer 解析后指定的属性, 创建相应的 MetaObject对象
             MetaObject metaValue = metaObjectForProperty(prop.getIndexedName());
             if (metaValue == SystemMetaObject.NULL_META_OBJECT) {
                 //如果上层就是null了，那就结束，返回null
@@ -134,6 +162,7 @@ public class MetaObject {
                 return metaValue.getValue(prop.getChildren());
             }
         } else {
+            // 通过ObjectWrapper 获取指定的属性值
             return objectWrapper.get(prop);
         }
     }
@@ -165,7 +194,9 @@ public class MetaObject {
     //为某个属性生成元对象
     public MetaObject metaObjectForProperty(String name) {
         //实际是递归调用
+        // 获取指定的属性
         Object value = getValue(name);
+        // 创建该属性对象相应的MetaObject对象
         return MetaObject.forObject(value, objectFactory, objectWrapperFactory);
     }
 
