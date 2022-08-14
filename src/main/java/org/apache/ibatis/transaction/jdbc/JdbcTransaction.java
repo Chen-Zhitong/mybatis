@@ -46,9 +46,13 @@ public class JdbcTransaction implements Transaction {
 
     private static final Log log = LogFactory.getLog(JdbcTransaction.class);
 
+    //  事务对应的数据库连接
     protected Connection connection;
+    // 数据库连接所属的dataSource
     protected DataSource dataSource;
+    // 事务的隔离级别
     protected TransactionIsolationLevel level;
+    // 是否自动提交
     protected boolean autoCommmit;
 
     public JdbcTransaction(DataSource ds, TransactionIsolationLevel desiredLevel, boolean desiredAutoCommit) {
