@@ -42,12 +42,14 @@ public abstract class VFS {
     /**
      * The list to which implementations are added by {@link #addImplClass(Class)}.
      */
-    //这里是提供一个用户扩展点，可以让用户自定义VFS实现
+    // 记录了用户自定义的VFS实现类. VFS.addImplClass()方法会将指定的VFS实现对应的Class对象添加
+    // 到 USER_IMPLEMENTATIONS 集合中
     public static final List<Class<? extends VFS>> USER_IMPLEMENTATIONS = new ArrayList<Class<? extends VFS>>();
     private static final Log log = LogFactory.getLog(ResolverUtil.class);
     /**
      * Singleton instance.
      */
+    // 单例模式, 记录了全局唯一的VFS对象
     private static VFS instance;
 
     /**
@@ -56,17 +58,19 @@ public abstract class VFS {
      */
     @SuppressWarnings("unchecked")
     public static VFS getInstance() {
+        // 检测instance对象
         if (instance != null) {
             return instance;
         }
 
         // Try the user implementations first, then the built-ins
+        // 优先使用用户自定义的VFS实现,如果没有自定义VFS实现, 则使用MyBatis提供的VFS实现
         List<Class<? extends VFS>> impls = new ArrayList<Class<? extends VFS>>();
         impls.addAll(USER_IMPLEMENTATIONS);
         impls.addAll(Arrays.asList((Class<? extends VFS>[]) IMPLEMENTATIONS));
 
         // Try each implementation class until a valid one is found
-        //遍历查找实现类，返回第一个找到的
+        // 遍历impls集合,依次实例化VFS对象并检测VFS对象是否有效,一旦得到有效的VFS对象则结束循环
         VFS vfs = null;
         for (int i = 0; vfs == null || !vfs.isValid(); i++) {
             Class<? extends VFS> impl = impls.get(i);
@@ -180,6 +184,7 @@ public abstract class VFS {
     /**
      * Return true if the {@link VFS} implementation is valid for the current environment.
      */
+    // 负责检测当前VFS对象在当前环境下是否有效
     public abstract boolean isValid();
 
     /**
@@ -192,6 +197,7 @@ public abstract class VFS {
      * @return A list containing the names of the child resources.
      * @throws IOException If I/O errors occur
      */
+    // 负责查找指定的资源名称列表
     protected abstract List<String> list(URL url, String forPath) throws IOException;
 
     /**

@@ -36,15 +36,23 @@ class PooledConnection implements InvocationHandler {
     private static final Class<?>[] IFACES = new Class<?>[]{Connection.class};
 
     private int hashCode = 0;
+    //  记录当前PooledConnection对象所在的pooledDataSource对象
+    // 该PolledConnection是从该pooledDataSource中获取的,
+    // 当调用close()方法时会讲PooledConnection放回该PooledDataSource中
     private PooledDataSource dataSource;
-    //真正的连接
+    // 真正的数据库连接
     private Connection realConnection;
-    //代理的连接
+    // 数据库连接的代理对象
     private Connection proxyConnection;
+    // 从连接池取出该连接的时间戳
     private long checkoutTimestamp;
+    // 该谅解创建的时间戳
     private long createdTimestamp;
+    // 最后一次被使用的时间戳
     private long lastUsedTimestamp;
+    // 由数据库URL, 用户名和密码计算出来的hash值, 可用于标识该连接所在的连接池
     private int connectionTypeCode;
+    // 检测当前PooledConnection是否有效,主要是为了防止程序通过close() 方法将连接归还给连接池之后依然通过该连接操作数据库
     private boolean valid;
 
     /*
@@ -229,6 +237,8 @@ class PooledConnection implements InvocationHandler {
 
     /*
      * Required for InvocationHandler implementation.
+     * proxyConnection这个连接代理对象的真正代理逻辑,它会对close()方法的调用进行代理
+     * 并且在调用真正数据库连接的方法之前进行检测
      *
      * @param proxy  - not used
      * @param method - the method to be executed
@@ -238,7 +248,7 @@ class PooledConnection implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         String methodName = method.getName();
-        //如果调用close的话，忽略它，反而将这个connection加入到池中
+        //如果调用close的话，则将其重新放入连接池,而不是真正关闭数据库连接
         if (CLOSE.hashCode() == methodName.hashCode() && CLOSE.equals(methodName)) {
             dataSource.pushConnection(this);
             return null;
@@ -247,7 +257,7 @@ class PooledConnection implements InvocationHandler {
                 if (!Object.class.equals(method.getDeclaringClass())) {
                     // issue #579 toString() should never fail
                     // throw an SQLException instead of a Runtime
-                    //除了toString()方法，其他方法调用之前要检查connection是否还是合法的,不合法要抛出SQLException
+                    // 通过valid字段检测连接是否有效
                     checkConnection();
                 }
                 //其他的方法，则交给真正的connection去调用

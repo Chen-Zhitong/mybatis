@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 /**
- * 池状态
+ * 用于管理PooledConnection对象状态的组件
  */
 public class PoolState {
 
@@ -33,18 +33,23 @@ public class PoolState {
     protected final List<PooledConnection> activeConnections = new ArrayList<PooledConnection>();
     protected PooledDataSource dataSource;
     //----------以下是一些统计信息----------
-    //请求次数
+    //请求连接的次数
     protected long requestCount = 0;
-    //总请求时间
+    //获取连接的累积时间
     protected long accumulatedRequestTime = 0;
+    // checkOut 表示应用从连接池取出连接到归还连接这段时长
+    // accumulatedCheckoutTime 记录了所有连接积累的checkoutTime时长
     protected long accumulatedCheckoutTime = 0;
+    //  当连接长时间未归还给连接池时, 会被认为该连接超时
+    // claimedOverdueConnectionCount 记录了超时的连接个数
     protected long claimedOverdueConnectionCount = 0;
+    // 累积超时时间
     protected long accumulatedCheckoutTimeOfOverdueConnections = 0;
-    //总等待时间
+    // 累积时间
     protected long accumulatedWaitTime = 0;
-    //要等待的次数
+    // 等待次数
     protected long hadToWaitCount = 0;
-    //坏的连接次数
+    // 无效的连接数
     protected long badConnectionCount = 0;
 
     public PoolState(PooledDataSource dataSource) {

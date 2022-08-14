@@ -157,13 +157,15 @@ public class ResolverUtil<T> {
      */
     //主要的方法，找一个package下满足条件的所有类,被TypeHanderRegistry,MapperRegistry,TypeAliasRegistry调用
     public ResolverUtil<T> find(Test test, String packageName) {
+        // 根据包名获取其对应的路径
         String path = getPackagePath(packageName);
 
         try {
-            //通过VFS来深入jar包里面去找一个class
+            // 通过 VFS.list() 查找packageName 包下的所有资源
             List<String> children = VFS.getInstance().list(path);
             for (String child : children) {
                 if (child.endsWith(".class")) {
+                    // 检测该类是否符合test条件
                     addIfMatching(test, child);
                 }
             }
@@ -194,12 +196,17 @@ public class ResolverUtil<T> {
     @SuppressWarnings("unchecked")
     protected void addIfMatching(Test test, String fqn) {
         try {
+            // fqn是类的完全限定名,即包括其所在包的包名
+            // 原始: com/learning/mapper/RoleMapper.class 处理后: com.learning.mapper.RoleMapper
             String externalName = fqn.substring(0, fqn.indexOf('.')).replace('/', '.');
             ClassLoader loader = getClassLoader();
             log.debug("Checking to see if class " + externalName + " matches criteria [" + test + "]");
 
+            //  加载指定的类
             Class<?> type = loader.loadClass(externalName);
+            // 通过 Test.matches() 方法检测条件是否满足
             if (test.matches(type)) {
+                // 将符合条件的类记录到matches集合中
                 matches.add((Class<T>) type);
             }
         } catch (Throwable t) {
@@ -217,6 +224,7 @@ public class ResolverUtil<T> {
          * Will be called repeatedly with candidate classes. Must return True if a class
          * is to be included in the results, false otherwise.
          */
+        // 参数 type 是待检测的类, 如果该类符合检测的条件,则matches() 方法返回true, 否则返回flase
         boolean matches(Class<?> type);
     }
 
@@ -224,6 +232,7 @@ public class ResolverUtil<T> {
      * A Test that checks to see if each class is assignable to the provided class. Note
      * that this test will match the parent type itself if it is presented for matching.
      */
+    // 用于检测指定类是否继承了 parent 指定的类
     public static class IsA implements Test {
         private Class<?> parent;
 
@@ -252,6 +261,7 @@ public class ResolverUtil<T> {
      * A Test that checks to see if each class is annotated with a specific annotation. If it
      * is, then the test returns true, otherwise false.
      */
+    // 检测指定类是否添加了 annotation 注解
     public static class AnnotatedWith implements Test {
         private Class<? extends Annotation> annotation;
 
