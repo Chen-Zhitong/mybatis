@@ -30,8 +30,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * 映射器代理工厂
  */
 public class MapperProxyFactory<T> {
-
+    // 当前MapperProxyFactory对象可以创建实现了mapperInterface接口代理对象
     private final Class<T> mapperInterface;
+
+    // 缓存, key是 mapperInterface 接口中某方法对应的Method对象,value 是对应的 MapperMethod 对象
     private Map<Method, MapperMethod> methodCache = new ConcurrentHashMap<Method, MapperMethod>();
 
     public MapperProxyFactory(Class<T> mapperInterface) {
@@ -49,10 +51,12 @@ public class MapperProxyFactory<T> {
     @SuppressWarnings("unchecked")
     protected T newInstance(MapperProxy<T> mapperProxy) {
         //用JDK自带的动态代理生成映射器
+        // 创建实现了mapperInterface接口的代理对象
         return (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), new Class[]{mapperInterface}, mapperProxy);
     }
 
     public T newInstance(SqlSession sqlSession) {
+        // 创建MapperProxy对象, 每次调用都会创建新的MapperProxy对象
         final MapperProxy<T> mapperProxy = new MapperProxy<T>(sqlSession, mapperInterface, methodCache);
         return newInstance(mapperProxy);
     }
