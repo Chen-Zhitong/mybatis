@@ -26,8 +26,9 @@ import java.net.URL;
  */
 public class ClassLoaderWrapper {
 
-    //defaultClassLoader没地方初始化啊?
+    // 应用指定的默认类加载器
     ClassLoader defaultClassLoader;
+    // 记录SystemClassLoader
     ClassLoader systemClassLoader;
 
     ClassLoaderWrapper() {
@@ -143,21 +144,25 @@ public class ClassLoaderWrapper {
 
         URL url;
 
+        // 遍历 ClassLoader 数组
         for (ClassLoader cl : classLoader) {
 
             if (null != cl) {
 
                 // look for the resource as passed in...
+                // 调用ClassLoader.getReource()方法查找指定的参数
                 url = cl.getResource(resource);
 
                 // ...but some class loaders want this leading "/", so we'll add it
                 // and try again if we didn't find the resource
+                // 尝试以"/"开头,再次查找
                 if (null == url) {
                     url = cl.getResource("/" + resource);
                 }
 
                 // "It's always in the last place I look for it!"
                 // ... because only an idiot would keep looking for it after finding it, so stop looking already.
+                // 查找到指定的资源
                 if (null != url) {
                     return url;
                 }
@@ -206,14 +211,14 @@ public class ClassLoaderWrapper {
 
     }
 
-    //一共5个类加载器
+    // 会返回ClassLoader[] 数组,该数组指明了类加载器的使用顺序
     ClassLoader[] getClassLoaders(ClassLoader classLoader) {
         return new ClassLoader[]{
-                classLoader,
-                defaultClassLoader,
-                Thread.currentThread().getContextClassLoader(),
-                getClass().getClassLoader(),
-                systemClassLoader};
+                classLoader, // 参数指定的类加载器
+                defaultClassLoader, // 系统指定的默认类加载器
+                Thread.currentThread().getContextClassLoader(), // 当前线程绑定的类加载器
+                getClass().getClassLoader(),// 加载当前类所使用的类加载器
+                systemClassLoader};// System ClassLoader
     }
 
 }
