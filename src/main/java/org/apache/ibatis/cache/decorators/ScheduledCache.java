@@ -29,7 +29,9 @@ import java.util.concurrent.locks.ReadWriteLock;
  */
 public class ScheduledCache implements Cache {
 
+    //  记录连词缓存清理之间的时间间隔
     protected long clearInterval;
+    // 记录最近一次更新时间
     protected long lastClear;
     private Cache delegate;
 

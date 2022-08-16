@@ -36,6 +36,7 @@ public class PerpetualCache implements Cache {
     private String id;
 
     //内部就是一个HashMap,所有方法基本就是直接调用HashMap的方法,不支持多线程？
+    // 通过装饰器模式(比如 BlockingCache ) 实现对Cache的包装,从而支持多线程
     private Map<Object, Object> cache = new HashMap<Object, Object>();
 
     public PerpetualCache(String id) {
@@ -47,6 +48,7 @@ public class PerpetualCache implements Cache {
         return id;
     }
 
+    // 下面所有的方法都是通过 cache 字段记录这个 HashMap对象的相应方法实现
     @Override
     public int getSize() {
         return cache.size();
@@ -77,6 +79,7 @@ public class PerpetualCache implements Cache {
         return null;
     }
 
+    // 重写了 equals() 方法和 hashCode() 方法, 两者都只关心 id 字段, 并不关心 cache 字段
     @Override
     public boolean equals(Object o) {
         //只要id相等就认为两个cache相同

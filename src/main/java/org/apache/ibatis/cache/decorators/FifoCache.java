@@ -29,11 +29,15 @@ import java.util.concurrent.locks.ReadWriteLock;
 /*
  * FIFO缓存
  * 这个类就是维护一个FIFO链表，其他都委托给所包装的cache去做。典型的装饰模式
+ * 当向缓存中添加数据时, 如果缓存项已达到上限,则会将缓存中最老(即最早进入的缓存)的缓存项删除
  */
 public class FifoCache implements Cache {
 
+    // 底层被装饰的Cache独享
     private final Cache delegate;
+    // 用于记录Key进入缓存的先后顺序,使用的是 LinkedList<Object>类型的集合对象
     private Deque<Object> keyList;
+    // 记录了缓存项上线, 超过该值, 则需要清理最老的缓存项
     private int size;
 
     public FifoCache(Cache delegate) {
@@ -58,7 +62,9 @@ public class FifoCache implements Cache {
 
     @Override
     public void putObject(Object key, Object value) {
+        // 检测并清理缓存
         cycleKeyList(key);
+        // 添加缓存项
         delegate.putObject(key, value);
     }
 
@@ -84,7 +90,7 @@ public class FifoCache implements Cache {
     }
 
     private void cycleKeyList(Object key) {
-        //增加记录时判断如果记录已超过1024条，会移除链表的第一个元素，从而达到FIFO缓存效果
+        //增加记录时判断如果记录已达到上限，会移除链表的第一个元素，从而达到FIFO缓存效果
         keyList.addLast(key);
         if (keyList.size() > size) {
             Object oldestKey = keyList.removeFirst();

@@ -55,14 +55,14 @@ public interface Cache {
      * @param key Can be any object but usually it is a {@link CacheKey}
      * @param value The result of a select.
      */
-    //存入值
+    // 向缓存中添加数据, 一般情况下, key是Cachekey, value 是查询结果
     void putObject(Object key, Object value);
 
     /**
      * @param key The key
      * @return The object stored in the cache.
      */
-    //获取值
+    // 根据指定的key, 在缓存中查找对应的结果对象
     Object getObject(Object key);
 
     /**
@@ -71,13 +71,13 @@ public interface Cache {
      * @param key The key
      * @return The object that was removed
      */
-    //删除值
+    // 删除key对应的缓存项
     Object removeObject(Object key);
 
     /**
      * Clears this cache instance
      */
-    //清空
+    // 清空缓存
     void clear();
 
     /**

@@ -34,7 +34,9 @@ public class LruCache implements Cache {
 
     private final Cache delegate;
     //额外用了一个map才做lru，但是委托的Cache里面其实也是一个map，这样等于用2倍的内存实现lru功能
+    // LinkedHashMap<Object,Object> 它是一个有序的HashMap, 用于记录key最近的使用情况
     private Map<Object, Object> keyMap;
+    // 记录最少被使用的缓存项的 key
     private Object eldestKey;
 
     public LruCache(Cache delegate) {
@@ -52,7 +54,13 @@ public class LruCache implements Cache {
         return delegate.getSize();
     }
 
+    /**
+     * 从新设置缓存大小时,会重置 keyMap字段
+     * @param size
+     */
     public void setSize(final int size) {
+        // 注意linkedHashMap构造函数的第三个参数, true表示该LinkedHashMap记录的顺序是
+        // access-order, 也就是说 LinkedhashMap.get() 方法会改变其记录的顺序
         keyMap = new LinkedHashMap<Object, Object>(size, .75F, true) {
             private static final long serialVersionUID = 4267176411845948333L;
 
@@ -64,7 +72,7 @@ public class LruCache implements Cache {
             protected boolean removeEldestEntry(Map.Entry<Object, Object> eldest) {
                 boolean tooBig = size() > size;
                 if (tooBig) {
-                    //这里没辙了，把eldestKey存入实例变量
+                    // 如果已达上限, 则更新 eldestkey 字段, 后面会删除该项
                     eldestKey = eldest.getKey();
                 }
                 return tooBig;
@@ -104,8 +112,9 @@ public class LruCache implements Cache {
 
     private void cycleKeyList(Object key) {
         keyMap.put(key, key);
-        //keyMap是linkedhashmap，最老的记录已经被移除了，然后这里我们还需要移除被委托的那个cache的记录
+        // eldestKey 不为空, 表示已达到缓存上限
         if (eldestKey != null) {
+            // 删除最久未使用的缓存项
             delegate.removeObject(eldestKey);
             eldestKey = null;
         }
