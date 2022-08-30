@@ -69,10 +69,11 @@ public class XMLStatementBuilder extends BaseBuilder {
 //  SELECT * FROM PERSON WHERE ID = #{id}
 //</select>
     public void parseStatementNode() {
+        // 获取SQL节点的id以及databaseId属性
         String id = context.getStringAttribute("id");
         String databaseId = context.getStringAttribute("databaseId");
 
-        //如果databaseId不匹配，退出
+        //如果id和databaseId不匹配或存在相同id且databaseId不为空的SQL节点,则不再加载
         if (!databaseIdMatchesCurrent(id, databaseId, this.requiredDatabaseId)) {
             return;
         }
@@ -102,7 +103,7 @@ public class XMLStatementBuilder extends BaseBuilder {
         StatementType statementType = StatementType.valueOf(context.getStringAttribute("statementType", StatementType.PREPARED.toString()));
         ResultSetType resultSetTypeEnum = resolveResultSetType(resultSetType);
 
-        //获取命令类型(select|insert|update|delete)
+        // 根据SQL节点的名称 决定其SqlCommandType
         String nodeName = context.getNode().getNodeName();
         SqlCommandType sqlCommandType = SqlCommandType.valueOf(nodeName.toUpperCase(Locale.ENGLISH));
         boolean isSelect = sqlCommandType == SqlCommandType.SELECT;
@@ -119,20 +120,26 @@ public class XMLStatementBuilder extends BaseBuilder {
         includeParser.applyIncludes(context.getNode());
 
         // Parse selectKey after includes and remove them.
-        //解析之前先解析<selectKey>
+        // 处理<selectKey>节点
         processSelectKeyNodes(id, parameterTypeClass, langDriver);
 
+        // ----------接下来真正的SQL节点的解析,也是parseStatementNode()方法的核心--------------
         // Parse the SQL (pre: <selectKey> and <include> were parsed and removed)
         //解析成SqlSource，一般是DynamicSqlSource
+        //调用LanguageDriver.createSqlSource()方法创建SqlSource对象
         SqlSource sqlSource = langDriver.createSqlSource(configuration, context, parameterTypeClass);
+        // 获取resultSets,keyProperty,keyColumn三个属性
         String resultSets = context.getStringAttribute("resultSets");
         //(仅对 insert 有用) 标记一个属性, MyBatis 会通过 getGeneratedKeys 或者通过 insert 语句的 selectKey 子元素设置它的值
         String keyProperty = context.getStringAttribute("keyProperty");
         //(仅对 insert 有用) 标记一个属性, MyBatis 会通过 getGeneratedKeys 或者通过 insert 语句的 selectKey 子元素设置它的值
         String keyColumn = context.getStringAttribute("keyColumn");
         KeyGenerator keyGenerator;
+        // 获取<selectKey>节点对应的SelectKeyGenerator的id
         String keyStatementId = id + SelectKeyGenerator.SELECT_KEY_SUFFIX;
         keyStatementId = builderAssistant.applyCurrentNamespace(keyStatementId, true);
+        // 这里会检测SQL节点是否配置了<selectKey>节点, SQL节点的useGeneratedkeys属性值, mybatis-config.xml 中全局的
+        // useGeneratedKeys 配置, 以及是否为 insert 语句, 决定使用的 KeyGenerator 接口实现.
         if (configuration.hasKeyGenerator(keyStatementId)) {
             keyGenerator = configuration.getKeyGenerator(keyStatementId);
         } else {
@@ -141,22 +148,30 @@ public class XMLStatementBuilder extends BaseBuilder {
                     ? new Jdbc3KeyGenerator() : new NoKeyGenerator();
         }
 
-        //又去调助手类
+        // 通过 MapperBuilderAssistant创建 MappedStatement对象, 并添加到
+        // Configuration.mappedStatements 集合中保存
         builderAssistant.addMappedStatement(id, sqlSource, statementType, sqlCommandType,
                 fetchSize, timeout, parameterMap, parameterTypeClass, resultMap, resultTypeClass,
                 resultSetTypeEnum, flushCache, useCache, resultOrdered,
                 keyGenerator, keyProperty, keyColumn, databaseId, langDriver, resultSets);
     }
 
+
     private void processSelectKeyNodes(String id, Class<?> parameterTypeClass, LanguageDriver langDriver) {
+        // 获取全部的<selectKey>节点
         List<XNode> selectKeyNodes = context.evalNodes("selectKey");
+        // 解析<selectKey>节点
         if (configuration.getDatabaseId() != null) {
             parseSelectKeyNodes(id, selectKeyNodes, parameterTypeClass, langDriver, configuration.getDatabaseId());
         }
         parseSelectKeyNodes(id, selectKeyNodes, parameterTypeClass, langDriver, null);
+        // 移除<selectKey>节点
         removeSelectKeyNodes(selectKeyNodes);
     }
-
+    /**
+     * 为<selectKey>节点生成id,检测databaseId是否匹配以及是否已经加载过相同id且
+     * databaseId不为空的<selectKey>节点,并调用parseSelectKeyNode()方法处理每个<selectKey>节点
+     */
     private void parseSelectKeyNodes(String parentId, List<XNode> list, Class<?> parameterTypeClass, LanguageDriver langDriver, String skRequiredDatabaseId) {
         for (XNode nodeToHandle : list) {
             String id = parentId + SelectKeyGenerator.SELECT_KEY_SUFFIX;
@@ -168,6 +183,7 @@ public class XMLStatementBuilder extends BaseBuilder {
     }
 
     private void parseSelectKeyNode(String id, XNode nodeToHandle, Class<?> parameterTypeClass, LanguageDriver langDriver, String databaseId) {
+        // 属性获取和设置
         String resultType = nodeToHandle.getStringAttribute("resultType");
         Class<?> resultTypeClass = resolveClass(resultType);
         StatementType statementType = StatementType.valueOf(nodeToHandle.getStringAttribute("statementType", StatementType.PREPARED.toString()));
@@ -186,9 +202,13 @@ public class XMLStatementBuilder extends BaseBuilder {
         String resultMap = null;
         ResultSetType resultSetTypeEnum = null;
 
+        // 通过LanguageDriver.createSqlSource()方法生成SqlSource
         SqlSource sqlSource = langDriver.createSqlSource(configuration, nodeToHandle, parameterTypeClass);
+        // <selectKey>只能配置select语句
         SqlCommandType sqlCommandType = SqlCommandType.SELECT;
 
+        // 通过MapperBuilderAssistant创建 MappedStatement对象 并添加到
+        // Configuration.mappedStatements集合中保存, 该集合为StrictMap<MappedStatement>类型
         builderAssistant.addMappedStatement(id, sqlSource, statementType, sqlCommandType,
                 fetchSize, timeout, parameterMap, parameterTypeClass, resultMap, resultTypeClass,
                 resultSetTypeEnum, flushCache, useCache, resultOrdered,
@@ -197,6 +217,8 @@ public class XMLStatementBuilder extends BaseBuilder {
         id = builderAssistant.applyCurrentNamespace(id, false);
 
         MappedStatement keyStatement = configuration.getMappedStatement(id, false);
+        // 创建<selectKey>节点对应的KeyGenerator, 添加到Configuration.keyGenerators集合中保存,
+        // Configuration.keyGenerators字段是StrictMap<KeyGenerator>类型的对象
         configuration.addKeyGenerator(id, new SelectKeyGenerator(keyStatement, executeBefore));
     }
 

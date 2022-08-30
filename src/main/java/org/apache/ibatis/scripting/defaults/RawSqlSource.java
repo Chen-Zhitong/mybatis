@@ -38,15 +38,19 @@ import java.util.HashMap;
  */
 public class RawSqlSource implements SqlSource {
 
+    // StaticSqlSource 对象
     private final SqlSource sqlSource;
 
     public RawSqlSource(Configuration configuration, SqlNode rootSqlNode, Class<?> parameterType) {
+        // 调用getSql()方法,完成SQL语句的拼装和初步解析
         this(configuration, getSql(configuration, rootSqlNode), parameterType);
     }
 
     public RawSqlSource(Configuration configuration, String sql, Class<?> parameterType) {
+        // 通过SqlSourceBuilder完成占位符的解析和替换操作
         SqlSourceBuilder sqlSourceParser = new SqlSourceBuilder(configuration);
         Class<?> clazz = parameterType == null ? Object.class : parameterType;
+        // SqlSourceBuilder.parse() 返回的是StaticSqlSource
         sqlSource = sqlSourceParser.parse(sql, clazz, new HashMap<String, Object>());
     }
 

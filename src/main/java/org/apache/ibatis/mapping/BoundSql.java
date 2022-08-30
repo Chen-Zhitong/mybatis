@@ -42,10 +42,15 @@ import java.util.Map;
  */
 public class BoundSql {
 
+    // 该字段中记录了SQL语句, 该SQL语句中可能含有"?"占位符
     private String sql;
+    // SQL中的参数属性结合,ParameterMapping的集合
     private List<ParameterMapping> parameterMappings;
+    // 客户端执行SQL时传入的实际参数
     private Object parameterObject;
+    // 空的hashMap集合,之后会复制DynamicContext.bindings集合中的内容
     private Map<String, Object> additionalParameters;
+    // additionalParamters集合对应的MetaObject对象
     private MetaObject metaParameters;
 
     public BoundSql(Configuration configuration, String sql, List<ParameterMapping> parameterMappings, Object parameterObject) {

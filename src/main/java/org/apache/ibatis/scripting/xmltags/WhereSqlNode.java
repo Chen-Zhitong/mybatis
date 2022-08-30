@@ -20,7 +20,13 @@ import org.apache.ibatis.session.Configuration;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
+ * WhereSqlNode 继承自 TrimSqlNode,
+ * WhereSqlNode指定了prefix字段为“WHERE”，prefixesToOverride集合中的项为“AND”和“OR”，suffix字段和suffixesToOverride集合为null。
+ * 也就是说，＜where＞节点解析后的SQL语句片段如果以“AND”或“OR”开头，则将开头处的“AND”或“OR”删除，之后再将“WHERE”关键字添加到SQL片段开始位置，
+ * 从而得到该＜where＞节点最终生成的SQL片段。
+ *
  * @author Clinton Begin
  */
 public class WhereSqlNode extends TrimSqlNode {

@@ -32,6 +32,7 @@ import java.util.Map;
 public class DynamicSqlSource implements SqlSource {
 
     private Configuration configuration;
+    // 记录了待解析的SqlNode树的根节点
     private SqlNode rootSqlNode;
 
     public DynamicSqlSource(Configuration configuration, SqlNode rootSqlNode) {
@@ -42,16 +43,17 @@ public class DynamicSqlSource implements SqlSource {
     //得到绑定的SQL
     @Override
     public BoundSql getBoundSql(Object parameterObject) {
-        //生成一个动态上下文
+        // 创建 DynamicContext 对象, parameterObject 是用户传入的实参
         DynamicContext context = new DynamicContext(configuration, parameterObject);
-        //这里SqlNode.apply只是将${}这种参数替换掉，并没有替换#{}这种参数
+        // 通过调用rootSqlNode.apply()方法调用整个树形结构中全部 SqlNode.apply()方法.
+        // 每个SqlNode的apply()方法都将解析得到的SQL语句片段追加到context中, 最终通过context.getSql()得到完整的SQL语句.
         rootSqlNode.apply(context);
-        //调用SqlSourceBuilder
+        // 创建SqlSourceBuilder, 解析参数属性, 并将SQL语句中的"#{}"占位符替换成"?"占位符
         SqlSourceBuilder sqlSourceParser = new SqlSourceBuilder(configuration);
         Class<?> parameterType = parameterObject == null ? Object.class : parameterObject.getClass();
         //SqlSourceBuilder.parse,注意这里返回的是StaticSqlSource,解析完了就把那些参数都替换成?了，也就是最基本的JDBC的SQL写法
         SqlSource sqlSource = sqlSourceParser.parse(context.getSql(), parameterType, context.getBindings());
-        //看似是又去递归调用SqlSource.getBoundSql，其实因为是StaticSqlSource，所以没问题，不是递归调用
+        // 创建BoundSql对象, 并将DynamicContext.bindings中的参数信息复制到其additionalParameters集合中保存
         BoundSql boundSql = sqlSource.getBoundSql(parameterObject);
         for (Map.Entry<String, Object> entry : context.getBindings().entrySet()) {
             boundSql.setAdditionalParameter(entry.getKey(), entry.getValue());

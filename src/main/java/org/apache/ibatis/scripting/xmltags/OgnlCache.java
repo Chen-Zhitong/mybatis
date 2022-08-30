@@ -40,7 +40,10 @@ public final class OgnlCache {
 
     public static Object getValue(String expression, Object root) {
         try {
+            // 创建 OgnlContext 对象, OgnlClassResolver 替代了 OGNL 中原有的DefaultClassResolver,
+            // 其主要功能就是前面介绍的Resource工具类定位资源
             Map<Object, OgnlClassResolver> context = Ognl.createDefaultContext(root, new OgnlClassResolver());
+            // 使用OGNL执行expression表达式
             return Ognl.getValue(parseExpression(expression), context, root);
         } catch (OgnlException e) {
             throw new BuilderException("Error evaluating expression '" + expression + "'. Cause: " + e, e);
@@ -48,10 +51,13 @@ public final class OgnlCache {
     }
 
     private static Object parseExpression(String expression) throws OgnlException {
+        // 查找缓存
         Object node = expressionCache.get(expression);
         if (node == null) {
             //大致意思就是OgnlParser.topLevelExpression很慢，所以加个缓存，放到ConcurrentHashMap里面
+            // 解析表达式
             node = Ognl.parseExpression(expression);
+            // 将表达式的解析结果添加到缓存中
             expressionCache.put(expression, node);
         }
         return node;

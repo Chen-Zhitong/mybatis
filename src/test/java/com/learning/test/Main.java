@@ -25,6 +25,7 @@ public class Main {
             e.printStackTrace();
         }
         SqlSessionFactory sqlSessionFactory = null;
+        // MyBatis初始化的入口是SqlSessionFactorySqlSessionFactoryBuilder().build() 方法
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession sqlSession = null;
         try {

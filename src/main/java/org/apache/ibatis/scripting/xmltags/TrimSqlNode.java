@@ -20,14 +20,19 @@ import org.apache.ibatis.session.Configuration;
 import java.util.*;
 
 /**
+ * 会根据子节点的解析结果,添加或删除相应的前缀或后缀
  * @author Clinton Begin
  */
 public class TrimSqlNode implements SqlNode {
-
+    //  该<trim>节点的子节点
     private SqlNode contents;
+    //记录了前缀字符串
     private String prefix;
+    // 记录了后缀字符串
     private String suffix;
+    // 如果<trim>节点包裹的是空语句(经常出现在if判断为否的情况下,删除指定前缀,如 where
     private List<String> prefixesToOverride;
+    // 如果<trim>节点包裹的是空语句(经常出现在if判断为否的情况下,删除指定后缀,如 逗号
     private List<String> suffixesToOverride;
     private Configuration configuration;
 
@@ -46,8 +51,10 @@ public class TrimSqlNode implements SqlNode {
 
     private static List<String> parseOverrides(String overrides) {
         if (overrides != null) {
+            // 按照"|"进行分割
             final StringTokenizer parser = new StringTokenizer(overrides, "|", false);
             final List<String> list = new ArrayList<String>(parser.countTokens());
+            // 转换为大写 并添加到集合中
             while (parser.hasMoreTokens()) {
                 list.add(parser.nextToken().toUpperCase(Locale.ENGLISH));
             }
@@ -56,18 +63,31 @@ public class TrimSqlNode implements SqlNode {
         return Collections.emptyList();
     }
 
+    /**
+     * 首先解析子节点,然后根据子节点的解析结果处理前缀和后缀
+     *
+     * @param context
+     * @return
+     */
     @Override
     public boolean apply(DynamicContext context) {
+        // 创建FilteredDynamicContext对象,其中封装了 DynamicContext
         FilteredDynamicContext filteredDynamicContext = new FilteredDynamicContext(context);
+        // 调用用子节点的apply()方法进行解析
         boolean result = contents.apply(filteredDynamicContext);
+        // 使用filteredDynamicContext.applyAll方法处理前缀和后缀
         filteredDynamicContext.applyAll();
         return result;
     }
 
     private class FilteredDynamicContext extends DynamicContext {
+        // 底层封装的 DynamicContext 对象
         private DynamicContext delegate;
+        // 是否已经处理过前缀和后缀, 初始值都为 false
         private boolean prefixApplied;
         private boolean suffixApplied;
+        // 用于记录子节点解析后的结果, FilteredDynamicContext.appendSql()方法会向该字段添加解析结果
+        // 而不是调用delegate.appendSql()方法
         private StringBuilder sqlBuffer;
 
         public FilteredDynamicContext(DynamicContext delegate) {
@@ -79,12 +99,16 @@ public class TrimSqlNode implements SqlNode {
         }
 
         public void applyAll() {
+            // 获取子节点解析后的结果, 并全部转化为大写
             sqlBuffer = new StringBuilder(sqlBuffer.toString().trim());
             String trimmedUppercaseSql = sqlBuffer.toString().toUpperCase(Locale.ENGLISH);
             if (trimmedUppercaseSql.length() > 0) {
+                // 处理前缀
                 applyPrefix(sqlBuffer, trimmedUppercaseSql);
+                //处理后缀
                 applySuffix(sqlBuffer, trimmedUppercaseSql);
             }
+            // 将解析后的结果添加到delegate中
             delegate.appendSql(sqlBuffer.toString());
         }
 
@@ -114,9 +138,13 @@ public class TrimSqlNode implements SqlNode {
         }
 
         private void applyPrefix(StringBuilder sql, String trimmedUppercaseSql) {
+            // 检测是否已经处理过前缀
             if (!prefixApplied) {
+                // 标记已经处理过浅醉
                 prefixApplied = true;
                 if (prefixesToOverride != null) {
+                    // 遍历prefixesToOverride集合
+                    // 如果以prefixesToOverride中某项开头,则将该项从SQL语句开头删除掉
                     for (String toRemove : prefixesToOverride) {
                         if (trimmedUppercaseSql.startsWith(toRemove)) {
                             sql.delete(0, toRemove.trim().length());
@@ -124,6 +152,7 @@ public class TrimSqlNode implements SqlNode {
                         }
                     }
                 }
+                // 添加prefix前缀
                 if (prefix != null) {
                     sql.insert(0, " ");
                     sql.insert(0, prefix);

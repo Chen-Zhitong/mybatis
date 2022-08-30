@@ -20,7 +20,7 @@ package org.apache.ibatis.mapping;
  */
 
 /**
- * 参数模式（给SP用）
+ * 表示存储过程中的参数类型
  */
 public enum ParameterMode {
     IN, OUT, INOUT

@@ -23,5 +23,10 @@ package org.apache.ibatis.scripting.xmltags;
  * SQL节点（choose|foreach|if|）
  */
 public interface SqlNode {
+    // apply() 是SqlNode接口中定义的唯一方法, 该方法会根据用户传入的实参, 参数解析该
+    // SqlNode所记录的动态SQL节点, 并调用 DynamicContext.appendSql() 方法将解析后的
+    // SQL片段追加到DynamicContext.sqlBuilder中保存
+    // 当SQL节点下的所有SqlNode完成解析后,我们就可以从DynamicContext中获取一条动态生成的
+    // 完整的SQL语句
     boolean apply(DynamicContext context);
 }

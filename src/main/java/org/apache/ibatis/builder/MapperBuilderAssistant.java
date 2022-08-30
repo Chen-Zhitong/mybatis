@@ -94,12 +94,16 @@ public class MapperBuilderAssistant extends BaseBuilder {
             throw new BuilderException("cache-ref element requires a namespace attribute.");
         }
         try {
+            // 标识未成功解析Cache引用
             unresolvedCacheRef = true;
+            // 获取namespace对应的Cache对象
             Cache cache = configuration.getCache(namespace);
             if (cache == null) {
                 throw new IncompleteElementException("No cache for namespace '" + namespace + "' could be found.");
             }
+            // 记录当前命名空间使用的Cache信息
             currentCache = cache;
+            // 标识已成功解析cahce引用
             unresolvedCacheRef = false;
             return cache;
         } catch (IllegalArgumentException e) {
@@ -107,6 +111,18 @@ public class MapperBuilderAssistant extends BaseBuilder {
         }
     }
 
+    /**
+     * 负责创建Cache对象, 并将其添加到Configuration.caches集合中保存h
+     *
+     * @param typeClass
+     * @param evictionClass
+     * @param flushInterval
+     * @param size
+     * @param readWrite
+     * @param blocking
+     * @param props
+     * @return
+     */
     public Cache useNewCache(Class<? extends Cache> typeClass,
                              Class<? extends Cache> evictionClass,
                              Long flushInterval,
@@ -127,9 +143,9 @@ public class MapperBuilderAssistant extends BaseBuilder {
                 .blocking(blocking)
                 .properties(props)
                 .build();
-        //加入缓存
+        //加入缓存, 其中会将Cache的id作为key, Cache对象本身作为value
         configuration.addCache(cache);
-        //当前的缓存
+        //记录当前命名空间使用的cache对象
         currentCache = cache;
         return cache;
     }
@@ -174,19 +190,28 @@ public class MapperBuilderAssistant extends BaseBuilder {
             Discriminator discriminator,
             List<ResultMapping> resultMappings,
             Boolean autoMapping) {
+        // ResultMap 完整的id是"namespace.id"的格式
         id = applyCurrentNamespace(id, false);
+        // 获取 被继承的ResultMap的完整id,也就是父ResultMap对象的完整id
         extend = applyCurrentNamespace(extend, true);
 
         //建造者模式
         ResultMap.Builder resultMapBuilder = new ResultMap.Builder(configuration, id, type, resultMappings, autoMapping);
+        // 针对extend属性做处理
         if (extend != null) {
+            // 检测Configuration.resultMaps集合中是否存在被继承的ResultMap对象
             if (!configuration.hasResultMap(extend)) {
                 throw new IncompleteElementException("Could not find a parent resultmap with id '" + extend + "'");
             }
+            // 获取需要被继承的Resultmap对象 也就是父ResultMap对象
             ResultMap resultMap = configuration.getResultMap(extend);
+            // 获取父ResultMap对象中记录的ResultMapping集合
             List<ResultMapping> extendedResultMappings = new ArrayList<ResultMapping>(resultMap.getResultMappings());
+            // 删除需要覆盖的ResultMapping集合
             extendedResultMappings.removeAll(resultMappings);
             // Remove parent constructor if this resultMap declares a constructor.
+            // 如果当前<resultMap>节点中定义了<constructor>节点则不需要父ResultMap中相应的constructor节点
+            // 则将父ResultMap中对应的ResultMapping对象删除
             boolean declaresConstructor = false;
             for (ResultMapping resultMapping : resultMappings) {
                 if (resultMapping.getFlags().contains(ResultFlag.CONSTRUCTOR)) {
@@ -202,9 +227,11 @@ public class MapperBuilderAssistant extends BaseBuilder {
                     }
                 }
             }
+            // 添加需要被继承下来的ResultMapping集合
             resultMappings.addAll(extendedResultMappings);
         }
         resultMapBuilder.discriminator(discriminator);
+        // 创建ResultMap对象,并添加到configration.resultmap集合中保存
         ResultMap resultMap = resultMapBuilder.build();
         configuration.addResultMap(resultMap);
         return resultMap;
@@ -403,14 +430,17 @@ public class MapperBuilderAssistant extends BaseBuilder {
             String resultSet,
             String foreignColumn,
             boolean lazy) {
+        // 解析<resultType>节点指定的property属性的类型
         Class<?> javaTypeClass = resolveResultJavaType(resultType, property, javaType);
+        // 获取typeHandler指定的TypeHandler对象,底层依赖于typeHandlerRegistry
         TypeHandler<?> typeHandlerInstance = resolveTypeHandler(javaTypeClass, typeHandler);
-        //解析复合的列名,一般用不到，返回的是空
+        // 解析column属性值,当column是"{prop1=col1,prop2=col2}"形式时,会解析成ResultMapping
+        // 对象集合,column这种形式主要用于嵌套查询的参数传递
         List<ResultMapping> composites = parseCompositeColumnName(column);
         if (composites.size() > 0) {
             column = null;
         }
-        //构建result map
+        //创建result map,并设置其字段
         ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, column, javaTypeClass);
         builder.jdbcType(jdbcType);
         builder.nestedQueryId(applyCurrentNamespace(nestedSelect, true));

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.learning.mapper.BlogMapper">
+    <!--    定义嵌套使用的ResultMap节点 -->
+    <resultMap id="authorResult" type="Author">
+        <id property="id" column="author_id"/>
+        <result property="username" column="author_username"/>
+        <result property="password" column="author_password"/>
+        <result property="email" column="author_email"
+    </resultMap>
+    <!--    定义嵌套查询所使用的SQL语句 -->
+    <select id="selectComment" resultMap="Comment">
+        SELECT id, content
+        FROM comment
+        WHERE post_id = #{post_id}
+    </select>
+
+    <resultMap id="detailedBlogResultMap" type="Blog">
+        <!--        定义映射中使用的构造函数-->
+        <constructor>
+            <idArg column="blog_id" javaType="int"/>
+        </constructor>
+        <!--        映射普通属性-->
+        <result property="title" column="blog_title"/>
+        <!--        嵌套映射JavaBean类型的属性 -->
+        <association property="author" resultMap="authorResult"/>
+
+        <!--        映射集合类型属性-->
+        <collection property="posts" ofType="Post">
+            <id property="id" column="post_id"/>
+            <result property="content" column="post_content"/>
+            <!--            嵌套查询-->
+            <collection property="comments" column="post_id" javaType="ArrayList"
+                        ofType="Post" select="selectComment"/>
+            <discriminator javaType="int" column="draft">
+                <case value="1" resultMap="DraftPost"/>
+            </discriminator>
+        </collection>
+    </resultMap>
+
+    <select id="selectBlogDetails" resultMap="detailedBlogResultMap">
+        select B.id        as blog_id,
+               B.title     as blog_title,
+               B.author_id as blog_author_id,
+               A.id        as author_id,
+               A.username  as author_username,
+               A.password  as author_password,
+               A.email     as author_email,
+               P.draft     as draft
+        from Blog B
+                     left outer join Author A on B.author_id = A.id
+                     left outer join Post P on B.id = P.blog_id
+        where B.id = #{id}
+    </select>
+</mapper>

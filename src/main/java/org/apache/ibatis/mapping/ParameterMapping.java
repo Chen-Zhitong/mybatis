@@ -23,6 +23,8 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
 import java.sql.ResultSet;
 
 /**
+ * 记录了"#{}"占位符中的参数属性
+ *
  * @author Clinton Begin
  */
 
@@ -35,20 +37,23 @@ public class ParameterMapping {
 
     //例子：#{property,javaType=int,jdbcType=NUMERIC}
 
-    //property
+    // 传入进来的参数Name
     private String property;
-    //mode
+    // 输入参数还是输出参数
     private ParameterMode mode;
-    //javaType=int
+    // 参数的Java类型
     private Class<?> javaType = Object.class;
-    //jdbcType=NUMERIC
+    // 参数的JDBC类型
     private JdbcType jdbcType;
-    //numericScale
+    // 浮点参数的精度
     private Integer numericScale;
+    // 参数对应的 TypeHandler 对象
     private TypeHandler<?> typeHandler;
+    // 参数对应的ResultMap的Id
     private String resultMapId;
-    //jdbcType=NUMERIC
+    // 参数的jdbcTypeName的属性
     private String jdbcTypeName;
+    // 目前还不支持该属性
     private String expression;
 
     private ParameterMapping() {

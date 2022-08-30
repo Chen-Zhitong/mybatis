@@ -18,6 +18,9 @@ package org.apache.ibatis.scripting.xmltags;
 import java.util.List;
 
 /**
+ * 首先遍历 ifSqlNodes集合并调用其中SqlNode对象的apply()方法,
+ * 然后根据前面的处理结果决定是否调用defaultSqlNode的apply()方法
+ *
  * @author Clinton Begin
  */
 
@@ -25,7 +28,9 @@ import java.util.List;
  * choose SQL节点
  */
 public class ChooseSqlNode implements SqlNode {
+    // <otherwise> 节点对应的SqlNode
     private SqlNode defaultSqlNode;
+    // <when> 节点对应的IfSqlNode结合
     private List<SqlNode> ifSqlNodes;
 
     public ChooseSqlNode(List<SqlNode> ifSqlNodes, SqlNode defaultSqlNode) {
@@ -35,13 +40,13 @@ public class ChooseSqlNode implements SqlNode {
 
     @Override
     public boolean apply(DynamicContext context) {
-        //循环判断if，只要有1个为true了，返回true
+        // 遍历ifSqlNodes集合,并调用其中SqlNode对象的apply()方法
         for (SqlNode sqlNode : ifSqlNodes) {
             if (sqlNode.apply(context)) {
                 return true;
             }
         }
-        //if都不为true，那就看otherwise
+        // 调用defaultSqlNode.apply()方法
         if (defaultSqlNode != null) {
             defaultSqlNode.apply(context);
             return true;

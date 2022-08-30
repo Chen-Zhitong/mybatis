@@ -109,6 +109,8 @@ public class XNode {
                 builder.insert(0, "[");
             }
             builder.insert(0, current.getName());
+            // 默认会拼装所有父节点的id或value或Property属性
+            // id.[id.[id]] 类似这样
             current = current.getParent();
         }
         return builder.toString();

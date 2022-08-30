@@ -35,12 +35,14 @@ public class ExpressionEvaluator {
 
     //表达式求布尔值，比如username == 'cbegin'
     public boolean evaluateBoolean(String expression, Object parameterObject) {
-        //非常简单，就是调用ognl
+        // 首先通过OGNL解析表达式的值
         Object value = OgnlCache.getValue(expression, parameterObject);
+        // 处理Boolean类型
         if (value instanceof Boolean) {
             //如果是Boolean
             return (Boolean) value;
         }
+        // 处理数字类型
         if (value instanceof Number) {
             //如果是Number，判断不为0
             return !new BigDecimal(String.valueOf(value)).equals(BigDecimal.ZERO);

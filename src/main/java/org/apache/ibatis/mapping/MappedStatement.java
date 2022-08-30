@@ -37,6 +37,7 @@ import java.util.List;
  */
 public final class MappedStatement {
 
+    // 节点中的id属性(包括命名空间前缀)
     private String resource;
     private Configuration configuration;
     private String id;
@@ -44,7 +45,7 @@ public final class MappedStatement {
     private Integer timeout;
     private StatementType statementType;
     private ResultSetType resultSetType;
-    //SQL源码
+    // SqlSource对象,对应一条SQL语句
     private SqlSource sqlSource;
     private Cache cache;
     private ParameterMap parameterMap;
@@ -52,6 +53,7 @@ public final class MappedStatement {
     private boolean flushCacheRequired;
     private boolean useCache;
     private boolean resultOrdered;
+    // SQL的类型, INSERT, UPDATE DELETE SELECT 或 FLUSH
     private SqlCommandType sqlCommandType;
     private KeyGenerator keyGenerator;
     private String[] keyProperties;

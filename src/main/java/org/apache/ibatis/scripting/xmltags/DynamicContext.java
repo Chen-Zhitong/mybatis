@@ -48,7 +48,11 @@ public class DynamicContext {
         //ContextMap对象内部可能封装了一个普通的POJO对象，也可以是直接传递的Map对象，当然从外部是看不出来的，因为都是使用Map的接口来读取数据。
     }
 
+    // 参数上下文
     private final ContextMap bindings;
+
+    // 在sqlNode解析动态SQL时, 会将解析后的SQL语句变短添加到该属性中保存,
+    // 最终拼凑出一条完整的SQL语句
     private final StringBuilder sqlBuilder = new StringBuilder();
     private int uniqueNumber = 0;
 
@@ -59,12 +63,15 @@ public class DynamicContext {
     public DynamicContext(Configuration configuration, Object parameterObject) {
         //绝大多数调用的地方parameterObject为null
         if (parameterObject != null && !(parameterObject instanceof Map)) {
-            //如果是map型  ??  这句是 如果不是map型
+            // 对于非Map类型的参数, 会创建对应的MetaObject对象,并封装成ContextMap对象
             MetaObject metaObject = configuration.newMetaObject(parameterObject);
+            //  初始化bindings集合
             bindings = new ContextMap(metaObject);
         } else {
             bindings = new ContextMap(null);
         }
+        // 将 PARAMETER_OBJECT_KEY -> parameterObject 这一对应关系添加到bindings集合中
+        // 其中PARAMETER_OBJECT_KEY的值是"_parameter", 在有的SqlNode实现中直接使用了该字面值
         bindings.put(PARAMETER_OBJECT_KEY, parameterObject);
         bindings.put(DATABASE_ID_KEY, configuration.getDatabaseId());
     }
@@ -77,11 +84,13 @@ public class DynamicContext {
         bindings.put(name, value);
     }
 
+    // 追加 SQL 片段
     public void appendSql(String sql) {
         sqlBuilder.append(sql);
         sqlBuilder.append(" ");
     }
 
+    // 获取解析后的, 完整的SQL语句
     public String getSql() {
         return sqlBuilder.toString().trim();
     }
@@ -90,26 +99,29 @@ public class DynamicContext {
         return uniqueNumber++;
     }
 
-    //上下文map，静态内部类
+    //上下文map，静态内部类,
     static class ContextMap extends HashMap<String, Object> {
         private static final long serialVersionUID = 2977601501966151582L;
 
+        // 将用户传入的参数封装成了MetaObject对象
         private MetaObject parameterMetaObject;
 
         public ContextMap(MetaObject parameterMetaObject) {
             this.parameterMetaObject = parameterMetaObject;
         }
 
+        // 重写了get()方法
         @Override
         public Object get(Object key) {
             String strKey = (String) key;
-            //先去map里找
+            // 如果ContextMap中已经包含了该key,直接返回
             if (super.containsKey(strKey)) {
                 return super.get(strKey);
             }
 
             //如果没找到，再用ognl表达式去取值
             //如person[0].birthdate.year
+            // 从运行时参数中查找对应属性
             if (parameterMetaObject != null) {
                 // issue #61 do not modify the context when reading
                 return parameterMetaObject.getValue(strKey);

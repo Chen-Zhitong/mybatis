@@ -78,7 +78,8 @@ import java.util.*;
  * 配置，里面好多配置项
  */
 public class Configuration {
-
+    // 所有Intercetor对象都是通过 interceptorChain 字段管理的
+    // interceptorChain底层使用ArrayList<Interceptor>实现
     protected final InterceptorChain interceptorChain = new InterceptorChain();
     //类型处理器注册机
     protected final TypeHandlerRegistry typeHandlerRegistry = new TypeHandlerRegistry();
@@ -96,6 +97,8 @@ public class Configuration {
     protected final Set<String> loadedResources = new HashSet<String>();
     protected final Map<String, XNode> sqlFragments = new StrictMap<XNode>("XML fragments parsed from previous mappers");
     //不完整的SQL语句
+    // “XMLMapperBuilder.configurationElement（）方法解析映射配置文件时，是按照从文件头到文件尾的顺序解析的，但是有时候在解析一个节点时，会引用定义在该节点之后的、还未解析的节点，这就会导致解析失败并抛出IncompleteElementException。”
+    //
     protected final Collection<XMLStatementBuilder> incompleteStatements = new LinkedList<XMLStatementBuilder>();
     protected final Collection<CacheRefResolver> incompleteCacheRefs = new LinkedList<CacheRefResolver>();
     protected final Collection<ResultMapResolver> incompleteResultMaps = new LinkedList<ResultMapResolver>();
@@ -128,6 +131,7 @@ public class Configuration {
     protected Integer defaultStatementTimeout;
     //默认为简单执行器
     protected ExecutorType defaultExecutorType = ExecutorType.SIMPLE;
+    // 在MyBatis初始化过程中, 会读取 autoMappingBehavior 配置项, 并设置到该字段中
     protected AutoMappingBehavior autoMappingBehavior = AutoMappingBehavior.PARTIAL;
     protected Properties variables = new Properties();
     //对象工厂和对象包装器工厂
@@ -831,6 +835,7 @@ public class Configuration {
         }
 
         //模糊，居然放在Map里面的一个静态内部类，
+        // 表示的是存在二义性的键值对
         protected static class Ambiguity {
             //提供一个主题
             private String subject;

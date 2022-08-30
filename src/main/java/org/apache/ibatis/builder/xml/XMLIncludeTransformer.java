@@ -49,17 +49,21 @@ public class XMLIncludeTransformer {
         if (source.getNodeName().equals("include")) {
             //走到这里，单独解析<include refid="userColumns"/>
             //拿到SQL片段
+            // 查找 refid属性指向的<sql>节点 返回的是其深克隆的Node对象
             Node toInclude = findSqlFragment(getStringAttribute(source, "refid"));
-            //递归调用自己,应用上?
+            //递归调用自己,引入的片段可能其中有其他片段
             applyIncludes(toInclude);
             //总之下面就是将字符串拼接进来，看不懂。。。
             if (toInclude.getOwnerDocument() != source.getOwnerDocument()) {
                 toInclude = source.getOwnerDocument().importNode(toInclude, true);
             }
+            // 将<include>节点替换成<sql>节点
             source.getParentNode().replaceChild(toInclude, source);
+            // 将<sql>节点的子节点,添加到<sql>节点前面
             while (toInclude.hasChildNodes()) {
                 toInclude.getParentNode().insertBefore(toInclude.getFirstChild(), toInclude);
             }
+            //删除<sql>节点
             toInclude.getParentNode().removeChild(toInclude);
         } else if (source.getNodeType() == Node.ELEMENT_NODE) {
             //一开始会走这段，取得所有儿子

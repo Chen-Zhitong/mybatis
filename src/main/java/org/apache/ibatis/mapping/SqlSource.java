@@ -26,7 +26,8 @@ package org.apache.ibatis.mapping;
  * SQL源码
  */
 public interface SqlSource {
-
+    // getBoundSql() 方法会根据映射文件或注解描述的SQL语句,以及传入的参数,返回可执行的SQL
+    // 通过解析得到BoundSql对象, 其中封装了包含"?"占位符的SQL语句以及绑定的实参
     BoundSql getBoundSql(Object parameterObject);
 
 }

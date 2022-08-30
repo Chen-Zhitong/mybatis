@@ -23,6 +23,8 @@ import org.apache.ibatis.type.SimpleTypeRegistry;
 import java.util.regex.Pattern;
 
 /**
+ * 表示的是包含"${}"占位符的动态SQL节点
+ *
  * @author Clinton Begin
  */
 
@@ -45,23 +47,34 @@ public class TextSqlNode implements SqlNode {
     //判断是否是动态sql
     public boolean isDynamic() {
         DynamicCheckerTokenParser checker = new DynamicCheckerTokenParser();
+        // 创建GenericTokenParser对象
         GenericTokenParser parser = createParser(checker);
         parser.parse(text);
         return checker.isDynamic();
     }
 
+    /**
+     * 会使用GenericTokenParser解析"${}"占位符,并替换成用户给定的实际参数值
+     *
+     * @param context
+     * @return
+     */
     @Override
     public boolean apply(DynamicContext context) {
+        //  chua创建GenericTOkenParser解析器
         GenericTokenParser parser = createParser(new BindingTokenParser(context, injectionFilter));
+        // 将解析后的SQL片段 添加到 DynamicContext 中
         context.appendSql(parser.parse(text));
         return true;
     }
 
     private GenericTokenParser createParser(TokenHandler handler) {
+        // 解析的是"${}"占位符
         return new GenericTokenParser("${", "}", handler);
     }
 
     //绑定记号解析器
+    //  主要功能是依据DynamicContext.bindings集合中的信息解析SQL语句节点中的"${}"占位符
     private static class BindingTokenParser implements TokenHandler {
 
         private DynamicContext context;
@@ -74,15 +87,19 @@ public class TextSqlNode implements SqlNode {
 
         @Override
         public String handleToken(String content) {
+            // 用户提供的实参
+            // 假设用户传入的实参中包含了“id-＞1”的对应关系，在TextSqlNode.apply（）方法解析时，会将“id=${id}”中的“${id}”占位符
+            // 直接替换成“1”得到“id=1”，并将其追加到DynamicContext中。
             Object parameter = context.getBindings().get("_parameter");
             if (parameter == null) {
                 context.getBindings().put("value", null);
             } else if (SimpleTypeRegistry.isSimpleType(parameter.getClass())) {
                 context.getBindings().put("value", parameter);
             }
-            //从缓存里取得值
+            // 通过OGNL解析content的值
             Object value = OgnlCache.getValue(content, context.getBindings());
             String srtValue = (value == null ? "" : String.valueOf(value)); // issue #274 return "" instead of "null"
+            // 检测合法性
             checkInjection(srtValue);
             return srtValue;
         }
