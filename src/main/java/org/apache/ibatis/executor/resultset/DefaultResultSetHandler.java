@@ -56,6 +56,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     private final MappedStatement mappedStatement;
     private final RowBounds rowBounds;
     private final ParameterHandler parameterHandler;
+    // 用户指定用于处理结果集的ResultHandler对象
     private final ResultHandler resultHandler;
     private final BoundSql boundSql;
     private final TypeHandlerRegistry typeHandlerRegistry;
@@ -134,34 +135,51 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     public List<Object> handleResultSets(Statement stmt) throws SQLException {
         ErrorContext.instance().activity("handling results").object(mappedStatement.getId());
 
+        // 该集合用于保存映射结果集得到的结果对象
         final List<Object> multipleResults = new ArrayList<Object>();
 
         int resultSetCount = 0;
+        // 获取第一个ResultSet对象, 可能存在多个ResultSet,这里只获取第一个ResultSet
         ResultSetWrapper rsw = getFirstResultSet(stmt);
 
+        // 获取MappedStatement.resultMaps集合,映射文件中的<resultMap>节点会被解析成ResultMap对象,
+        // 保存到MappedStatement.resultMaps集合中, 如果SQL节点能够产生多个ResultSet,那么我们可以在SQL节点的resultMap属性中
+        // 配置多个<resultMap>节点的id,它们之间通过","分隔, 实现对多个结果集的映射
         List<ResultMap> resultMaps = mappedStatement.getResultMaps();
         //一般resultMaps里只有一个元素
         int resultMapCount = resultMaps.size();
+        // 如果结果集不为空,则resultMaps集合不能为空, 否则抛出异常
         validateResultMapsCount(rsw, resultMapCount);
-        while (rsw != null && resultMapCount > resultSetCount) {
+        while (rsw != null && resultMapCount > resultSetCount) { //---(1)  遍历resultMaps集合
+            // 获取该结果集对应的ResultMap的对象
             ResultMap resultMap = resultMaps.get(resultSetCount);
+            // 根据ResultMap中定义的映射规则对ResultSet进行映射,并将映射的结果对象添加到
+            // multipleResults 集合中保存
             handleResultSet(rsw, resultMap, multipleResults, null);
-            rsw = getNextResultSet(stmt);
-            cleanUpAfterHandlingResultSet();
-            resultSetCount++;
+            rsw = getNextResultSet(stmt);// 获取下一个结果集
+            cleanUpAfterHandlingResultSet(); // 清空 nestedResultObject集合
+            resultSetCount++;// 递增 resultSetCount
         }
 
+        // 获取MappedStatement.resultSets属性. 该属性仅对多结果集的情况适用,该属性将列出语句执行后
+        // 返回的结果集, 并给每个结果集一个名称, 名称是逗号分割的
+        // 这里会根据ResultSet名称处理嵌套映射
         String[] resultSets = mappedStatement.getResulSets();
         if (resultSets != null) {
             while (rsw != null && resultSetCount < resultSets.length) {
+                // 根据resultSet的名称, 获取未处理的ResultMapping
                 ResultMapping parentMapping = nextResultMaps.get(resultSets[resultSetCount]);
                 if (parentMapping != null) {
                     String nestedResultMapId = parentMapping.getNestedResultMapId();
                     ResultMap resultMap = configuration.getResultMap(nestedResultMapId);
+                    // 根据ResultMap对象映射结果集
                     handleResultSet(rsw, resultMap, null, parentMapping);
                 }
+                // 获取下一个结果集
                 rsw = getNextResultSet(stmt);
+                // 清空 nestedResultObject集合
                 cleanUpAfterHandlingResultSet();
+                // 递增resultSetCount
                 resultSetCount++;
             }
         }
@@ -170,28 +188,34 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     }
 
     private ResultSetWrapper getFirstResultSet(Statement stmt) throws SQLException {
+        // 获取ResultSet对象
         ResultSet rs = stmt.getResultSet();
         //HSQLDB2.1特殊情况处理
         while (rs == null) {
             // move forward to get the first resultset in case the driver
             // doesn't return the resultset as the first result (HSQLDB 2.1)
+            // 检测是否还有待处理的结果集
             if (stmt.getMoreResults()) {
                 rs = stmt.getResultSet();
             } else {
+                // 没有待处理的的结果集
                 if (stmt.getUpdateCount() == -1) {
                     // no more results. Must be no resultset
                     break;
                 }
             }
         }
+        // 将结果集封装成ResultSetWrapper对象
         return rs != null ? new ResultSetWrapper(rs, configuration) : null;
     }
 
     private ResultSetWrapper getNextResultSet(Statement stmt) throws SQLException {
         // Making this method tolerant of bad JDBC drivers
         try {
+            // 检测JDBC是否支持多结果集
             if (stmt.getConnection().getMetaData().supportsMultipleResultSets()) {
                 // Crazy Standard JDBC way of determining if there are more results
+                // 检测是否还有待处理的结果集, 若存在 则封装成ResultSetWrapper对象并返回
                 if (!((!stmt.getMoreResults()) && (stmt.getUpdateCount() == -1))) {
                     ResultSet rs = stmt.getResultSet();
                     return rs != null ? new ResultSetWrapper(rs, configuration) : null;

@@ -29,10 +29,10 @@ import java.util.List;
  */
 public interface ResultSetHandler {
 
-    //处理结果集
+    //处理结果集, 生成相应的结果对象集合
     <E> List<E> handleResultSets(Statement stmt) throws SQLException;
 
-    //处理OUT参数
+    // 处理存储过程的输出参数
     void handleOutputParameters(CallableStatement cs) throws SQLException;
 
 }
