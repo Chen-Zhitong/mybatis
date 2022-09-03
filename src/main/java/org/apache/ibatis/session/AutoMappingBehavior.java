@@ -21,19 +21,21 @@ package org.apache.ibatis.session;
  * @author Eduardo Macarron
  */
 public enum AutoMappingBehavior {
-
     /**
      * Disables auto-mapping.
      */
+    // NONE表示取消自动映射
     NONE,
 
     /**
      * Will only auto-map results with no nested result mappings defined inside.
      */
+    // PARTIAL只会自动映射没有定义嵌套映射的ResultSet
     PARTIAL,
 
     /**
      * Will auto-map result mappings of any complexity (containing nested or otherwise).
      */
+    // FULL会映射任意复杂的ResultSet
     FULL
 }
