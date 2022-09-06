@@ -679,6 +679,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
             for (ResultMapping propertyMapping : propertyMappings) {
                 // issue gcode #109 && issue #149
                 // 如果包含嵌套查询,且配置了延迟加载,则创建代理对象
+                // 默认是用的是JavassistProxyFactory
                 if (propertyMapping.getNestedQueryId() != null && propertyMapping.isLazy()) {
                     //TODO 使用代理(cglib/javaassist)
                     return configuration.getProxyFactory().createProxy(resultObject, lazyLoader, configuration, objectFactory, constructorArgTypes, constructorArgs);
@@ -831,15 +832,20 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     }
 
     private Object getNestedQueryConstructorValue(ResultSet rs, ResultMapping constructorMapping, String columnPrefix) throws SQLException {
+        // 获取嵌套查询的id以及对应的MappedStatement对象
         final String nestedQueryId = constructorMapping.getNestedQueryId();
         final MappedStatement nestedQuery = configuration.getMappedStatement(nestedQueryId);
         final Class<?> nestedQueryParameterType = nestedQuery.getParameterMap().getType();
         final Object nestedQueryParameterObject = prepareParameterForNestedQuery(rs, constructorMapping, nestedQueryParameterType, columnPrefix);
+        // 获取传递给嵌套查询的参数值
         Object value = null;
         if (nestedQueryParameterObject != null) {
+            // 获取嵌套查询对应的BoundSql对象和相应的CacheKey对象
             final BoundSql nestedBoundSql = nestedQuery.getBoundSql(nestedQueryParameterObject);
             final CacheKey key = executor.createCacheKey(nestedQuery, nestedQueryParameterObject, RowBounds.DEFAULT, nestedBoundSql);
+            // 获取嵌套查询结果集经过映射后的目标类型
             final Class<?> targetType = constructorMapping.getJavaType();
+            // 创建ResultLoader对象,并调用loadResult()方法执行嵌套查询,得到相应构造方法的参数值
             final ResultLoader resultLoader = new ResultLoader(configuration, executor, nestedQuery, nestedQueryParameterObject, targetType, key, nestedBoundSql);
             value = resultLoader.loadResult();
         }
@@ -853,26 +859,35 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     //得到嵌套查询值
     private Object getNestedQueryMappingValue(ResultSet rs, MetaObject metaResultObject, ResultMapping propertyMapping, ResultLoaderMap lazyLoader, String columnPrefix)
             throws SQLException {
+        // 获取嵌套查询的id和对应MappedSatement的对象
         final String nestedQueryId = propertyMapping.getNestedQueryId();
         final String property = propertyMapping.getProperty();
+        // 获取传递给嵌套查询的参数类型和参数值
         final MappedStatement nestedQuery = configuration.getMappedStatement(nestedQueryId);
         final Class<?> nestedQueryParameterType = nestedQuery.getParameterMap().getType();
         final Object nestedQueryParameterObject = prepareParameterForNestedQuery(rs, propertyMapping, nestedQueryParameterType, columnPrefix);
         Object value = NO_VALUE;
         if (nestedQueryParameterObject != null) {
+            // 获取嵌套查询对应的BoundSql对象和相应的CacheKey对象
             final BoundSql nestedBoundSql = nestedQuery.getBoundSql(nestedQueryParameterObject);
             final CacheKey key = executor.createCacheKey(nestedQuery, nestedQueryParameterObject, RowBounds.DEFAULT, nestedBoundSql);
+            // 获取嵌套查询结果集经过映射后的目标类型
             final Class<?> targetType = propertyMapping.getJavaType();
+            // 检测缓存中是否存在该嵌套查询的结果对象
             if (executor.isCached(nestedQuery, key)) {
-                //如果已经有一级缓存了，则延迟加载(实际上deferLoad方法中可以看到则是立即加载)
+                // 创建DeferredLoad对象,并通过该DeferredLoad对象从缓存中加载结果
                 executor.deferLoad(nestedQuery, metaResultObject, property, key, targetType);
             } else {
-                //否则lazyLoader.addLoader 需要延迟加载则addLoader
-                //或者ResultLoader.loadResult 不需要延迟加载则立即加载
+                // 如果该属性配置了延迟加载,则将其添加到ResultLoaderMap中,等到真正使用时
+                // 再执行嵌套查询并得到结果对象
                 final ResultLoader resultLoader = new ResultLoader(configuration, executor, nestedQuery, nestedQueryParameterObject, targetType, key, nestedBoundSql);
                 if (propertyMapping.isLazy()) {
+                    // 如果该属性配置了延迟加载,则将其添加到ResultLoaderMap中, 等待真正使用时
+                    // 再执行嵌套查询并得到结果对象
                     lazyLoader.addLoader(property, metaResultObject, resultLoader);
                 } else {
+                    //没有配置延迟加载,则直接调用resultLoader.loadResult()方法执行嵌套查询,
+                    // 并映射得到结果对象
                     value = resultLoader.loadResult();
                 }
             }

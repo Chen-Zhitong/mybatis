@@ -46,7 +46,7 @@ import java.util.*;
  */
 public class ResultLoaderMap {
 
-    //加载对的hashmap
+    // 用于保存对象中延迟加载属性及及其对象的ResultLoader对象之间的关系
     private final Map<String, LoadPair> loaderMap = new HashMap<String, LoadPair>();
 
     private static String getUppercaseFirstProperty(String property) {
@@ -90,7 +90,7 @@ public class ResultLoaderMap {
         //先删除key，防止第二次又去查数据库就不对了
         LoadPair pair = loaderMap.remove(property.toUpperCase(Locale.ENGLISH));
         if (pair != null) {
-            //去数据库查
+            //去数据库查, 执行延迟加载
             pair.load();
             return true;
         }
@@ -101,7 +101,7 @@ public class ResultLoaderMap {
         final Set<String> methodNameSet = loaderMap.keySet();
         String[] methodNames = methodNameSet.toArray(new String[methodNameSet.size()]);
         for (String methodName : methodNames) {
-            load(methodName);
+            load(methodName); // 加载loaderMap集合中记录的全部属性
         }
     }
 
@@ -123,10 +123,12 @@ public class ResultLoaderMap {
         /**
          * Meta object which sets loaded properties.
          */
+        // 外层对象(一般是外层对象的代理对象)对应的MetaObject对象
         private transient MetaObject metaResultObject;
         /**
          * Result loader which loads unread properties.
          */
+        // 负责加载延迟加载属性的ResultLoader对象
         private transient ResultLoader resultLoader;
         /**
          * Wow, logger.
@@ -139,10 +141,12 @@ public class ResultLoaderMap {
         /**
          * Name of the unread property.
          */
+        // 延迟加载的属性名称
         private String property;
         /**
          * ID of SQL statement which loads the property.
          */
+        // 用于加载属性的Sql语句的ID
         private String mappedStatement;
         /**
          * Parameter of the sql statement.
@@ -187,6 +191,7 @@ public class ResultLoaderMap {
         }
 
         public void load(final Object userObject) throws SQLException {
+            // 经过一系列检测后,会创建相应的ResultLoader对象
             if (this.metaResultObject == null || this.resultLoader == null) {
                 if (this.mappedParameter == null) {
                     throw new ExecutorException("Property [" + this.property + "] cannot be loaded because "
@@ -218,6 +223,7 @@ public class ResultLoaderMap {
                         old.parameterObject, old.targetType, old.cacheKey, old.boundSql);
             }
 
+            // 调用resultLoader.loadResult()执行延迟加载,并将加载得到的嵌套对象设置到外层对象中
             this.metaResultObject.setValue(property, this.resultLoader.loadResult());
         }
 

@@ -34,6 +34,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
+ * 负责保存一次延迟加载所需的全部信息
  * @author Clinton Begin
  */
 
@@ -42,15 +43,24 @@ import java.util.List;
  */
 public class ResultLoader {
 
+    // 配置独享
     protected final Configuration configuration;
+    // 用于执行延迟加载操作的Executor对象
     protected final Executor executor;
+    // 记录了延迟执行的SQL语句以及相关配置信息
     protected final MappedStatement mappedStatement;
-    protected final Object parameterObject;
-    protected final Class<?> targetType;
-    protected final ObjectFactory objectFactory;
-    protected final CacheKey cacheKey;
     protected final BoundSql boundSql;
+
+    // 记录了延迟执行的SQL语句的实参
+    protected final Object parameterObject;
+    /// 记录了延迟加载得到的对象类型
+    protected final Class<?> targetType;
+    // ObjectFactory  工厂对象,通过反射创建延迟加载的Java对象
+    protected final ObjectFactory objectFactory;
+    // Cachekey对象
+    protected final CacheKey cacheKey;
     protected final ResultExtractor resultExtractor;
+    // 创建ResultLoader的线程Id
     protected final long creatorThreadId;
 
     protected boolean loaded;
@@ -69,26 +79,42 @@ public class ResultLoader {
         this.creatorThreadId = Thread.currentThread().getId();
     }
 
-    //加载结果
+    /**
+     * 通过Executor执行ResultLoader中记录的SQL并返回相应的延迟加载对象
+     *
+     * @return
+     * @throws SQLException
+     */
     public Object loadResult() throws SQLException {
-        //1.selectList
+        // 执行延迟加载,得到结果对象,并以List的形式返回
         List<Object> list = selectList();
-        //2.ResultExtractor.extractObjectFromList
+        // 将list集合转换成targetTeype指定类型的对象
         resultObject = resultExtractor.extractObjectFromList(list, targetType);
         return resultObject;
     }
 
+    /**
+     *  真正执行延迟加载操作的地方
+     *
+     * @param <E>
+     * @return
+     * @throws SQLException
+     */
     private <E> List<E> selectList() throws SQLException {
+        // 记录执行延迟加载的Executor对象
         Executor localExecutor = executor;
-        //如果executor已经被关闭了，则创建一个新的
+        // 检测调用该方法的线程是否为创建ResultLoader对象的线程, 检测localExecutor是否关闭,
+        // 检测到异常情况时,会创建新的Executor对象来执行延迟加载操作
         if (Thread.currentThread().getId() != this.creatorThreadId || localExecutor.isClosed()) {
             localExecutor = newExecutor();
         }
         try {
             //又调回Executor.query去了，比较巧妙
+            // 执行查询操作,得到延迟加载的对象
             return localExecutor.<E>query(mappedStatement, parameterObject, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER, cacheKey, boundSql);
         } finally {
             if (localExecutor != executor) {
+                //  如果实在selectList()方法中新建的Executor对象,则需要关闭
                 localExecutor.close(false);
             }
         }

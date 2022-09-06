@@ -38,6 +38,13 @@ public class ResultExtractor {
         this.objectFactory = objectFactory;
     }
 
+    /**
+     *  将list转换为targetType类型的对象
+     *
+     * @param list
+     * @param targetType
+     * @return
+     */
     public Object extractObjectFromList(List<Object> list, Class<?> targetType) {
         Object value = null;
         if (targetType != null && targetType.isAssignableFrom(list.getClass())) {
@@ -61,7 +68,7 @@ public class ResultExtractor {
                 value = list.toArray((Object[]) array);
             }
         } else {
-            //4.最后返回list的第0个元素
+            //4.如果目标对象是普通java对象,且延迟加载得到的list大小为1,则仍未将其中唯一的项作为转换后的对象返回
             if (list != null && list.size() > 1) {
                 throw new ExecutorException("Statement returned more than one row, where no more than one was expected.");
             } else if (list != null && list.size() == 1) {

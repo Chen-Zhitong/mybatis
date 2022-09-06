@@ -30,8 +30,10 @@ import java.util.Properties;
  */
 public interface ProxyFactory {
 
+    // 根据配置初始化ProxyFactory对象, Mybatis提供的两个子类方法中,该方法都是空实现
     void setProperties(Properties properties);
 
+    // createProxy()方法用于创建代理对象
     Object createProxy(Object target, ResultLoaderMap lazyLoader, Configuration configuration, ObjectFactory objectFactory, List<Class<?>> constructorArgTypes, List<Object> constructorArgs);
 
 }
