@@ -170,6 +170,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
                 // 根据resultSet的名称, 获取未处理的ResultMapping
                 ResultMapping parentMapping = nextResultMaps.get(resultSets[resultSetCount]);
                 if (parentMapping != null) {
+                    // 获取映射该结果集要使用的Resultmap对象
                     String nestedResultMapId = parentMapping.getNestedResultMapId();
                     ResultMap resultMap = configuration.getResultMap(nestedResultMapId);
                     // 根据ResultMap对象映射结果集
@@ -561,8 +562,11 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     }
 
     private void linkToParents(ResultSet rs, ResultMapping parentMapping, Object rowValue) throws SQLException {
+        // 创建CacheKey对象
         CacheKey parentKey = createKeyForMultipleResults(rs, parentMapping, parentMapping.getColumn(), parentMapping.getForeignColumn());
+        // 获取pendingRelations集合中parentKey对应的pendingRelation对象
         List<PendingRelation> parents = pendingRelations.get(parentKey);
+        // 遍历PendingRelations集合
         for (PendingRelation parent : parents) {
             if (parent != null) {
                 final Object collectionProperty = instantiateCollectionPropertyIfAppropriate(parent.propertyMapping, parent.metaObject);
@@ -617,10 +621,13 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     }
 
     private void addPendingChildRelation(ResultSet rs, MetaObject metaResultObject, ResultMapping parentMapping) throws SQLException {
+        // 1. 为指定结果集创建 CacheKey 对象
         CacheKey cacheKey = createKeyForMultipleResults(rs, parentMapping, parentMapping.getColumn(), parentMapping.getColumn());
+        // 2. 创建 PendingRelation 对象
         PendingRelation deferLoad = new PendingRelation();
         deferLoad.metaObject = metaResultObject;
         deferLoad.propertyMapping = parentMapping;
+        // 3. 将pendingRelation对象添加到pendingRelations集合缓存
         List<PendingRelation> relations = pendingRelations.get(cacheKey);
         // issue #255
         if (relations == null) {
@@ -628,10 +635,12 @@ public class DefaultResultSetHandler implements ResultSetHandler {
             pendingRelations.put(cacheKey, relations);
         }
         relations.add(deferLoad);
+        // 4. 在nextResultmaps集合记录指定属性对应的结果集名称以及对应的ResultMapping对象
         ResultMapping previous = nextResultMaps.get(parentMapping.getResultSet());
         if (previous == null) {
             nextResultMaps.put(parentMapping.getResultSet(), parentMapping);
         } else {
+            // 如果同名的结果集对应不同的Resultmapping, 则抛出异常
             if (!previous.equals(parentMapping)) {
                 throw new ExecutorException("Two different properties are mapped to the same resultSet");
             }
@@ -640,13 +649,16 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 
     private CacheKey createKeyForMultipleResults(ResultSet rs, ResultMapping resultMapping, String names, String columns) throws SQLException {
         CacheKey cacheKey = new CacheKey();
-        cacheKey.update(resultMapping);
+        cacheKey.update(resultMapping); // 添加Resultmapping
         if (columns != null && names != null) {
+            // 按照逗号切分别名
             String[] columnsArray = columns.split(",");
             String[] namesArray = names.split(",");
             for (int i = 0; i < columnsArray.length; i++) {
+                // 查询该列记录对应列的值
                 Object value = rs.getString(columnsArray[i]);
                 if (value != null) {
+                    // 添加列名和列值
                     cacheKey.update(namesArray[i]);
                     cacheKey.update(value);
                 }
