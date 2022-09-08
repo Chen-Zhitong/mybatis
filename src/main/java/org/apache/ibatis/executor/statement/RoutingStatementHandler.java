@@ -37,6 +37,7 @@ import java.util.List;
  */
 public class RoutingStatementHandler implements StatementHandler {
 
+    // 底层封装的真正的StatementHandler对象
     private final StatementHandler delegate;
 
     public RoutingStatementHandler(Executor executor, MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
@@ -58,6 +59,7 @@ public class RoutingStatementHandler implements StatementHandler {
 
     }
 
+    // 所有方法都是通过调用delegate对象的对应方法实现的
     @Override
     public Statement prepare(Connection connection) throws SQLException {
         return delegate.prepare(connection);

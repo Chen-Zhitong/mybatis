@@ -33,23 +33,23 @@ import java.util.List;
  */
 public interface StatementHandler {
 
-    //准备语句
+    // 从连接中获取一个Statement
     Statement prepare(Connection connection)
             throws SQLException;
 
-    //参数化
+    // 绑定statement执行时所需的实参
     void parameterize(Statement statement)
             throws SQLException;
 
-    //批处理
+    // 批量执行SQL语句
     void batch(Statement statement)
             throws SQLException;
 
-    //update
+    // 执行update/inster/delete语句
     int update(Statement statement)
             throws SQLException;
 
-    //select-->结果给ResultHandler
+    //执行select语句-->结果给ResultHandler
     <E> List<E> query(Statement statement, ResultHandler resultHandler)
             throws SQLException;
 

@@ -51,29 +51,36 @@ public class Jdbc3KeyGenerator implements KeyGenerator {
         processBatch(ms, stmt, parameters);
     }
 
-    //批处理
+    //  遍历数据库生成的主键结果集,并设置到parameters集合对应元素的属性中
     public void processBatch(MappedStatement ms, Statement stmt, List<Object> parameters) {
         ResultSet rs = null;
         try {
             //核心是使用JDBC3的Statement.getGeneratedKeys
+            // 获取数据库自动生成的主键,如果没有生成主键,则返回结果集为空
             rs = stmt.getGeneratedKeys();
             final Configuration configuration = ms.getConfiguration();
             final TypeHandlerRegistry typeHandlerRegistry = configuration.getTypeHandlerRegistry();
+            // 获得keyProperties属性指定的属性名称,它表示主键对应的属性名称
             final String[] keyProperties = ms.getKeyProperties();
             final ResultSetMetaData rsmd = rs.getMetaData();
             TypeHandler<?>[] typeHandlers = null;
+            // 检测数据库生成的主键列数与keyProperties属性指定的列数是否匹配
             if (keyProperties != null && rsmd.getColumnCount() >= keyProperties.length) {
                 for (Object parameter : parameters) {
                     // there should be one row for each statement (also one for each parameter)
+                    // parameters中有多少元素,就对应生成多少个主键
                     if (!rs.next()) {
                         break;
                     }
+                    // 为用户传入的实参创建相应的MetaObject对象
                     final MetaObject metaParam = configuration.newMetaObject(parameter);
+                    // 获取对应的TypeHandler对象
                     if (typeHandlers == null) {
                         //先取得类型处理器
                         typeHandlers = getTypeHandlers(typeHandlerRegistry, metaParam, keyProperties);
                     }
                     //填充键值
+                    // 将生成的主键设置到用户传入的参数的对应位置
                     populateKeys(rs, metaParam, keyProperties, typeHandlers);
                 }
             }

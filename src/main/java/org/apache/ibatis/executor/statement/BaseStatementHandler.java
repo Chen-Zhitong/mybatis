@@ -34,22 +34,25 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
+ * 语句处理器的基类,它只提供了一些参数绑定的相关方法,并没有实现操作数据库的方法
+ *
  * @author Clinton Begin
- */
-
-/**
- * 语句处理器的基类
  */
 public abstract class BaseStatementHandler implements StatementHandler {
 
     protected final Configuration configuration;
     protected final ObjectFactory objectFactory;
     protected final TypeHandlerRegistry typeHandlerRegistry;
+    // 记录使用的ResultSetHandler对象,它的主要功能是将结果集映射成结果对象
     protected final ResultSetHandler resultSetHandler;
+    // 记录使用的ParameterHandler对象, ParameterHandler的主要功能是为SQL语句绑定实参,也就是使用
+    // 传入的实参替换SQL语句中的 "?" 占位符
     protected final ParameterHandler parameterHandler;
 
+    // 记录执行SQL语句的Executor对象
     protected final Executor executor;
     protected final MappedStatement mappedStatement;
+    // RowBounds记录了用户设置的offset和limit,用于在结果集中定位映射的起始位置和结束位置
     protected final RowBounds rowBounds;
 
     protected BoundSql boundSql;
@@ -64,6 +67,7 @@ public abstract class BaseStatementHandler implements StatementHandler {
         this.objectFactory = configuration.getObjectFactory();
 
         if (boundSql == null) { // issue #435, get the key before calculating the statement
+            // 调用KeyGenerator.processBefore()方法获取主键
             generateKeys(parameterObject);
             boundSql = mappedStatement.getBoundSql(parameterObject);
         }

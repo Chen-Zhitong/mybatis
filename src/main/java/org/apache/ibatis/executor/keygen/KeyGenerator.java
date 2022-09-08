@@ -29,9 +29,10 @@ import java.sql.Statement;
  */
 public interface KeyGenerator {
 
-    //定了2个回调方法，processBefore,processAfter
+    // 在执行insert之前执行
     void processBefore(Executor executor, MappedStatement ms, Statement stmt, Object parameter);
 
+    // 在执行insert之后执行
     void processAfter(Executor executor, MappedStatement ms, Statement stmt, Object parameter);
 
 }

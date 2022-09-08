@@ -84,23 +84,34 @@ public class DefaultResultSetHandler implements ResultSetHandler {
         this.resultHandler = resultHandler;
     }
 
+    /**
+     * 对存储过程中输出参数的相关处理
+     *
+     * @param cs
+     * @throws SQLException
+     */
     @Override
     public void handleOutputParameters(CallableStatement cs) throws SQLException {
+        //  获取用户传入的实际参数,并为其创建相应的MetaObject对象
         final Object parameterObject = parameterHandler.getParameterObject();
         final MetaObject metaParam = configuration.newMetaObject(parameterObject);
+        // 获取BoundSql.parameterMappings集合,其中记录了参数相关信息
         final List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
         //循环处理每个参数
         for (int i = 0; i < parameterMappings.size(); i++) {
             final ParameterMapping parameterMapping = parameterMappings.get(i);
             //只处理OUT|INOUT
             if (parameterMapping.getMode() == ParameterMode.OUT || parameterMapping.getMode() == ParameterMode.INOUT) {
+                // 如果存在输出类型的参数,则解析参数值,并设置到parameterObject中
                 if (ResultSet.class.equals(parameterMapping.getJavaType())) {
                     //如果是ResultSet型(游标)
                     //#{result, jdbcType=CURSOR, mode=OUT, javaType=ResultSet, resultMap=userResultMap}
                     //先用CallableStatement.getObject取得这个游标，作为参数传进去
+                    // 如果指定该输出参数为ResultSet类型,则需要解析
                     handleRefCursorOutputParameter((ResultSet) cs.getObject(i + 1), parameterMapping, metaParam);
                 } else {
                     //否则是普通型，核心就是CallableStatement.getXXX取得值
+                    // 使用TypeHandler获取参数值,并设置到parameterObject中
                     final TypeHandler<?> typeHandler = parameterMapping.getTypeHandler();
                     metaParam.setValue(parameterMapping.getProperty(), typeHandler.getResult(cs, i + 1));
                 }
@@ -112,15 +123,20 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     // HANDLE OUTPUT PARAMETER
     //
 
-    //处理游标(OUT参数)
+    // 负责处理ResultSet类型的输出参数(存储过程?), 它会按照指定的的ResultMap对该ResultSet类型的输出参数进行映射,
+    // 并将映射得到的结果对象设置到用户传入的parameterObject对象中
     private void handleRefCursorOutputParameter(ResultSet rs, ParameterMapping parameterMapping, MetaObject metaParam) throws SQLException {
         try {
+            // 获取映射使用的ResultMap对象
             final String resultMapId = parameterMapping.getResultMapId();
             final ResultMap resultMap = configuration.getResultMap(resultMapId);
+            // 创建用于保存映射结果对象的DefaultResultHandler对象
             final DefaultResultHandler resultHandler = new DefaultResultHandler(objectFactory);
+            // 将结果集封装成ResultSetWrapper
             final ResultSetWrapper rsw = new ResultSetWrapper(rs, configuration);
-            //里面就和一般ResultSet处理没两样了
+            // 通过handlerRowValues()方法完成映射操作,并将结果对象保存到DefaultResultHandler中
             handleRowValues(rsw, resultMap, resultHandler, new RowBounds(), null);
+            // 将映射得到的结果对象保存到parameterObject中
             metaParam.setValue(parameterMapping.getProperty(), resultHandler.getResultList());
         } finally {
             // issue #228 (close resultsets)

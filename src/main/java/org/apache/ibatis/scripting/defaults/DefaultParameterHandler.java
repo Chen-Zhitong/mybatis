@@ -41,10 +41,15 @@ import java.util.List;
  */
 public class DefaultParameterHandler implements ParameterHandler {
 
+    // typeHandlerRegistry对象,管理MyBatis中全部TypeHandler对象
     private final TypeHandlerRegistry typeHandlerRegistry;
 
+    // MappedStatement对象,其中记录SQL节点相应的配置信息
     private final MappedStatement mappedStatement;
+    // 用户传入的实参对象
     private final Object parameterObject;
+    // 对应的BoundSql对象,需要设置参数的PreparedStatement对象,就是根据该BoundSql中记录的SQL
+    // 语句创建的, BoundSql中也记录了对应参数的名称和相关属性
     private BoundSql boundSql;
     private Configuration configuration;
 
@@ -65,35 +70,41 @@ public class DefaultParameterHandler implements ParameterHandler {
     @Override
     public void setParameters(PreparedStatement ps) throws SQLException {
         ErrorContext.instance().activity("setting parameters").object(mappedStatement.getParameterMap().getId());
+        // 去除sql中的参数映射列表
         List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+        // 检测parameterMappings集合是否为空
         if (parameterMappings != null) {
             //循环设参数
             for (int i = 0; i < parameterMappings.size(); i++) {
                 ParameterMapping parameterMapping = parameterMappings.get(i);
+                // 过滤掉存储过程中的输出参数
                 if (parameterMapping.getMode() != ParameterMode.OUT) {
-                    //如果不是OUT，才设进去
-                    Object value;
-                    String propertyName = parameterMapping.getProperty();
+                    Object value; // 记录绑定的实参
+                    String propertyName = parameterMapping.getProperty(); // 获取参数名称
+                    // 获取对应的实参值
                     if (boundSql.hasAdditionalParameter(propertyName)) { // issue #448 ask first for additional params
                         //若有额外的参数, 设为额外的参数
                         value = boundSql.getAdditionalParameter(propertyName);
-                    } else if (parameterObject == null) {
+                    } else if (parameterObject == null) { // 整个实参为空
                         //若参数为null，直接设null
                         value = null;
                     } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
                         //若参数有相应的TypeHandler，直接设object
                         value = parameterObject;
                     } else {
-                        //除此以外，MetaObject.getValue反射取得值设进去
+                        // 获取对象中相应的属性值或查找Map对象中值
                         MetaObject metaObject = configuration.newMetaObject(parameterObject);
                         value = metaObject.getValue(propertyName);
                     }
+                    // 获取ParameterMapping中设置的TypeHandler对象
                     TypeHandler typeHandler = parameterMapping.getTypeHandler();
                     JdbcType jdbcType = parameterMapping.getJdbcType();
                     if (value == null && jdbcType == null) {
                         //不同类型的set方法不同，所以委派给子类的setParameter方法
                         jdbcType = configuration.getJdbcTypeForNull();
                     }
+                    // 通过TypeHandler.setParameter()方法会调用PreparedStatement.set*()方法
+                    // 为SQL语句绑定相应的实参
                     typeHandler.setParameter(ps, i + 1, value, jdbcType);
                 }
             }
