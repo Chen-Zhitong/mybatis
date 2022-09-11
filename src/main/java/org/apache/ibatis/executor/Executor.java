@@ -38,7 +38,7 @@ public interface Executor {
     //不需要ResultHandler
     ResultHandler NO_RESULT_HANDLER = null;
 
-    //更新
+    //  执行 update, insert, delete三种类型的SQL语句
     int update(MappedStatement ms, Object parameter) throws SQLException;
 
     //查询，带分页，带缓存，BoundSql
@@ -47,7 +47,7 @@ public interface Executor {
     //查询，带分页
     <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException;
 
-    //刷新批处理语句
+    //  批量执行SQL语句
     List<BatchResult> flushStatements() throws SQLException;
 
     //提交和回滚，参数是是否要强制
@@ -55,22 +55,25 @@ public interface Executor {
 
     void rollback(boolean required) throws SQLException;
 
-    //创建CacheKey
+    //创建缓存中用到的CacheKey对象
     CacheKey createCacheKey(MappedStatement ms, Object parameterObject, RowBounds rowBounds, BoundSql boundSql);
 
-    //判断是否缓存了
+    // 根据CacheKey对象查找缓存
     boolean isCached(MappedStatement ms, CacheKey key);
 
-    //清理Session缓存
+    // 清空一级缓存
     void clearLocalCache();
 
-    //延迟加载
+    // 延迟加载一级缓存中的数据
     void deferLoad(MappedStatement ms, MetaObject resultObject, String property, CacheKey key, Class<?> targetType);
 
+    // 获取事务对象
     Transaction getTransaction();
 
+    // 关闭Executor对象
     void close(boolean forceRollback);
 
+    // 检测Executor对象是否关闭
     boolean isClosed();
 
     void setExecutorWrapper(Executor executor);

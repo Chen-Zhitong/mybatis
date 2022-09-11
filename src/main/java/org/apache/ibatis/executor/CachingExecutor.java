@@ -33,7 +33,8 @@ import java.util.List;
  */
 
 /**
- * 二级缓存执行器
+ * 二级缓存执行器,是一个Executor接口的装饰器,它为Executor对象增加了二级缓存功能
+ * Mybatis中提供的二级缓存是应用级别的缓存,它的什么周期与应用程序的生命周期相同.
  */
 public class CachingExecutor implements Executor {
 
@@ -78,8 +79,10 @@ public class CachingExecutor implements Executor {
 
     @Override
     public <E> List<E> query(MappedStatement ms, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException {
+        // 1. 获取BoundSql对象
         BoundSql boundSql = ms.getBoundSql(parameterObject);
         //query时传入一个cachekey参数
+        // 创建CacheKey对象
         CacheKey key = createCacheKey(ms, parameterObject, rowBounds, boundSql);
         return query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
     }
@@ -88,22 +91,33 @@ public class CachingExecutor implements Executor {
     @Override
     public <E> List<E> query(MappedStatement ms, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql)
             throws SQLException {
+        // 获取查询语句是否开启了二级缓存功能
         Cache cache = ms.getCache();
-        //默认情况下是没有开启缓存的(二级缓存).要开启二级缓存,你需要在你的 SQL 映射文件中添加一行: <cache/>
-        //简单的说，就是先查CacheKey，查不到再委托给实际的执行器去查
+        //默认情况下是没有开启缓存的(二级缓存).要开启二级缓存,你需要先在配置文件中添加 mybatis: configuration: cache-enabled:true
+        // 再在 SQL 映射文件中添加一行: <cache/>或<cache-ref/>
+
+        // 2. 是否开启了二级缓存功能
         if (cache != null) {
+            // 根据<select>节点的配置,决定是否需要去清空二级缓存
             flushCacheIfRequired(ms);
+            // 键SQL节点的useCache配置以及是否使用了resultHandler配置
             if (ms.isUseCache() && resultHandler == null) {
+                // 3. 二级缓存不能保存输出类型的参数, 如果查询操作调用了包含输出参数的存储过程,则报错
                 ensureNoOutParams(ms, parameterObject, boundSql);
                 @SuppressWarnings("unchecked")
+                // 4. 查询二级缓存
                 List<E> list = (List<E>) tcm.getObject(cache, key);
                 if (list == null) {
+                    // 5. 二级缓存没有相应的结果对象, 调用封装的Executor对象的query()方法,
+                    // 正如前面介绍的,其中会先查询一级缓存
                     list = delegate.<E>query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
+                    // 将查询结果保存到TransactionalCache.entriesToAddOnCommit集合中
                     tcm.putObject(cache, key, list); // issue #578 and #116
                 }
                 return list;
             }
         }
+        // 没有启动二级缓存,直接调用底层Executor执行数据库查询操作
         return delegate.<E>query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
     }
 
@@ -114,16 +128,20 @@ public class CachingExecutor implements Executor {
 
     @Override
     public void commit(boolean required) throws SQLException {
+        //  调用底层的Executor提交事务
         delegate.commit(required);
+        //遍历所有相关的TranscationalCache对象执行commit方法
         tcm.commit();
     }
 
     @Override
     public void rollback(boolean required) throws SQLException {
         try {
+            // 调用底层的Executor回滚事务
             delegate.rollback(required);
         } finally {
             if (required) {
+                // 遍历所有相关的TranscationalCache对象执行rollback()方法
                 tcm.rollback();
             }
         }

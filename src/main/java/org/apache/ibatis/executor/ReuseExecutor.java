@@ -70,26 +70,32 @@ public class ReuseExecutor extends BaseExecutor {
     @Override
     public List<BatchResult> doFlushStatements(boolean isRollback) throws SQLException {
         for (Statement stmt : statementMap.values()) {
+            // 遍历statementMap集合并关闭其中的Statement对象
             closeStatement(stmt);
         }
+        //清空statementMap集合
         statementMap.clear();
+        //返回空集合
         return Collections.emptyList();
     }
 
     private Statement prepareStatement(StatementHandler handler, Log statementLog) throws SQLException {
         Statement stmt;
-        //得到绑定的SQL语句
         BoundSql boundSql = handler.getBoundSql();
+        //得到绑定的SQL语句
         String sql = boundSql.getSql();
         //如果缓存中已经有了，直接得到Statement
         if (hasStatementFor(sql)) {
             stmt = getStatement(sql);
         } else {
             //如果缓存没有找到，则和SimpleExecutor处理完全一样，然后加入缓存
+            // 获取数据库连接
             Connection connection = getConnection(statementLog);
+            // 创建新的Statement对象,并缓存到statementMap集合中
             stmt = handler.prepare(connection);
             putStatement(sql, stmt);
         }
+        // 处理占位符
         handler.parameterize(stmt);
         return stmt;
     }

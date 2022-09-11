@@ -25,11 +25,12 @@ import java.util.Map;
  */
 
 /**
- * 事务缓存管理器，被CachingExecutor使用
+ * 事务缓存管理器，用于管理CachingExecutor使用的二级缓存对象
  */
 public class TransactionalCacheManager {
 
-    //管理了许多TransactionalCache
+    // key是对应的CachingExecutor使用的二级缓存对象
+    // value是相应的TransactionalCache对象,在该TransactionalCache封装了对应的二级缓存对象,也就这里的key
     private Map<Cache, TransactionalCache> transactionalCaches = new HashMap<Cache, TransactionalCache>();
 
     public void clear(Cache cache) {
@@ -62,7 +63,9 @@ public class TransactionalCacheManager {
     private TransactionalCache getTransactionalCache(Cache cache) {
         TransactionalCache txCache = transactionalCaches.get(cache);
         if (txCache == null) {
+            //  创建TranscationalCache对象
             txCache = new TransactionalCache(cache);
+            // 提那家到transcationalCaches集合
             transactionalCaches.put(cache, txCache);
         }
         return txCache;
